@@ -1,0 +1,127 @@
+
+{% extends "base.html" %}
+{% load staticfiles%}
+
+{% block title %} Metamarker {% endblock %}
+
+
+
+<!-- Navigation -->
+
+{% block navigation %}
+{% include "home/navbar.html" %}
+{% endblock %}
+{% block content %}
+
+
+<!-- Header -->
+<header class="masthead d-flex">
+  <div class="container text-center my-auto">
+    <h1 class="mb-1">Project Metabolomic Biomarker</h1>
+    <h3 class="mb-5">
+      <em>A Free Platform That Handles All your Metabolomic Biomarker Discovery Workflow</em>
+    </h3>
+    <a class="btn btn-primary btn-xl js-scroll-trigger" href="#about">Find Out More</a>
+  </div>
+  <div class="overlay"></div>
+</header>
+
+
+
+
+<section class="content-section bg-primary text-white text-center" id="about">
+  {% include "home/about.html" %}
+</section>
+
+<section class="content-section bg-primary text-white text-center" id="services">
+  <div class="container mb-5">
+    <div class="content-section-heading">
+      <h3 class="text-secondary mb-0">Services</h3>
+      <h2 class="mb-5">What We Offer</h2>
+    </div>
+    <div class="row mb-5">
+      <div class="col-lg-3 col-md-6 mb-5 mb-lg-0">
+        <a href="#" class="portfolio-link">
+          <span class="service-icon rounded-circle mx-auto portfolio-link "><i class="fas fa-align-center"></i></span>
+        </a>
+        <h4>
+          <strong>Data Preprocessing</strong>
+        </h4>
+        <p class="text-faded mb-0">Cleaning dataset, error correction, normalization and so on</p>
+      </div>
+
+
+
+      <div class="col-lg-3 col-md-6 mb-5 mb-lg-0">
+        <a href="#" class="portfolio-link" >
+          <span class="service-icon rounded-circle mx-auto portfolio-link ">  <i class="fas fa-crop"></i></span>
+        </a>
+        <h4>
+          <strong>data Visualization</strong>
+        </h4>
+        <p class="text-faded mb-0">Various Plotting and mapping techniques</p>
+      </div>
+      <div class="col-lg-3 col-md-6 mb-5 mb-lg-0">
+        <a href="#" class="portfolio-link" >
+          <span class="service-icon rounded-circle mx-auto portfolio-link "><i class="fas fa-bezier-curve"></i></span>
+        </a>
+        <h4>
+          <strong>data Processing</strong>
+        </h4>
+        <p class="text-faded mb-0">Statistical Analysis And Modeling</P>
+        </DIV>
+
+        <div class="col-lg-3 col-md-6 mb-5 mb-lg-0">
+          <a href="#" class="portfolio-link" >
+            <span class="service-icon rounded-circle mx-auto portfolio-link "> <i class="fas fa-archive"></i></span>
+          </a>
+          <h4>
+            <strong>Report Generating</strong>
+          </h4>
+          <p class="text-faded mb-0">Pdfs or word documents</P>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+
+          <div class="row">
+            <div class="container text-center">
+              <h2 class="mb-4">. . . Or you can go with the flow with our step by step biomarker discovery workflow tool</h2>
+              <a href="#" class="btn btn-xl btn-light mr-4">Click here to start</a> 
+            </div>
+          </div>
+      </div>
+    </section>
+
+
+
+    <!-- Map -->
+    <section id="contact" class="map">
+      <iframe width="100%" height="100%" frameborder="0" scrolling="no"
+      marginheight="0" marginwidth="0"
+    src="https://maps.google.com/maps?width=100%&amp;height=600&amp;hl=en&amp;q=Memorial%20University%20of%20Newfoundland+(Machine%20Intelligence%20and%20Bioinformatics%20Lab)&amp;ie=UTF8&amp;t=&amp;z=12&amp;iwloc=B&amp;output=embed"></iframe>
+<!-- <iframe width="100%" height="400" src="https://maps.google.com/maps?width=100%&amp;height=600&amp;hl=en&amp;q=Memorial%20University%20of%20Newfoundland+(Machine%20Intelligence%20and%20Bioinformatics%20Lab)&amp;ie=UTF8&amp;t=&amp;z=12&amp;iwloc=B&amp;output=embed" ><a href="https://www.maps.ie/map-my-route/">Create a route on google maps</a></iframe> -->
+<!-- <iframe width="100%" height="375" id="gmap_canvas" src="https://maps.google.com/maps?q=MEMORIAL%20UNIVERSITY%20OF%20NEW%20&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe><a href="https://www.pureblack.de">pureblack.de</a></div><style>.mapouter{text-align:right;height:375px;width:1080px;}.gmap_canvas {overflow:hidden;background:none!important;height:375px;width:1080px;}</style>Google Maps by <a href="https://www.embedgooglemap.net" rel="nofollow" target="_blank">Embedgooglemap.net</a> -->
+      <br />
+      <!-- <small>
+        <a href="https://maps.google.com/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;q=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;aq=0&amp;oq=twitter&amp;sll=28.659344,-81.187888&amp;sspn=0.128789,0.264187&amp;ie=UTF8&amp;hq=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;t=m&amp;z=15&amp;iwloc=A"></a>
+      </small> -->
+    </section>
+
+
+
+
+    <!-- Callout -->
+
+    {% endblock %}
+
+
+    {%block footer %}
+      {% include "home/footer.html" %}
+    {% endblock %}
+
+
+    {%block js_block %}
+
+    {% endblock %}
