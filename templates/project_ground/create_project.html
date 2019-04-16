@@ -2,6 +2,28 @@
 {% extends "base.html" %}
 {% load staticfiles%}
 
+
+
+{% block css_block %}
+<style media="screen">
+  .masthead{
+    color:#0D040F;
+    padding-top: 5rem;
+    font-size:17px;
+    font-weight:650;
+
+  }
+
+  .masthead input,
+  .masthead select,
+  .masthead textarea{
+    background: #eeeeee;
+  }
+
+</style>
+
+
+ {% endblock %}
 {% block title %} {{page_title}} {% endblock %}
 
 
@@ -12,11 +34,28 @@
 
 
 
-
-
-
-
 {% block content %}
+
+<header class="masthead d-flex">
+  <div class="container text-center my-auto">
+
+    <!-- {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %} -->
+    {% if form.errors %}
+      <ul>
+        {% for key,value in form.errors.items %}
+          <li>{{ key|escape }} : {{ value|escape }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    {% include "project_ground/file_input_form.html" %}
+
+
+
+  </div>
+  <div class="overlay"></div>
+</header>
+
 
 
 {% endblock %}
@@ -27,7 +66,7 @@
 
 <!--  Footer -->
 {%block footer %}
-{% include "home/footer.html" %}
+
 {% endblock %}
 
 

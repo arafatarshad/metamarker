@@ -2,44 +2,29 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-
-
-
 from .models import DatasetType
-# Create your views here.
+from .forms import ProjectForm
 
-#
-# class SnippetDetail(APIView):
-#     """
-#     Retrieve, update or delete a snippet instance.
-#     """
-#     def get_object(self, pk):
-#         try:
-#             return Snippet.objects.get(pk=pk)
-#         except Snippet.DoesNotExist:
-#             raise Http404
-#
-#     def get(self, request, pk, format=None):
-#         snippet = self.get_object(pk)
-#         serializer = SnippetSerializer(snippet)
-#         return Response(serializer.data)
-#
-#     def put(self, request, pk, format=None):
-#         snippet = self.get_object(pk)
-#         serializer = SnippetSerializer(snippet, data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-#
-#     def delete(self, request, pk, format=None):
-#         snippet = self.get_object(pk)
-#         snippet.delete()
-#         return Response(status=status.HTTP_204_NO_CONTENT)
+
+from django.http import HttpResponse
+
+# Create your views here.
 
 
 class CreateProject(APIView):
 
         def get(self, request, *args, **kwargs):
+            form = ProjectForm()
             return render(request,"project_ground/create_project.html",{"page_title":"Create New Project",
-                                                                        "dataset_types":DatasetType.objects})
+                                                                        "dataset_types":DatasetType.objects.all(),
+                                                                        "form":form})
+
+        def post(self, request, *args, **kwargs):
+            form = ProjectForm(request.POST,  request.FILES)
+            if form.is_valid():
+                html = "<html><body>It is now %s.</body></html>"
+                return HttpResponse(html)
+            else :
+                return render(request,"project_ground/temp.html",{"page_title":"Create New Project",
+                                                                        "dataset_types":DatasetType.objects.all(),
+                                                                        "form":form})
