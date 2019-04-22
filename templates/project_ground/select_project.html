@@ -1,0 +1,36 @@
+
+{% if form.errors %}
+    {% for key,value in form.errors.items %}
+      <div class="alert alert-danger">
+        <strong>{{ key}} : {{ value|escape }}</strong>
+      </div>
+      {% endfor %}
+    {% for error in form.non_field_errors %}
+        <p class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </p>
+    {% endfor %}
+{% endif %}
+
+
+<form method="POST" enctype="multipart/form-data" id="select_project_form">
+  {% csrf_token %}
+  <div class="form-group container centering_form">
+
+
+    <div class="form-row">
+      <div class="form-group col-md-12">
+        <label for="inputEmail4">Your Email Address</label>
+        <input type ="email" name="email" class="form-control"  placeholder="Enter your email address" value="{{form.data.email}}" required>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-12">
+        <label for="inputEmail4">Your First Name</label>
+        <input type ="text" name="project_reference" class="form-control"  placeholder="First Name" value="{{form.data.project_reference}}" required>
+      </div>
+    </div>
+
+     <button type="submit" class="btn btn-primary">SUBMIT</button>
+  </div>
+</form>

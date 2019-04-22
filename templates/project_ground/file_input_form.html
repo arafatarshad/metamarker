@@ -1,34 +1,49 @@
 
+{% if form.errors %}
+    {% for key,value in form.errors.items %}
+      <div class="alert alert-danger">
+        <strong>{{ key}} : {{ value|escape }}</strong>
+      </div>
+      {% endfor %}
+    {% for error in form.non_field_errors %}
+        <p class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </p>
+    {% endfor %}
+{% endif %}
 
-<form method="POST" enctype="multipart/form-data">
+
+<form method="POST" enctype="multipart/form-data" id="new_project_form">
+  {% csrf_token %}
   <div class="form-group container centering_form">
 
 
     <div class="form-row">
       <div class="form-group col-md-4">
         <label for="inputEmail4">Your First Name</label>
-        <input type ="text" name="author_first_name" class="form-control" placeholder="First Name" required>
+        <input type ="text" name="author_first_name" class="form-control"  placeholder="First Name" value="{{form.data.author_first_name}}" required>
       </div>
 
       <div class="form-group col-md-4">
         <label for="inputEmail4">Your Last Name</label>
-        <input type ="text" name="author_last_name" class="form-control" placeholder="Last Name" required>
+        <input type ="text" name="author_last_name" class="form-control" placeholder="Last Name" required value="{{form.data.author_last_name}}">
       </div>
 
       <div class="form-group col-md-4">
         <label for="inputEmail4">Your Email Address</label>
-        <input type ="email" name="email" class="form-control" placeholder="Email Address" required>
+        <input type ="email" name="email" class="form-control" placeholder="Email Address" required value="{{form.data.email}}">
       </div>
 
     </div>
 
-
     <div class="form-row">
       <div class="form-group col-md-12">
         <label for="inputEmail4">DatasetType</label>
-        <select class="form-control" name="dataset_type_id">
+        <select class="form-control" name="dataset_type_id" required>
+
+            <option value="">Select an Option</option>
           {% for type in dataset_types %}
-            <option value="{{ type.id }}">{{ type.name }}</option>
+            <option value="{{ type.pk }}">{{ type.name }}</option>
           {% endfor %}
         </select>
       </div>
@@ -37,7 +52,7 @@
    <div class="form-row">
      <div class="form-group col-md-12">
         <label for="inputEmail4">Description of the project</label>
-        <textarea class="form-control" name="description" rows="5" style="min-width: 100%" placeholder="Describe Your Project"></textarea>
+        <textarea class="form-control" name="description" rows="5" style="min-width: 100%" placeholder="Describe Your Project" >{{form.data.description}}</textarea>
         </div>
    </div>
 
@@ -46,7 +61,7 @@
 
 
   <div class="custom-file">
-    <input type="file" accept=".csv,.CSV" required class="custom-file-input" id="customFile" name="dataset"  onchange="$(this).next().after().text($(this).val().split('\\').slice(-1)[0])">
+    <input type="file" accept=".csv,.CSV" required  class="custom-file-input" id="customFile" name="dataset"  onchange="$(this).next().after().text($(this).val().split('\\').slice(-1)[0])">
     <label class="custom-file-label" for="customFile">Choose file</label>
   </div>
 

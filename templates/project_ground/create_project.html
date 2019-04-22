@@ -11,6 +11,7 @@
     padding-top: 5rem;
     font-size:17px;
     font-weight:650;
+    height:120%;
 
   }
 
@@ -19,10 +20,29 @@
   .masthead textarea{
     background: #eeeeee;
   }
+  .my-auto{
 
+      position: relative;
+  }
+  .btn-sml{
+
+    position: absolute;
+    left:-50px;
+    top: -40px;
+    background-color: rgba(52, 58, 64, 0.5);
+    border: none;
+  }
+  .btn-sml:hover{
+    background: #343a40
+  }
+
+  .hidden-section{
+    display : none !important;
+  }
+  .show-section{
+    display : block !important;
+  }
 </style>
-
-
  {% endblock %}
 {% block title %} {{page_title}} {% endblock %}
 
@@ -36,25 +56,29 @@
 
 {% block content %}
 
-<header class="masthead d-flex">
+<header class="masthead d-flex show-section" id="selection_section" >
   <div class="container text-center my-auto">
-
-    <!-- {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %} -->
-    {% if form.errors %}
-      <ul>
-        {% for key,value in form.errors.items %}
-          <li>{{ key|escape }} : {{ value|escape }}</li>
-        {% endfor %}
-      </ul>
-    {% endif %}
-
-    {% include "project_ground/file_input_form.html" %}
-
-
-
+    {% include "project_ground/file_selection.html" %}
   </div>
   <div class="overlay"></div>
 </header>
+
+  <div class="masthead d-flex hidden-section" id="new_project_section" >
+    <div class="container text-center my-auto">
+      <span class="btn btn-sml btn-danger" onclick="closeSections()"><i class="fa fa-times"></i></span>
+      {% include "project_ground/file_input_form.html" %}
+    </div>
+    <div class="overlay"></div>
+  </div>
+
+
+  <div class="masthead d-flex hidden-section" id="select_project_section">
+    <div class="container text-center my-auto">
+      <span class="btn btn-sml btn-danger" onclick="closeSections()"><i class="fa fa-times"></i></span>
+      {% include "project_ground/select_project.html" %}
+    </div>
+    <div class="overlay"></div>
+  </div>
 
 
 
@@ -75,4 +99,27 @@
 <!--  additional Javascript-->
 {%block js_block %}
 
+
+<script type="text/javascript">
+$( document ).ready(function() {
+
+});
+
+function newProject(){
+  $("#new_project_section").removeClass("hidden-section").addClass("show-section");
+  $("#select_project_section").removeClass("show-section").addClass("hidden-section");
+  $("#selection_section").removeClass("show-section").addClass("hidden-section");
+}
+function selectProject(){
+  $("#new_project_section").removeClass("show-section").addClass("hidden-section");
+  $("#select_project_section").removeClass("hidden-section").addClass("show-section");
+  $("#selection_section").removeClass("show-section").addClass("hidden-section");
+}
+function closeSections(){
+  $("#new_project_section").removeClass("show-section").addClass("hidden-section");
+  $("#select_project_section").removeClass("show-section").addClass("hidden-section");
+  $("#selection_section").removeClass("hidden-section").addClass("show-section");
+}
+
+</script>
 {% endblock %}
