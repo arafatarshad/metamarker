@@ -1,0 +1,50 @@
+.masthead{
+  color:#0D040F;
+  padding-top: 5rem;
+  font-size:17px;
+  font-weight:650;
+  height:120%;
+
+}
+
+.masthead input,
+.masthead select,
+.masthead textarea{
+  background: #eeeeee;
+}
+.my-auto{
+
+    position: relative;
+}
+.btn-sml{
+
+  position: absolute;
+  left:-50px;
+  top: -40px;
+  background-color: rgba(52, 58, 64, 0.5);
+  border: none;
+}
+.btn-sml:hover{
+  background: #343a40
+}
+
+.hidden-section{
+  display : none !important;
+}
+.show-section{
+  display : block !important;
+}
+
+
+
+@media only screen and (max-width: 768px) {
+  .masthead{
+    color:#0D040F;
+    padding-top: 5rem;
+    font-size:17px;
+    font-weight:650;
+    height:280% !important;
+
+  }
+
+}

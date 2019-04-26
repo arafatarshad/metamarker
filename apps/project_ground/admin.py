@@ -3,7 +3,7 @@ from .models import DatasetType,Project
 # Register your models here.
 
 class ProjectAdmin(admin.ModelAdmin):
-    list_display=('id','author_first_name','author_last_name','description','email','project_reference','dataset_type_id','basefilename','dataset')
+    list_display=('id','author_first_name','author_last_name','description','email','reference_id','dataset')
 
 class DatasetTypeAdmin(admin.ModelAdmin):
     list_display=('id','name')

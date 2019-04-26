@@ -1,0 +1,36 @@
+
+{% extends "base.html" %}
+{% load staticfiles%}
+
+
+{% block css_block %}
+
+<link href="{% static 'css/create_select_form.css' %}" rel="stylesheet">
+
+{% endblock %}
+{% block title %} {{page_title}} {% endblock %}
+
+
+{% block navigation %}
+{% include "home/navbar.html" %}
+{% endblock %}
+
+
+{% block content %}
+
+
+<header class="masthead d-flex show-section">
+  <div class="container text-center my-auto">
+    <button   type="button" class="btn btn-primary btn-lg btn-block btn-huge" name="new_project"
+      onclick="location.href='{% url 'create_project' value=0 %}'">New Project</button>
+      <br>
+    <button type="button" class="btn btn-success btn-lg btn-block btn-huge" name="select_project"
+    onclick="location.href='{% url 'create_project' value=1 %}'">Select Project</button>
+  </div>
+  <div class="overlay"></div>
+</header>
+
+{% endblock %}
+
+{%block footer %}
+{% endblock %}

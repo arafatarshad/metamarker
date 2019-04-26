@@ -1,125 +1,84 @@
 
 {% extends "base.html" %}
 {% load staticfiles%}
-
-
-
 {% block css_block %}
-<style media="screen">
-  .masthead{
-    color:#0D040F;
-    padding-top: 5rem;
-    font-size:17px;
-    font-weight:650;
-    height:120%;
-
-  }
-
-  .masthead input,
-  .masthead select,
-  .masthead textarea{
-    background: #eeeeee;
-  }
-  .my-auto{
-
-      position: relative;
-  }
-  .btn-sml{
-
-    position: absolute;
-    left:-50px;
-    top: -40px;
-    background-color: rgba(52, 58, 64, 0.5);
-    border: none;
-  }
-  .btn-sml:hover{
-    background: #343a40
-  }
-
-  .hidden-section{
-    display : none !important;
-  }
-  .show-section{
-    display : block !important;
-  }
-</style>
- {% endblock %}
+<link href="{% static 'css/create_select_form.css' %}" rel="stylesheet">
+{% endblock %}
 {% block title %} {{page_title}} {% endblock %}
-
-
 {% block navigation %}
 {% include "home/navbar.html" %}
 {% endblock %}
-
-
-
-
 {% block content %}
-
-<header class="masthead d-flex show-section" id="selection_section" >
-  <div class="container text-center my-auto">
-    {% include "project_ground/file_selection.html" %}
-  </div>
-  <div class="overlay"></div>
-</header>
-
-  <div class="masthead d-flex hidden-section" id="new_project_section" >
+  <div class="masthead d-flex" id="new_project_section" >
     <div class="container text-center my-auto">
-      <span class="btn btn-sml btn-danger" onclick="closeSections()"><i class="fa fa-times"></i></span>
+      {% if form.errors %}
+          {% for key,value in form.errors.items %}
+            <div class="alert alert-danger">
+              <strong>{{ key}} : {{ value|escape }}</strong>
+            </div>
+            {% endfor %}
+          {% for error in form.non_field_errors %}
+              <p class="alert alert-danger">
+                  <strong>{{ error|escape }}</strong>
+              </p>
+          {% endfor %}
+      {% endif %}
+      <span class="btn btn-sml btn-danger" onclick="goBack()"><i class="fa fa-times"></i></span>
       {% include "project_ground/file_input_form.html" %}
     </div>
     <div class="overlay"></div>
   </div>
 
-
-  <div class="masthead d-flex hidden-section" id="select_project_section">
-    <div class="container text-center my-auto">
-      <span class="btn btn-sml btn-danger" onclick="closeSections()"><i class="fa fa-times"></i></span>
-      {% include "project_ground/select_project.html" %}
-    </div>
-    <div class="overlay"></div>
-  </div>
-
-
-
 {% endblock %}
-
-
-
-
-
 <!--  Footer -->
 {%block footer %}
-
 {% endblock %}
-
-
-
-
 <!--  additional Javascript-->
 {%block js_block %}
 
+<script src="{% static 'vendor/jquery_validation.js' %}"></script>
+<script src="{% static 'vendor/sweetalert.min.js' %}"></script>
 
 <script type="text/javascript">
-$( document ).ready(function() {
 
-});
 
-function newProject(){
-  $("#new_project_section").removeClass("hidden-section").addClass("show-section");
-  $("#select_project_section").removeClass("show-section").addClass("hidden-section");
-  $("#selection_section").removeClass("show-section").addClass("hidden-section");
-}
-function selectProject(){
-  $("#new_project_section").removeClass("show-section").addClass("hidden-section");
-  $("#select_project_section").removeClass("hidden-section").addClass("show-section");
-  $("#selection_section").removeClass("show-section").addClass("hidden-section");
-}
-function closeSections(){
-  $("#new_project_section").removeClass("show-section").addClass("hidden-section");
-  $("#select_project_section").removeClass("show-section").addClass("hidden-section");
-  $("#selection_section").removeClass("hidden-section").addClass("show-section");
-}
+  $(document).ready(function() {
 
+    $('form[id="select_project_form"]').validate({
+      rules: {
+        author_first_name:{required:true},
+        author_last_name:{required:true},
+        email: {required: true,email: true},
+        dataset_type_id: {required: true},
+      },
+      messages: {
+        author_first_name:'Please Enter your First name',
+        author_last_name:'Please Enter your Last name',
+        email: 'Enter a valid email',
+        dataset_type_id:'Select the kind of the dataset', 
+      },
+      submitHandler: function(form) {
+        form.submit();
+      }
+    });
+
+  });
+
+
+
+
+  function goBack() {
+    swal({ title: "Are you sure?",
+     text: "You will be redirected to previous page !",
+     type: "warning",
+     showCancelButton: true,
+     confirmButtonColor: "#DD6B55",
+     confirmButtonText: "Yes, delete it!"
+   }).then(okay => {
+       if (okay) {
+        window.location.href = "{% url 'start_project' %}";
+      }
+    });
+  }
 </script>
 {% endblock %}

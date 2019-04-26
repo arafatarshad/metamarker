@@ -32,7 +32,9 @@ class Project(models.Model):
     description=models.TextField(max_length=250,blank=True)
     email=models.EmailField(blank=False)
 
-    project_reference= str(uuid.uuid4())
+    # reference_id=models.UUIDField(default=uuid.uuid4, editable=False,unique=True)
+    reference_id = models.CharField(max_length=64, verbose_name=u"Reference key",
+                 default=uuid.uuid1)
 
     dataset= models.FileField(upload_to=upload_path,null=True,blank=False,validators=[FileExtensionValidator(allowed_extensions=['csv'])])
     uploaded_at = models.DateTimeField(auto_now_add=True)
@@ -40,4 +42,4 @@ class Project(models.Model):
     basefilename=models.TextField(blank=True)
 
     def __str__(self):
-        return self.project_reference
+        return str(self.reference_id)

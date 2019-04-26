@@ -1,0 +1,31 @@
+
+{% extends "base.html" %}
+{% load staticfiles%}
+
+
+{% block css_block %}
+<link href="{% static 'css/create_select_form.css' %}" rel="stylesheet">
+
+{% endblock %}
+{% block title %} {{page_title}} {% endblock %}
+
+
+{% block navigation %}
+{% include "home/navbar.html" %}
+{% endblock %}
+
+
+{% block content %}
+
+
+<header class="masthead d-flex show-section">
+  <div class="container text-center my-auto">
+      hello world
+  </div>
+  <div class="overlay"></div>
+</header>
+
+{% endblock %}
+
+{%block footer %}
+{% endblock %}
