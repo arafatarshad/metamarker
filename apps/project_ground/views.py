@@ -49,7 +49,7 @@ class CreateOrSelectProject(APIView):
                 form = ProjectForm(request.POST,  request.FILES)
                 new_project=form.save(commit=False)
                 new_project.dataset_type_id_id=request.POST['dataset_type_id']
-                new_project.save() 
+                new_project.save()
 
                 template_name = "project_ground/dashboard/dashboard.html"
                 return render(request,template_name,{"page_title":"Select Existing Project","project":new_project})
