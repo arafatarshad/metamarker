@@ -39,7 +39,7 @@ class CreateOrSelectProject(APIView):
 
                 if project !=None :
                     print(project.reference_id)
-                    template_name = "project_ground/dashboard/dashboard.html"
+                    template_name = "dashboard/dashboard_main.html"
                     return render(request,template_name,{"page_title":"Select Existing Project","project":project,})
                 else :
                     template_name = "errors/project_not_found.html"
