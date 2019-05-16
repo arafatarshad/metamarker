@@ -7,10 +7,10 @@ from django.shortcuts import get_object_or_404
 from .models import DatasetType
 from .models import Project
 from .forms import ProjectForm
-
 from django.forms.utils import ErrorList
-
 from django.http import HttpResponse
+
+
 
 # Create your views here.
 class StartProject(APIView):
@@ -19,7 +19,6 @@ class StartProject(APIView):
 
 
 class CreateOrSelectProject(APIView):
-
         def get(self, request, *args, **kwargs):
             print(kwargs.get('value'))
             if kwargs.get('value') == 0 :
@@ -40,6 +39,10 @@ class CreateOrSelectProject(APIView):
                 if project !=None :
                     print(project.reference_id)
                     template_name = "dashboard/dashboard_main.html"
+
+                    # setting up the session variable
+                    request.session["reference_id"]=reference
+
                     return render(request,template_name,{"page_title":"Select Existing Project","project":project,})
                 else :
                     template_name = "errors/project_not_found.html"

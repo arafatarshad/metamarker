@@ -28,11 +28,9 @@
         <small>Control panel</small>
       </h1> -->
     </section>
-
     <section class="content">
-      {% block content%}
-
-      {% endblock %}
+      {{ request.session.reference_id }}
+      {% block content%}{% endblock %}
     </section>
   </div>
 
