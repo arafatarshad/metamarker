@@ -1,0 +1,44 @@
+{% extends "dashboard_main_template/dashboard_main.html" %}
+
+
+
+
+
+{% block content %}
+<div class=" table-container" style="width:auto;overflow:auto">
+  {% if table %}
+    <div >
+    {{ table|safe }}
+    </div>
+  {% endif %}
+</div>
+
+
+<div class=" table-container" style="width:auto;overflow:auto;margin-top:30px">
+  {% if graph %}
+    <div >
+    {{ graph|safe }}
+    </div>
+  {% endif %}
+</div>
+
+<div class=" table-container" style="width:auto;overflow:auto;margin-top:30px">
+  {% if dist %}
+    <div >
+    {{ dsit|safe }}
+    </div>
+  {% endif %}
+</div>
+
+
+
+{% endblock%}
+
+{%block scripts %}
+<script type="text/javascript">
+  $( document ).ready(function() {
+        $('li#dashboard_side').addClass("active");
+    });
+
+</script>
+{% endblock%}

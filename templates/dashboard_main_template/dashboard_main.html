@@ -2,14 +2,19 @@
 {% load staticfiles %}
 <html>
 <head>
-  {% include 'dashboard/styles.html' %}
+  {% include 'dashboard_main_template/styles.html' %}
+  <style media="screen">
+    body, .wrapper{
+      overflow-x: scroll;
+    }
+  </style>
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
-    {% include 'dashboard/header.html' %}
+    {% include 'dashboard_main_template/header.html' %}
   <!-- L"active"eft side column. contains the logo and sidebar -->
-      {% include 'dashboard/sidebar.html' %}
+      {% include 'dashboard_main_template/sidebar.html' %}
   <!-- Content Wrapper. Contains page content -->
 
 
@@ -29,11 +34,13 @@
       </h1> -->
     </section>
     <section class="content">
-      {{ request.session.reference_id }}
       {% block content%}{% endblock %}
     </section>
   </div>
 
-    {%include 'dashboard/scripts.html' %}
+    {%include 'dashboard_main_template/scripts.html' %}
+
+      {% block scripts%} {% endblock %}
+
 </body>
 </html>

@@ -1,6 +1,8 @@
 import os
 import uuid
 from django.shortcuts import render
+from django.shortcuts import redirect
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
@@ -37,13 +39,14 @@ class CreateOrSelectProject(APIView):
                 project  = Project.objects.filter(reference_id=reference).filter(email=email).first()
 
                 if project !=None :
-                    print(project.reference_id)
-                    template_name = "dashboard/dashboard_main.html"
-
+                    # print(project.reference_id)
+                    # template_name = "dashboard/dashboard_main.html"
                     # setting up the session variable
                     request.session["reference_id"]=reference
+                    return redirect('/dashboard/')
 
-                    return render(request,template_name,{"page_title":"Select Existing Project","project":project,})
+                    # return render(request,template_name,{"page_title":"Dashboard","project":project,})
+
                 else :
                     template_name = "errors/project_not_found.html"
                     return render(request,template_name,{"page_title":"Project not found"})
