@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load staticfiles%}
+
+
+
+{% block css_block %}
+
+<link href="{% static 'css/create_select_form.css' %}" rel="stylesheet">
+<link href="{% static 'css/sweet_alert.css' %}" rel="stylesheet">
+
+ {% endblock %}
+{% block title %} {{page_title}} {% endblock %}
+
+
+{% block navigation %}
+{% include "home/navbar.html" %}
+{% endblock %}
+
+
+
+
+{% block content %}
+
+  <div class="masthead d-flex" id="new_project_section" >
+    <div class="container text-center my-auto">
+      {% if form.errors %}
+          {% for key,value in form.errors.items %}
+            <div class="alert alert-danger">
+              <strong>{{ key}} : {{ value|escape }}</strong>
+            </div>
+            {% endfor %}
+          {% for error in form.non_field_errors %}
+              <p class="alert alert-danger">
+                  <strong>{{ error|escape }}</strong>
+              </p>
+          {% endfor %}
+      {% endif %}
+      <span class="btn btn-sml btn-danger" onclick="goBack()"><i class="fa fa-times"></i></span>
+      {% include "project_ground/select_project_form.html" %}
+    </div>
+    <div class="overlay"></div>
+  </div>
+
+{% endblock %}
+
+
+
+
+
+<!--  Footer -->
+{%block footer %}
+
+{% endblock %}
+
+
+
+
+<!--  additional Javascript-->
+{%block js_block %}
+
+<script src="{% static 'vendor/jquery_validation.js' %}"></script>
+<script src="{% static 'vendor/sweetalert.min.js' %}"></script>
+
+<script type="text/javascript">
+
+
+$(document).ready(function() {
+
+  $('form[id="select_project_form"]').validate({
+    rules: {
+      project_reference:{required:true},
+      email: {required: true,email: true}
+    },
+    messages: {
+      email: 'Enter a valid email',
+      project_reference: 'Enter Unique reference key of the project',
+    },
+    submitHandler: function(form) {
+      form.submit();
+    }
+  });
+
+});
+
+
+function goBack() {
+  swal({ title: "Are you sure?",
+   text: "You will be redirected to previous page !",
+   type: "warning",
+   showCancelButton: true,
+   confirmButtonColor: "#DD6B55",
+   confirmButtonText: "Yes, delete it!"
+ }).then(okay => {
+     if (okay) {
+      window.location.href = "{% url 'start_project' %}";
+    }
+  });
+}
+
+</script>
+{% endblock %}

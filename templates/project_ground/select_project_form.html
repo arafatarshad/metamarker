@@ -1,0 +1,22 @@
+
+<form method="POST" id="select_project_form">
+  {% csrf_token %}
+  <div class="form-group container centering_form">
+
+
+    <div class="form-row">
+      <div class="form-group col-md-12">
+        <label for="inputEmail4">Your Email Address</label>
+        <input type ="email" name="email" class="form-control"  placeholder="Enter your email address" value="{{form.data.email}}" >
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-12">
+        <label for="inputEmail4">Project Reference Nuber</label>
+        <input type ="text" name="project_reference" class="form-control"  placeholder="Reference " value="{{form.data.project_reference}}" >
+      </div>
+    </div>
+
+     <button type="submit" class="btn btn-primary" name="select" id="select">SUBMIT</button>
+  </div>
+</form>

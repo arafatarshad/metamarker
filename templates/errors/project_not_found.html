@@ -1,0 +1,36 @@
+
+{% extends "base.html" %}
+{% load staticfiles%}
+
+
+{% block css_block %}
+
+<link href="{% static 'css/create_select_form.css' %}" rel="stylesheet">
+
+{% endblock %}
+{% block title %} {{page_title}} {% endblock %}
+
+
+{% block navigation %}
+{% include "home/navbar.html" %}
+{% endblock %}
+
+
+{% block content %}
+
+<!-- Header -->
+<header class="masthead d-flex">
+  <div class="container text-center my-auto">
+    <h1 class="mb-1">We are extremely sorry</h1>
+    <h3 class="mb-5">
+      <em>We dont have any project referenced with that credentials please try again !!</em>
+    </h3>
+    <a class="btn btn-primary btn-xl js-scroll-trigger" href="{% url 'create_project' value=1 %}">try again</a>
+  </div>
+  <div class="overlay"></div>
+</header>
+
+{% endblock %}
+
+{%block footer %}
+{% endblock %}
