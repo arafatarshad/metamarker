@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import DatasetType,Project
+from .models import DatasetType,Project,ExtraDataset,PreprocessingTasks
 # Register your models here.
 
 class ProjectAdmin(admin.ModelAdmin):
@@ -9,5 +9,14 @@ class DatasetTypeAdmin(admin.ModelAdmin):
     list_display=('id','name')
 
 
+class DatasetAdmin(admin.ModelAdmin):
+    list_display=('id','name')
+
+class PreprocessingTasksAdmin(admin.ModelAdmin):
+    list_display=('id','name')
+
+
 admin.site.register(DatasetType,DatasetTypeAdmin)
 admin.site.register(Project,ProjectAdmin)
+admin.site.register(ExtraDataset,DatasetAdmin)
+admin.site.register(PreprocessingTasks,PreprocessingTasksAdmin)

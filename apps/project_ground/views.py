@@ -39,14 +39,8 @@ class CreateOrSelectProject(APIView):
                 project  = Project.objects.filter(reference_id=reference).filter(email=email).first()
 
                 if project !=None :
-                    # print(project.reference_id)
-                    # template_name = "dashboard/dashboard_main.html"
-                    # setting up the session variable
                     request.session["reference_id"]=reference
-                    return redirect('/dashboard/')
-
-                    # return render(request,template_name,{"page_title":"Dashboard","project":project,})
-
+                    return redirect('/dashboard/') 
                 else :
                     template_name = "errors/project_not_found.html"
                     return render(request,template_name,{"page_title":"Project not found"})

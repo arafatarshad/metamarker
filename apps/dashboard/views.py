@@ -70,15 +70,12 @@ class showDashBoard(APIView):
 
 
     def getMeTheTable(self,df):
-
-
         cell_list=self.getMeListOfCells(df)
         trace= go.Table(
             header = dict(values=list(df.columns),fill=dict(color='#C2D4FF'),  height = 40),
             cells = dict(values=cell_list,fill=dict(color='#F5F8FF'),  height = 30)
             )
         data=[trace]
-
         layout = None
 
         if len(df.columns) > 35 :
@@ -97,14 +94,13 @@ class showDashBoard(APIView):
     def getMetheParallelPlot(self,df1):
 
         colorscale=self.getMeColorCode(df1[df1.columns[-1]])
-        print(colorscale)
+        # print(colorscale)
         dimension_list=list()
 
         for value in list(df1.columns):
             dimension_list.append(dict(label = value , values = df1[value]))
 
         trace=go.Parcoords(
-            # line = dict(color = df1[df1.columns[-1]],colorscale = colorscale,showscale = True,reversescale = True,cmin = -4000,cmax = -100),dimensions=dimension_list)
             line = dict(color = df1[df1.columns[-1]],cmin = -4000,cmax = -100),dimensions=dimension_list)
         data=[trace]
         layout = go.Layout(plot_bgcolor = '#E5E5E5',paper_bgcolor = '#E5E5E5',dragmode = 'zoom')
@@ -116,13 +112,6 @@ class showDashBoard(APIView):
 
         figure=go.Figure(data=data,layout=layout)
         return opy.plot(figure, auto_open=False, output_type='div')
-
-
-
-
-
-
-
 
 
 

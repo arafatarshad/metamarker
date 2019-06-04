@@ -25,11 +25,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^$',generic.TemplateView.as_view(template_name='home/home.html')),            #main homepage
 
-
-
-    #new project initation or old project entry point
-    # url(r'^project_ground/', include('apps.project_ground.urls', namespace = 'project_ground')),
     url(r'^project_ground/', include('apps.project_ground.urls')),
-    url(r'^dashboard/', include('apps.dashboard.urls')), 
+    url(r'^dashboard/', include('apps.dashboard.urls')),
+    url(r'^preprocessing/', include('apps.preprocessing.urls')),
 
 ]

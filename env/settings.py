@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'apps.project_ground',
     'apps.dashboard',
+    'apps.preprocessing',
 ]
 
 MIDDLEWARE = [
