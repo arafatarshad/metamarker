@@ -14,6 +14,10 @@ from apps.project_ground.models import Project, ExtraDataset, PreprocessingTasks
 from django.http import HttpResponse
 import datetime
 from .lib.missing_value_handler import MissingValueHandler
+from .lib.scaling import ScalingDatasethandler
+
+
+
 
 import pandas as pd
 # Create your views here.
@@ -22,10 +26,13 @@ class showPreprocessingIndex(APIView):
         def ProcessDataframe(self,project):
 
             df=pd.read_csv(project.dataset)
+
             missing_value_handler = MissingValueHandler()
+            scaling_handler=ScalingDatasethandler()
+
             columns = df.columns
             missing_value_handler.fixTheColumnsDatatype(df,columns)
-
+            scaling_handler.LnScaling(df)
 
         def get(self, request, *args, **kwargs):
 
