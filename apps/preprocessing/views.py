@@ -32,7 +32,7 @@ class showPreprocessingIndex(APIView):
 
             columns = df.columns
             missing_value_handler.fixTheColumnsDatatype(df,columns)
-            scaling_handler.LnScaling(df)
+            scaling_handler.XVastScaliong(df)
 
         def get(self, request, *args, **kwargs):
 
