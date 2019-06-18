@@ -3,17 +3,16 @@ import pandas as pd
 from random import randint
 from sklearn import preprocessing as pre
 import numpy as np
+import math
 class ScalingDatasethandler:
 
     def removeClassVariable(self,df):
         numeric_df = df._get_numeric_data()
         if df[df.columns[-1]].equals(numeric_df[numeric_df.columns[-1]]):
             numeric_df.drop([numeric_df.columns[-1]],axis=1, inplace=True)
-        # print(numeric_df)
         return numeric_df
 
     def meanRemovalAndVarianceScaling(self,df):
-        # numeric_df = df._get_numeric_data()
         numeric_df = self.removeClassVariable(df)
         for c in numeric_df.columns:
             df[c]=pre.scale(numeric_df[c])

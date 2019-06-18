@@ -46,27 +46,21 @@ class Project(models.Model):
     def __str__(self):
         return str(self.reference_id)
 
-
-
-
-
 class PreprocessingTasks(models.Model):
     id = models.AutoField(primary_key=True)
     name=models.CharField(max_length=100)
     type= models.IntegerField()
     action_strategy=models.CharField(max_length=100,blank=True)
-
-
-
-
-
-
+ 
 class ExtraDataset(models.Model):
     id = models.AutoField(primary_key=True)
     name=models.CharField(max_length=100)
     PreprocessingTasks_id=models.ManyToManyField(PreprocessingTasks)
-    basefilename=models.TextField(blank=True,default="Main Dataset")
+    basefilename=models.TextField(blank=True,default="Sub Dataset")
     project_id = models.ForeignKey(Project, on_delete=models.CASCADE,null=False)
 
     def __str__(self):
         return self.name
+
+    def get_preprocessing(self):
+        return ",".join([str(p) for p in self.PreprocessingTasks_id.all()])

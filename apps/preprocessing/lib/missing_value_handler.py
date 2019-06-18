@@ -17,3 +17,4 @@ class MissingValueHandler:
 
         if self.getPctMissing(df[c]) >= limit:
             df[c].drop
+        return df

@@ -23,7 +23,7 @@
         <div class="form-group">
             <label>Select your Dataset</label>
             <select class="form-control select2" style="width: 100%;" name="dataset_id">
-              <option selected="selected" value="{{ project.id }}">Main File</option>
+              <option selected="selected" value="00000">Main File</option>
               {% for x in dataset %}
                   <option value="{{ x.id }}">{{ x.name }}</option>
               {% endfor %}
@@ -57,7 +57,7 @@
         <div class="form-group">
           {% for x in preprocessing_tasks %}
             {% if x.type == 0 %}
-              <input type="checkbox" class="minimal" value="{{x.id}}"><label>{{x.name}}</label>  <br>
+              <input type="checkbox" name="PreprocessingTasks_id" class="minimal" value="{{x.id}}"><label>{{x.name}}</label>  <br>
             {% endif %}
           {% endfor %}
          </div>
@@ -79,7 +79,7 @@
         <div class="form-group">
           {% for x in preprocessing_tasks %}
             {% if x.type == 1 %}
-              <input type="checkbox" class="minimal" value="{{x.id}}"><label>{{x.name}}</label>  <br>
+              <input type="checkbox" class="minimal" name="PreprocessingTasks_id" value="{{x.id}}"><label>{{x.name}}</label>  <br>
             {% endif %}
           {% endfor %}
          </div>

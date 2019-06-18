@@ -10,7 +10,7 @@ class DatasetTypeAdmin(admin.ModelAdmin):
 
 
 class DatasetAdmin(admin.ModelAdmin):
-    list_display=('id','name')
+    list_display=('id','name','get_preprocessing','basefilename','project_id')
 
 class PreprocessingTasksAdmin(admin.ModelAdmin):
     list_display=('id','name')
