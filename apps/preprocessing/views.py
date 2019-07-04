@@ -52,7 +52,7 @@ class showPreprocessingIndex(APIView):
             self.saveDataSet(project,request,df)
             now = datetime.datetime.now()
             html = "<html><body>It is now %s.</body></html>" % now
-            return    HttpResponse(html) 
+            return    HttpResponse(html)
 
         def saveDataSet(self,project,request,df):
             file_name=self.file_name()
@@ -90,10 +90,14 @@ class showPreprocessingIndex(APIView):
             return self.scaling_handler.VastScaling(df)
         def eight(self,df):
             return self.scaling_handler.XVastScaliong(df)
+        def nine(self,df):
+            return self.scaling_handler.RangeScaling(df)
+        def ten(self,df):
+            return self.scaling_handler.XVastScaliong(df)
 
 
         def PreprocessDataframe(self,df,request):
-            options={1:self.one,3:self.three,4:self.four,5:self.five,6:self.six,7:self.seven,8:self.eight}
+            options={1:self.one,3:self.three,4:self.four,5:self.five,6:self.six,7:self.seven,8:self.eight,9:self.nine,10:self.ten}
             for c in dict(request.POST)["PreprocessingTasks_id"]:
                 df= options[(int)(c)](df)
             return df

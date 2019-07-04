@@ -60,3 +60,20 @@ class ScalingDatasethandler:
         for c in numeric_df.columns:
             df[c] = df[c] * max_value
         return df
+
+    def RangeScaling(self,df):
+        numeric_df = self.removeClassVariable(df)
+        for c in numeric_df.columns:
+            mean=df[c].mean()
+            max=mean=df[c].max()
+            min=mean=df[c].min()
+            df[c] = ((df[c] - mean) / (max - min) )
+        return df
+
+
+    def LevelScaling(self,df):
+        numeric_df = self.removeClassVariable(df)
+        for c in numeric_df.columns:
+            mean=df[c].mean()
+            df[c] = ((df[c] - mean) / mean )
+        return df

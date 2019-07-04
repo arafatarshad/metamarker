@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'apps.project_ground',
     'apps.dashboard',
     'apps.preprocessing',
+    'apps.data_processing',
 ]
 
 MIDDLEWARE = [

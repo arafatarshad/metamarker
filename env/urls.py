@@ -28,5 +28,6 @@ urlpatterns = [
     url(r'^project_ground/', include('apps.project_ground.urls')),
     url(r'^dashboard/', include('apps.dashboard.urls')),
     url(r'^preprocessing/', include('apps.preprocessing.urls')),
+    url(r'^data_processing/', include('apps.data_processing.urls')),
 
 ]

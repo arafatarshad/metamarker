@@ -22,7 +22,7 @@ class StartProject(APIView):
 
 class CreateOrSelectProject(APIView):
         def get(self, request, *args, **kwargs):
-            print(kwargs.get('value'))
+            # print(kwargs.get('value'))
             if kwargs.get('value') == 0 :
                 template_name = "project_ground/create_project.html"
                 return render(request,template_name,{"page_title":"Create New Project","dataset_types":DatasetType.objects.all()})
@@ -40,7 +40,7 @@ class CreateOrSelectProject(APIView):
 
                 if project !=None :
                     request.session["reference_id"]=reference
-                    return redirect('/dashboard/') 
+                    return redirect('/dashboard/')
                 else :
                     template_name = "errors/project_not_found.html"
                     return render(request,template_name,{"page_title":"Project not found"})
