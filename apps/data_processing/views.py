@@ -32,7 +32,7 @@ class PCA(APIView):
             totalColumns=range(len(pd.read_csv(project.dataset).columns)-1)
             return render(request,"processing/pca/pca_processing.html",{"page_title":"PCA-processing","project":project,"dataset":dataset,"total_columns":totalColumns})
 
-        def post(self, request, *args, **kwargs): 
+        def post(self, request, *args, **kwargs):
             project = Project.objects.get(reference_id=request.session['reference_id'])
             dataset_id =request.POST['dataset_id']
             no_of_components =request.POST['no_of_components']
@@ -40,7 +40,9 @@ class PCA(APIView):
 
 
             helper=PCA_Helper(no_of_components,df)
-            helper.scalerScaling()
+
+
+
             now = datetime.datetime.now()
             html = "<html><body>It is now %s.</body></html>" % now
             return    HttpResponse(html)

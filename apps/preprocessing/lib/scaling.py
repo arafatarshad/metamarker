@@ -16,6 +16,7 @@ class ScalingDatasethandler:
         numeric_df = self.removeClassVariable(df)
         for c in numeric_df.columns:
             df[c]=pre.scale(numeric_df[c])
+
         return df
     def UnivariateScaling(self,df):
         # numeric_df = df._get_numeric_data()
@@ -24,6 +25,7 @@ class ScalingDatasethandler:
         for c in numeric_df.columns:
             std=df.loc[:,c].std()
             df[c]= df[c]/std
+            df[c].replace([np.inf, -np.inf], 0)
         return df
 
 
@@ -34,12 +36,14 @@ class ScalingDatasethandler:
         for c in numeric_df.columns:
             std=df.loc[:,c].std()
             df[c]= df[c]/math.sqrt(std)
+            df[c].replace([np.inf, -np.inf], 0)
         return df
 
     def LnScaling(self,df):
         numeric_df = self.removeClassVariable(df)
         for c in numeric_df.columns:
             df[c]= np.log(df[c])
+            df[c].replace([np.inf, -np.inf], 0)
         # print(df)
         return df
 
@@ -49,6 +53,7 @@ class ScalingDatasethandler:
             mean=df[c].mean()
             std=df.loc[:,c].std()
             df[c]=[mean/std]*df[c]
+            df[c].replace([np.inf, -np.inf], 0)
         return df
 
     def XVastScaliong(self,df):
@@ -56,6 +61,7 @@ class ScalingDatasethandler:
         means=[]
         for c in numeric_df.columns:
             means.append(df[c].mean()/df.loc[:,c].std())
+            df[c].replace([np.inf, -np.inf], 0)
         max_value=max(means)
         for c in numeric_df.columns:
             df[c] = df[c] * max_value
@@ -68,6 +74,7 @@ class ScalingDatasethandler:
             max=mean=df[c].max()
             min=mean=df[c].min()
             df[c] = ((df[c] - mean) / (max - min) )
+            df[c].replace([np.inf, -np.inf], 0)
         return df
 
 
@@ -76,4 +83,5 @@ class ScalingDatasethandler:
         for c in numeric_df.columns:
             mean=df[c].mean()
             df[c] = ((df[c] - mean) / mean )
+            df[c].replace([np.inf, -np.inf], 0)
         return df

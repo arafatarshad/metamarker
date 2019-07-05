@@ -15,7 +15,7 @@ from django.http import HttpResponse
 import datetime
 from .lib.missing_value_handler import MissingValueHandler
 from .lib.scaling import ScalingDatasethandler
-
+from sklearn import preprocessing
 
 from apps.project_ground.models import ExtraDataset, PreprocessingTasks , Project
 
@@ -63,8 +63,9 @@ class showPreprocessingIndex(APIView):
             new_dataset.basefilename=file_name
             df.to_csv("uploads/"+file_name)
             new_dataset.save()
-            for c in dict(request.POST)["PreprocessingTasks_id"]:
-                new_dataset.PreprocessingTasks_id.add(c)
+            if 'PreprocessingTasks_id' in request.POST:
+                for c in dict(request.POST)["PreprocessingTasks_id"]:
+                    new_dataset.PreprocessingTasks_id.add(c)
             new_dataset.save()
 
 
@@ -98,6 +99,25 @@ class showPreprocessingIndex(APIView):
 
         def PreprocessDataframe(self,df,request):
             options={1:self.one,3:self.three,4:self.four,5:self.five,6:self.six,7:self.seven,8:self.eight,9:self.nine,10:self.ten}
-            for c in dict(request.POST)["PreprocessingTasks_id"]:
-                df= options[(int)(c)](df)
+
+            df= self.relieveHotEncoder(df)
+            if 'PreprocessingTasks_id' in request.POST:
+                 for c in dict(request.POST)["PreprocessingTasks_id"]:
+                    df= options[(int)(c)](df)
+            return df
+
+
+        def relieveHotEncoder(self,df):
+            features=list(df.columns.values)
+            target=features[-1]
+            features.remove(target)
+            
+            for c in features:
+                if df[c].dtypes=='object':
+                    df = pd.concat([df,pd.get_dummies(df[c], prefix=c,dummy_na=True)],axis=1).drop([c],axis=1)
+            le = preprocessing.LabelEncoder()
+            temp=le.fit_transform(df[target])
+
+            df.drop(target,axis=1,inplace=True)
+            df[target]=temp
             return df
