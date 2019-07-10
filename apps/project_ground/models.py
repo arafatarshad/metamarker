@@ -31,7 +31,8 @@ class Project(models.Model):
     id = models.AutoField(primary_key=True)
     author_first_name=models.CharField(max_length=100,blank=False)
     author_last_name=models.CharField(max_length=100,blank=False)
-    description=models.TextField(max_length=250,blank=True)
+    # description=models.TextField(max_length=250,blank=True)
+    description=models.TextField(blank=True)
     email=models.EmailField(blank=False)
 
     # reference_id=models.UUIDField(default=uuid.uuid4, editable=False,unique=True)
@@ -39,7 +40,7 @@ class Project(models.Model):
                  default=uuid.uuid1)
 
     dataset= models.FileField(upload_to=upload_path,null=True,blank=False,validators=[FileExtensionValidator(allowed_extensions=['csv'])])
-    uploaded_at = models.DateTimeField(auto_now_add=True)
+    # uploaded_at = models.DateTimeField(auto_now_add=True)
     dataset_type_id = models.ForeignKey(DatasetType, on_delete=models.CASCADE,null=True)
     basefilename=models.TextField(blank=True,default="Main Dataset")
 
@@ -51,7 +52,7 @@ class PreprocessingTasks(models.Model):
     name=models.CharField(max_length=100)
     type= models.IntegerField()
     action_strategy=models.CharField(max_length=100,blank=True)
- 
+
 class ExtraDataset(models.Model):
     id = models.AutoField(primary_key=True)
     name=models.CharField(max_length=100)

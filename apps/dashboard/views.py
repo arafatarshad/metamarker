@@ -88,9 +88,6 @@ class showDashBoard(APIView):
 
 
 
-
-
-
     def getMetheParallelPlot(self,df1):
 
         colorscale=self.getMeColorCode(df1[df1.columns[-1]])

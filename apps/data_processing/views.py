@@ -38,8 +38,12 @@ class PCA(APIView):
             no_of_components =request.POST['no_of_components']
             df=self.getUsProperDf(dataset_id,project)
 
-
             helper=PCA_Helper(no_of_components,df)
+
+            if 'scaler_scale_check' in request.POST:
+                helper.StandardScale()
+
+
 
 
 
