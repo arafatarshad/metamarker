@@ -86,20 +86,40 @@ WSGI_APPLICATION = 'env.wsgi.application'
 # }
 
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'metamarker_database',
+#         'USER': 'root',
+#         'PASSWORD': 'root',
+#         'HOST': '127.0.0.1',
+#         'PORT': '8889',
+#     }
+# }
+
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'metamarker_database',
+#         'USER': 'root',
+#         'PASSWORD': 'root',
+#     }
+# }
+
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'metamarker_database',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',  
-        'PORT': '3306',
+   'default': {
+       'ENGINE': 'django.db.backends.mysql',
+       'NAME': 'metamarker_database',
+       'USER': 'root',
+       'PASSWORD': 'root',
+       'HOST': 'localhost',
+       'PORT': '3306',
+       'default-character-set':'utf8'
     }
 }
-
-
-
-
 
 
 # Password validation
