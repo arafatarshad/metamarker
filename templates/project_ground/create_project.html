@@ -49,13 +49,11 @@
         author_first_name:{required:true},
         author_last_name:{required:true},
         email: {required: true,email: true},
-        dataset_type_id: {required: true},
       },
       messages: {
         author_first_name:'Please Enter your First name',
         author_last_name:'Please Enter your Last name',
-        email: 'Enter a valid email',
-        dataset_type_id:'Select the kind of the dataset', 
+        email: 'Enter a valid email', 
       },
       submitHandler: function(form) {
         form.submit();

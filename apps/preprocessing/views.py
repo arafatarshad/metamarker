@@ -63,10 +63,12 @@ class showPreprocessingIndex(APIView):
             new_dataset.basefilename=file_name
             df.to_csv("uploads/"+file_name)
             new_dataset.save()
-            if 'PreprocessingTasks_id' in request.POST:
-                for c in dict(request.POST)["PreprocessingTasks_id"]:
-                    new_dataset.PreprocessingTasks_id.add(c)
-            new_dataset.save()
+
+            # if 'PreprocessingTasks_id' in request.POST:
+            #     for c in dict(request.POST)["PreprocessingTasks_id"]:
+            #         new_dataset.PreprocessingTasks_id.add(c)
+            #
+            # new_dataset.save()
 
 
         def getUsProperDf(self,dataset_id,project):
@@ -94,7 +96,7 @@ class showPreprocessingIndex(APIView):
         def nine(self,df):
             return self.scaling_handler.RangeScaling(df)
         def ten(self,df):
-            return self.scaling_handler.XVastScaliong(df)
+            return self.scaling_handler.LevelScaling(df)
 
 
         def PreprocessDataframe(self,df,request):
@@ -111,7 +113,7 @@ class showPreprocessingIndex(APIView):
             features=list(df.columns.values)
             target=features[-1]
             features.remove(target)
-            
+
             for c in features:
                 if df[c].dtypes=='object':
                     df = pd.concat([df,pd.get_dummies(df[c], prefix=c,dummy_na=True)],axis=1).drop([c],axis=1)
