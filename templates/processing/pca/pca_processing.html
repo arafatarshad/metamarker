@@ -1,15 +1,8 @@
 {% extends "dashboard_main_template/dashboard_main.html" %}
-
-
-
-
 {% block content %}
 
 <form name="options_form" id="options_form" class="" action="{% url 'pca_processing' %}"  method="post">
-
-
 <div class="box box-default">
-
   <div class="box-header with-border">
     <h3 class="box-title">Principal Components Analysis</h3>
 
@@ -91,6 +84,30 @@
 
 
 
+<div class="modal modal-info fade" id="modal-info">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Information</h4>
+      </div>
+      <div class="modal-body">
+        <p>Your Task Has been added to the server job queue. \n You will be notified by email once the server processes the entire dataset and generates the result</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+        <!-- <button type="button" class="btn btn-outline">Save changes</button> -->
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+
+
 {% endblock%}
 
 {%block scripts %}
@@ -115,13 +132,14 @@
               url: url,
               data: form.serialize(),
               beforesend:function(){
-                // $('#modal-info').modal("show");
+
               },
               success: function(data)
               {
                 // $('#modal-info').modal("hide");
                 $('#options_form')[0].reset();
-
+                $('#options_form')[0].reset();
+                $('#modal-info').modal("show");
               },error:function(e){
                 alert("Sorry We could not process your request ");
               }

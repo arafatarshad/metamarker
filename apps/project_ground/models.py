@@ -143,6 +143,7 @@ class Job(models.Model):
     status = models.IntegerField()
     created_at = models.DateTimeField(blank=True, null=True)
     processing_algorithm = models.ForeignKey('ProcessingAlgorithm', models.DO_NOTHING)
+    extradataset = models.ForeignKey('ExtraDataset', models.DO_NOTHING)
 
     class Meta:
         managed = False
@@ -173,7 +174,6 @@ class PreprocessingTasks(models.Model):
 
 class ProcessingAlgorithm(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)
-    processing_algorithmcol = models.CharField(max_length=45, blank=True, null=True)
 
     class Meta:
         managed = False

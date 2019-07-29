@@ -1,0 +1,56 @@
+{% extends "dashboard_main_template/dashboard_main.html" %}
+{% load staticfiles %}
+
+
+{%block css_block%}
+
+<link rel="stylesheet" href="{% static 'vendor/jquery-datatable/jquery.datatable.css' %}">
+{% endblock %}
+{% block content %}
+<table id="example"  class="cell-border" class="display" style="width:100%">
+      <thead>
+          <tr>
+              <th>Dataset Name</th>
+              <th>Status</th>
+              <th>Procssing Model Name</th>
+              <th>Action</th>
+          </tr>
+      </thead>
+      <tbody></tbody>
+</table>
+
+{% endblock%}
+
+
+
+{%block scripts %}
+<script type="text/javascript" src="{% static 'vendor/jquery-datatable/jquery.dataTables.min.js' %}"></script>
+
+<script type="text/javascript" language="javascript" class="init">
+     $(document).ready(function() {
+         $('#example').DataTable( {
+             "select": true,
+             "processing": true,
+             "ajax": {
+                 "processing": true,
+                 "url": "{% url 'alljob' %}",
+                 "dataSrc": ""
+             },
+             "columns": [
+                   { "data": "dataset_name" },
+                   { "data": "status" },
+                   { "data": "processing_algorithm" },
+                   {
+                        data: 'id',
+                        render: function ( data, type, row ) {
+                          var url = "{% url 'deleteSinglejob' 123 %}".replace('123',data);
+                          return "<a href="+url+" class='btn btn-danger btn-xs' >Delete</a>"
+                        }
+                    }
+                 ]
+         },
+
+         );
+     } );
+ </script>
+{% endblock%}

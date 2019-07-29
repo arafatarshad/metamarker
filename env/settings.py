@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'apps.dashboard',
     'apps.preprocessing',
     'apps.data_processing',
+    'apps.job',
 ]
 
 MIDDLEWARE = [
@@ -168,3 +169,8 @@ STATICFILES_DIRS = [
 
 MEDIA_URL = '/uploads/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
+
+
+
+# id used for different processing algorithm
+PCA=1

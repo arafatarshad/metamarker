@@ -24,10 +24,10 @@ from django.conf.urls import url,include
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^$',generic.TemplateView.as_view(template_name='home/home.html')),            #main homepage
-
     url(r'^project_ground/', include('apps.project_ground.urls')),
     url(r'^dashboard/', include('apps.dashboard.urls')),
     url(r'^preprocessing/', include('apps.preprocessing.urls')),
     url(r'^data_processing/', include('apps.data_processing.urls')),
+    url(r'^job/', include('apps.job.urls')),
 
 ]
