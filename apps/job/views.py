@@ -1,27 +1,27 @@
-
-from django.shortcuts import render
-from django.shortcuts import redirect
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
+
+from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from django.forms.utils import ErrorList
 from django.http import HttpResponse
 
-from apps.project_ground.models import Project, ExtraDataset, PreprocessingTasks
-from apps.project_ground.models import ExtraDataset, PreprocessingTasks , Project,AllParameters,Job, JobParameters
+from apps.project_ground.models import Extradataset, PreprocessingTasks , Project,Job
 
 import json
 from django.core import serializers
-# Create your views here.
+
+from background_task import background
+
 class JOB(APIView):
 
         def get(self, request, *args, **kwargs):
             return render(request,"job/job.html",{"page_title":"Task-Manager"})
 
-
         def getJobData(request,id):
-            # job=Job.objects.all()
             job=Job.objects.filter(status__in=[0,1,2])
 
             data = []
@@ -35,7 +35,12 @@ class JOB(APIView):
                     query["status"]="Complete"
 
                 query["id"]=single_job.id
-                query["dataset_name"]=single_job.extradataset.name
+
+                if single_job.extradataset_id==None:
+                    query["dataset_name"]="Main Dataset"
+                else:
+                    query["dataset_name"]=single_job.extradataset.name
+
                 query["processing_algorithm"]=single_job.processing_algorithm.name
 
                 data.append(query)
@@ -46,3 +51,9 @@ class JOB(APIView):
             job.status=50
             job.save()
             return render(request,"job/job.html",{"page_title":"Task-Manager"})
+
+
+#
+# @background(schedule=5)
+# def hello():
+# 	print ("Hello World!")

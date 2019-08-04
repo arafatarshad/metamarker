@@ -19,7 +19,7 @@ from django.urls import path
 from django.views import generic
 from django.conf.urls import url,include
 
-
+# from apps.job.views import hello
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,5 +29,8 @@ urlpatterns = [
     url(r'^preprocessing/', include('apps.preprocessing.urls')),
     url(r'^data_processing/', include('apps.data_processing.urls')),
     url(r'^job/', include('apps.job.urls')),
-
+    url(r'^automate/', include('apps.master_processor.urls')),
 ]
+
+
+# hello(repeat=10,repeat_until=None)

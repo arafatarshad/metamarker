@@ -9,15 +9,15 @@ from django.shortcuts import get_object_or_404
 from django.forms.utils import ErrorList
 from django.http import HttpResponse
 
-from apps.project_ground.models import Project, ExtraDataset, PreprocessingTasks
+from apps.project_ground.models import Project, PreprocessingTasks
+from apps.project_ground.models import Extradataset as ExtraDataset
 
 from django.http import HttpResponse
 import datetime
 from .lib.missing_value_handler import MissingValueHandler
 from .lib.scaling import ScalingDatasethandler
 from sklearn import preprocessing
-
-from apps.project_ground.models import ExtraDataset, PreprocessingTasks , Project
+ 
 
 import pandas as pd
 import os

@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'apps.preprocessing',
     'apps.data_processing',
     'apps.job',
+    'background_task',
+    'apps.master_processor',
 ]
 
 MIDDLEWARE = [

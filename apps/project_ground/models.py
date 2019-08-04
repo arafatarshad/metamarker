@@ -8,16 +8,6 @@ import random
 
 
 
-class AllParameters(models.Model):
-    name = models.CharField(max_length=255, blank=True, null=True)
-    type = models.IntegerField(blank=True, null=True)
-    processing_algorithm = models.ForeignKey('ProcessingAlgorithm', models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'all_parameters'
-        unique_together = (('id', 'processing_algorithm'),)
-
 
 class AuthGroup(models.Model):
     name = models.CharField(unique=True, max_length=150)
@@ -84,6 +74,16 @@ class AuthUserUserPermissions(models.Model):
         db_table = 'auth_user_user_permissions'
         unique_together = (('user', 'permission'),)
 
+class ComponentResult(models.Model):
+    component_id = models.IntegerField(blank=True, null=True)
+    result = models.TextField(blank=True, null=True)  # This field type is a guess.
+    pca_result = models.ForeignKey('PcaResult', models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'component_result'
+        unique_together = (('id', 'pca_result'),)
+
 
 class DjangoAdminLog(models.Model):
     action_time = models.DateTimeField()
@@ -129,7 +129,8 @@ class DjangoSession(models.Model):
         db_table = 'django_session'
 
 
-class ExtraDataset(models.Model):
+
+class Extradataset(models.Model):
     name = models.CharField(max_length=100)
     basefilename = models.TextField()
     project_id = models.ForeignKey('Project', models.DO_NOTHING)
@@ -139,27 +140,41 @@ class ExtraDataset(models.Model):
         db_table = 'extradataset'
 
 
+
 class Job(models.Model):
     status = models.IntegerField()
     created_at = models.DateTimeField(blank=True, null=True)
     processing_algorithm = models.ForeignKey('ProcessingAlgorithm', models.DO_NOTHING)
-    extradataset = models.ForeignKey('ExtraDataset', models.DO_NOTHING)
+    extradataset = models.ForeignKey(Extradataset, models.DO_NOTHING, blank=True, null=True)
+    project = models.ForeignKey('Project', models.DO_NOTHING)
 
     class Meta:
         managed = False
         db_table = 'job'
-        unique_together = (('id', 'processing_algorithm'),)
+        unique_together = (('id', 'processing_algorithm', 'project'),)
 
 
-class JobParameters(models.Model):
+
+class PcaJobParameters(models.Model):
+    no_of_components = models.IntegerField()
+    reduce_to = models.IntegerField(blank=True, null=True)
     job = models.ForeignKey(Job, models.DO_NOTHING)
-    all_parameters = models.ForeignKey(AllParameters, models.DO_NOTHING)
-    value = models.FloatField(blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'job_parameters'
+        db_table = 'pca_job_parameters'
         unique_together = (('id', 'job'),)
+
+
+class PcaResult(models.Model):
+    variance_explained = models.TextField(blank=True, null=True)  # This field type is a guess.
+    job = models.ForeignKey(Job, models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'pca_result'
+        unique_together = (('id', 'job'),)
+
 
 
 class PreprocessingTasks(models.Model):
@@ -174,7 +189,7 @@ class PreprocessingTasks(models.Model):
 
 class ProcessingAlgorithm(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)
-
+    reference_id = models.CharField(max_length=11)
     class Meta:
         managed = False
         db_table = 'processing_algorithm'

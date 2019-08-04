@@ -9,14 +9,12 @@ from django.shortcuts import get_object_or_404
 from django.forms.utils import ErrorList
 from django.http import HttpResponse
 
-from apps.project_ground.models import Project, ExtraDataset, PreprocessingTasks
 
 from django.http import HttpResponse
-# import datetime
 from datetime import datetime
 
 
-from apps.project_ground.models import ExtraDataset, PreprocessingTasks , Project,AllParameters,Job, JobParameters
+from apps.project_ground.models import Extradataset as ExtraDataset, PreprocessingTasks , Project,Job , PcaJobParameters
 
 import pandas as pd
 import os
@@ -34,6 +32,8 @@ class PCA(APIView):
             return render(request,"processing/pca/pca_processing.html",{"page_title":"PCA-processing","project":project,"dataset":dataset,"total_columns":totalColumns})
 
         def post(self, request, *args, **kwargs):
+            print(request.POST)
+
             self.saveTheJob(request)
             now = datetime.now()
             html = "<html><body>It is now %s.</body></html>" % now
@@ -41,47 +41,14 @@ class PCA(APIView):
 
         def saveTheJob(self,request):
             project = Project.objects.get(reference_id=request.session['reference_id'])
-            dataset_id =request.POST['dataset_id']
-            no_of_components =request.POST['no_of_components']
 
-            # processing_algorithm_id = getattr(settings,pca, None)
-            processing_algorithm_id = settings.PCA
-            param= AllParameters.objects.get(processing_algorithm_id=processing_algorithm_id)
-            # param= AllParameters.objects
-            job= Job(status=0,created_at=datetime.now(),processing_algorithm_id=processing_algorithm_id,extradataset_id=dataset_id)
+            print("--------------------------------------ssssssssssss-------------------")
+            if request.POST['dataset_id'] == '00000':
+                job= Job(status=0,created_at=datetime.now(),processing_algorithm_id=settings.PCA,project_id=project.id)
+            else:
+                job= Job(status=0,created_at=datetime.now(),processing_algorithm_id=settings.PCA,extradataset_id=request.POST['dataset_id'],project_id=project.id)
             job.save()
-            job_parameters=JobParameters(all_parameters_id=param.id,value=no_of_components,job_id=job.id)
-            job_parameters.save()
-
-
-
-
-        # def post(self, request, *args, **kwargs):
-        #
-        #
-        #
-        #
-        #     project = Project.objects.get(reference_id=request.session['reference_id'])
-        #     dataset_id =request.POST['dataset_id']
-        #     no_of_components =request.POST['no_of_components']
-        #     df=self.getUsProperDf(dataset_id,project)
-        #
-        #     helper=PCA_Helper(no_of_components,df)
-        #
-        #     if 'scaler_scale_check' in request.POST:
-        #         helper.StandardScale()
-        #
-        #
-        #
-        #
-        #
-        #     now = datetime.datetime.now()
-        #     html = "<html><body>It is now %s.</body></html>" % now
-        #     return    HttpResponse(html)
-        #
-        # def getUsProperDf(self,dataset_id,project):
-        #     if dataset_id=='00000':
-        #         return pd.read_csv(project.dataset)
-        #     else:
-        #         filenmae=ExtraDataset.objects.filter(id=dataset_id).first().basefilename
-        #         return pd.read_csv("uploads/"+filenmae)
+            print(job.id)
+            pca_job=PcaJobParameters(no_of_components=request.POST['no_of_components'],reduce_to=request.POST['reduce_to'],job_id=job.id)
+            pca_job.save()
+            print(pca_job)
