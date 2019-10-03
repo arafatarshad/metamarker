@@ -1,4 +1,4 @@
-{% extends "dashboard_main_template/dashboard_main.html" %}
+ {% extends "dashboard_main_template/dashboard_main.html" %}
 {% block content %}
 
 <form name="options_form" id="options_form" class="" action="{% url 'pca_processing' %}"  method="post">
@@ -29,7 +29,9 @@
             <select class="form-control select2" style="width: 100%;" name="no_of_components">
               <option selected="selected" value="2">2</option>
               {% for i in total_columns %}
+                {%if i > 2 %}
                   <option value={{ i }}>{{ i }}</option>
+                {% endif %}
               {% endfor %}
             </select>
         </div>
@@ -94,8 +96,6 @@
   <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
-
-
 </form>
 
 

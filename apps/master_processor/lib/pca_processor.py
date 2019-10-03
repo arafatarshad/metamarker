@@ -85,11 +85,6 @@ class PCA_Helper:
             ComponentResult(component_id=i,result=json.dumps(feature_list),pca_result_id=pca_result.id).save()
 
 
-        print("---------------wah wah kya baat -------------------------")
-        print(PcaResult.id)
-
-
-
 
 
 

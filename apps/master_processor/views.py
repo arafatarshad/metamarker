@@ -11,6 +11,7 @@ import random
 from .lib.pca_processor import PCA_Helper
 
 class Master(APIView):
+    
     def __init__(self):
         if Job.objects.filter(status=1).exists()==False:
             self.nextInLine()
