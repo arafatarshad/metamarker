@@ -176,3 +176,25 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 
 # id used for different processing algorithm
 PCA=1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'aarafat@mun.ca'
+EMAIL_HOST_PASSWORD = 'Pigpiepoe5*'
+EMAIL_PORT = 587

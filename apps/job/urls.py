@@ -6,5 +6,7 @@ urlpatterns = [
     # path('api/jobs',views.JOB().as_view({'post': 'getJobData'}),name="alljob")
     path('api/jobs',views.JOB().getJobData,name="alljob"),
     # path('delete/<id>/',views.JOB().deleteJOB,name="deleteSinglejob"),
-    path('test/<int:id>/',views.JOB().deleteJOB,name="deleteSinglejob")
+    path('test/<int:id>/',views.JOB().deleteJOB,name="deleteSinglejob"),
+    # path('/automate_the_job_cycle',views.Master.as_view(),name="automate"),
+    path('checkon/',views.Master.as_view(),name="lijani"),
 ]

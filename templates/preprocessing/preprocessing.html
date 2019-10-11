@@ -17,6 +17,7 @@
       <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
     </div>
   </div>
+
   <div class="box-body">
     <div class="row">
       <div class="col-md-6">
@@ -48,7 +49,8 @@
 
     <div class="box-tools pull-right">
       <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-      <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+      <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button> -->
+
     </div>
   </div>
   <div class="box-body">
@@ -57,7 +59,11 @@
         <div class="form-group">
           {% for x in preprocessing_tasks %}
             {% if x.type == 0 %}
-              <input type="checkbox" name="PreprocessingTasks_id" class="minimal" value="{{x.id}}"><label>{{x.name}}</label>  <br>
+              <input type="checkbox" name="PreprocessingTasks_id" disabled="disabled" checked="checked" class="minimal" value="{{x.id}}"><label>{{x.name}}</label>  <br>
+              <div class="alert alert-info" role="alert">
+                The system will deal with the missing values/ imputation in the dataset.
+                If any feature comes with 80% missing values or more the system will automatically drop that column from the dataset.
+</div>
             {% endif %}
           {% endfor %}
          </div>
@@ -70,7 +76,7 @@
   <div class="box-header with-border">
     <h3 class="box-title">How do you want to scale your dataset</h3>
     <div class="box-tools pull-right">
-      <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+      <button type="button" class="btn btn-box-tool"  data-widget="collapse"><i class="fa fa-minus"></i></button>
     </div>
   </div>
   <div class="box-body">

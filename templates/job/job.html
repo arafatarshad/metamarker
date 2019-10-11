@@ -2,11 +2,14 @@
 {% load staticfiles %}
 
 
-{%block css_block%}
+{%block style%}
 
-<link rel="stylesheet" href="{% static 'vendor/jquery-datatable/jquery.datatable.css' %}">
+
+
 {% endblock %}
 {% block content %}
+<link rel="stylesheet" href="{% static 'vendor/jquery-datatable/jquery.datatable.min.css' %}">
+<!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"> -->
 <table id="example"  class="cell-border" class="display" style="width:100%">
       <thead>
           <tr>

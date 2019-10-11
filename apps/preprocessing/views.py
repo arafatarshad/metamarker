@@ -17,7 +17,7 @@ import datetime
 from .lib.missing_value_handler import MissingValueHandler
 from .lib.scaling import ScalingDatasethandler
 from sklearn import preprocessing
- 
+
 
 import pandas as pd
 import os
@@ -77,6 +77,7 @@ class showPreprocessingIndex(APIView):
             else:
                 filenmae=ExtraDataset.objects.filter(id=dataset_id).first().basefilename
                 return pd.read_csv("uploads/"+filenmae)
+
         def one(self,df):
             # global missing_value_handler
             columns = df.columns
@@ -102,6 +103,8 @@ class showPreprocessingIndex(APIView):
         def PreprocessDataframe(self,df,request):
             options={1:self.one,3:self.three,4:self.four,5:self.five,6:self.six,7:self.seven,8:self.eight,9:self.nine,10:self.ten}
 
+            # df= self.relieveHotEncoder(df)
+            df=df._get_numeric_data()
             df= self.relieveHotEncoder(df)
             if 'PreprocessingTasks_id' in request.POST:
                  for c in dict(request.POST)["PreprocessingTasks_id"]:

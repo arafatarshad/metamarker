@@ -15,14 +15,22 @@ import json
 from django.core import serializers
 
 from background_task import background
+from .email_update import email_update
+
+
+
+
+from .lib.pca_processor import PCA_Helper
+
+
+
 
 class JOB(APIView):
-
         def get(self, request, *args, **kwargs):
             return render(request,"job/job.html",{"page_title":"Task-Manager"})
 
         def getJobData(request,id):
-            job=Job.objects.filter(status__in=[0,1,2])
+            job=Job.objects.filter(status__in=[0,1,2,3])
 
             data = []
             for single_job in job:
@@ -53,7 +61,44 @@ class JOB(APIView):
             return render(request,"job/job.html",{"page_title":"Task-Manager"})
 
 
-#
-# @background(schedule=5)
-# def hello():
-# 	print ("Hello World!")
+
+
+
+
+
+
+
+
+        def ProcessJobs(self):
+            print("I am here____________")
+            newjob=Job.objects.filter(status=0).first()
+            email_update.tellThemProjectStarts(newjob)
+
+
+
+        def job1(self):
+        	print("inside job1")
+        	self.checkBackgroundTask(repeat=10, repeat_until=None)
+        	print("on the way out job one")
+
+
+
+class Master(APIView):
+
+    def get(self, request, *args, **kwargs):
+        checkBackgroundTask(repeat=600, repeat_until=None)
+        return render(request,"job/job.html",{"page_title":"Task-Manager"})
+
+    @background(queue='my-queue')
+    def checkBackgroundTask():
+        if Job.objects.filter(status=1).exists()==False:
+            self.processNextInLine()
+        if Job.objects.filter(status=2).exists()==True:
+            email_update.notifyCompleteTakUser()
+
+    def processNextInLine(self):
+        newjob=Job.objects.filter(status=0).first()
+        newjob.status=1
+        newjob.save()
+        if newjob.processing_algorithm.reference_id == 'pc_001':
+            pca=PCA_Helper(newjob)
