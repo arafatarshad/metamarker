@@ -38,7 +38,7 @@ class PCA_Helper:
         self.X.drop(self.target,axis=1, inplace=False)
 
         self.X= self.X.fillna(self.X.mean())
-        self.Y= self.X.fillna(self.X.mean())
+        # self.Y= self.X.fillna(self.X.mean())
         self.StandardScale()
 
     def StandardScale(self):

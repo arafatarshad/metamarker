@@ -21,6 +21,7 @@ from .email_update import email_update
 
 
 from .lib.pca_processor import PCA_Helper
+from .lib.dca_processor import DCA_Helper
 
 
 
@@ -62,13 +63,6 @@ class JOB(APIView):
 
 
 
-
-
-
-
-
-
-
         def ProcessJobs(self):
             print("I am here____________")
             newjob=Job.objects.filter(status=0).first()
@@ -102,3 +96,20 @@ class Master(APIView):
         newjob.save()
         if newjob.processing_algorithm.reference_id == 'pc_001':
             pca=PCA_Helper(newjob)
+        elif newjob.processing_algorithm.reference_id == 'pc_002':
+            dca=DCA_Helper(newjob)
+
+
+    def runThisJob(self,request,id):
+        job = Job.objects.get(pk=id)
+        dca=DCA_Helper(job)
+        dca.getUsCaseAndControl()
+        return render(request,"job/job.html",{"page_title":"Task-Manager"})
+
+    #
+    #
+    # def runThisJob(self,request,id):
+    #     job = Job.objects.get(pk=id)
+    #     job.status=50
+    #     job.save()
+    #     return render(request,"job/job.html",{"page_title":"Task-Manager"})

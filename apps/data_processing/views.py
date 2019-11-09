@@ -47,4 +47,27 @@ class PCA(APIView):
                 job= Job(status=0,created_at=datetime.now(),processing_algorithm_id=settings.PCA,extradataset_id=request.POST['dataset_id'],project_id=project.id)
             job.save()
             pca_job=PcaJobParameters(no_of_components=request.POST['no_of_components'],reduce_to=request.POST['reduce_to'],job_id=job.id)
-            pca_job.save() 
+            pca_job.save()
+
+
+class DCA(APIView):
+
+        def get(self, request, *args, **kwargs):
+            project = Project.objects.get(reference_id=request.session['reference_id'])
+            dataset=ExtraDataset.objects.filter(project_id=project)
+            return render(request,"processing/dca/dca_processing.html",{"page_title":"DCA-processing","project":project,"dataset":dataset})
+
+        def post(self, request, *args, **kwargs):
+            print(request.POST)
+            self.saveTheJob(request)
+            now = datetime.now()
+            html = "<html><body>It is now %s.</body></html>" % now
+            return    HttpResponse(html)
+
+        def saveTheJob(self,request):
+            project = Project.objects.get(reference_id=request.session['reference_id'])
+            if request.POST['dataset_id'] == '00000':
+                job= Job(status=0,created_at=datetime.now(),processing_algorithm_id=settings.DCA,project_id=project.id)
+            else:
+                job= Job(status=0,created_at=datetime.now(),processing_algorithm_id=settings.DCA,extradataset_id=request.POST['dataset_id'],project_id=project.id)
+            job.save()

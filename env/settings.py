@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'apps.data_processing',
     'apps.job',
     'background_task',
-    'apps.master_processor',
+    'apps.master_processor', 
 ]
 
 MIDDLEWARE = [
@@ -176,7 +176,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 
 # id used for different processing algorithm
 PCA=1
-
+DCA=2
 
 
 
