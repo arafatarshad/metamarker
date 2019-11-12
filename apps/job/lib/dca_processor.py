@@ -66,14 +66,14 @@ class DCA_Helper:
         self.n2=self.control.shape[0]
         self.n=self.n1+self.n2
         self.m=self.case.shape[1]
-        # self.getUsDiffCorelation()
+        self.getUsDiffCorelation()
         self.createPermutedCaseControl()
 
     def getUsDiffCorelation(self):
         zcase=np.log((self.caseCorelation+1)/(1-self.caseCorelation))*0.5
         zcontrol=np.log((self.controlCorelation+1)/(1-self.controlCorelation))*0.5
         self.diffCorelation=(math.sqrt((self.n1-3)/2)*zcase)-(math.sqrt((self.n2-3)/2)*zcontrol)
-        # print(diffCorelation)
+        # print(self.diffCorelation)
 
     def createPermutedCaseControl(self):
         new_df=self.getUsProperDf(self.job)._get_numeric_data()
@@ -94,7 +94,7 @@ class DCA_Helper:
 
             if control_swap ==0 and case_swap ==0:
                 flag=False
-        case,control = [x for _, x in self.df.groupby(self.df[self.target] ==self.unique_labels[0])]
+        case,control = [x for _, x in self.df.groupby(new_df[self.target] ==self.unique_labels[0])]
         self.caseCopy=case
         self.controlCopy=control
         self.caseCopy.drop(self.target,axis=1, inplace=True)
@@ -103,14 +103,21 @@ class DCA_Helper:
         self.createNewCaseControlCopyCorelation()
 
     def generatecount_permuteSig(self):
-        print(self.m)
+        # print(self.m)
+        # print(abs(self.diffCorelation.iat[1,0]))
+        # print("--------------------------------------------------")
+        # print("--------------------------------------------------")
+        # print("--------------------------------------------------")
+        # print("--------------------------------------------------")
+        # print(abs(self.diffCorelationCopy.iat[1,0]))
         for i in range(0,self.m):
-            for j in range(1,self.m):
-                if((abs(float(self.diffCorelation[i][j])))<abs(float(self.diffCorelationCopy[i][j]))):
-                    print(True)
-                    self.count_permuteSig[i][j]=self.count_permuteSig[i][j]+1
+            for j in range(0,self.m):
+                if(abs(float(self.diffCorelation.iat[i,j]))<abs(float(self.diffCorelationCopy.iat[i,j]))):
 
-        print(self.count_permuteSig)
+                    self.count_permuteSig.iat[i,j]+=1
+                    if self.count_permuteSig.iat[i,j]>1:
+                        print(True)
+        print(self.count_permuteSig.to_json())
 
 
 
