@@ -209,6 +209,7 @@ class DaaResultAndParameter(models.Model):
     sig_count = models.IntegerField(blank=True, null=True)
     job = models.ForeignKey('Job', models.DO_NOTHING)
     scaler_scale = models.IntegerField(blank=True, null=True)
+    diff_cor = models.TextField()  # This field type is a guess.
 
     class Meta:
         managed = False

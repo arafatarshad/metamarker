@@ -17,7 +17,7 @@ import base64
 import math
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
-from apps.project_ground.models import Extradataset, PreprocessingTasks , Project,Job,PcaJobParameters,PcaResult, ComponentResult
+from apps.project_ground.models import Extradataset, PreprocessingTasks , Project,Job,PcaJobParameters,PcaResult, ComponentResult,DaaResultAndParameter
 import random
 
 
@@ -35,7 +35,7 @@ class DCA_Helper:
     n=0
     n1=0
     n2=0
-
+    daa=None
     caseCorelation =None
     controlCorelation=None
     diffCorelation=None
@@ -46,6 +46,7 @@ class DCA_Helper:
 
     def __init__(self,job):
         self.job=job
+        self.daa=DaaResultAndParameter.objects.filter(job_id=self.job.id)[0]
         self.df=self.getUsProperDf(job)._get_numeric_data()
         # self.df=self.df.replace(to_replace=[None], value=np.nan, inplace=True)
         self.features=list(self.df.columns.values)
@@ -53,6 +54,9 @@ class DCA_Helper:
         self.features.remove(self.target)
 
     def getUsCaseAndControl(self):
+        self.job.status=1
+        self.job.save()
+
         self.unique_labels=self.df[self.target].unique()
         case,control = [x for _, x in self.df.groupby(self.df[self.target] ==self.unique_labels[0])]
         self.case=case
@@ -66,6 +70,8 @@ class DCA_Helper:
         self.n2=self.control.shape[0]
         self.n=self.n1+self.n2
         self.m=self.case.shape[1]
+
+
         self.getUsDiffCorelation()
         self.createPermutedCaseControl()
 
@@ -73,6 +79,8 @@ class DCA_Helper:
         zcase=np.log((self.caseCorelation+1)/(1-self.caseCorelation))*0.5
         zcontrol=np.log((self.controlCorelation+1)/(1-self.controlCorelation))*0.5
         self.diffCorelation=(math.sqrt((self.n1-3)/2)*zcase)-(math.sqrt((self.n2-3)/2)*zcontrol)
+
+
         # print(self.diffCorelation)
 
     def createPermutedCaseControl(self):
@@ -103,25 +111,20 @@ class DCA_Helper:
         self.createNewCaseControlCopyCorelation()
 
     def generatecount_permuteSig(self):
-        # print(self.m)
-        # print(abs(self.diffCorelation.iat[1,0]))
-        # print("--------------------------------------------------")
-        # print("--------------------------------------------------")
-        # print("--------------------------------------------------")
-        # print("--------------------------------------------------")
-        # print(abs(self.diffCorelationCopy.iat[1,0]))
+
         for i in range(0,self.m):
             for j in range(0,self.m):
                 if(abs(float(self.diffCorelation.iat[i,j]))<abs(float(self.diffCorelationCopy.iat[i,j]))):
-
                     self.count_permuteSig.iat[i,j]+=1
-                    if self.count_permuteSig.iat[i,j]>1:
-                        print(True)
-        print(self.count_permuteSig.to_json())
 
+        # for object in self.daa:
+        #     object.diff_cor=self.diffCorelation.to_json()
+        #     object.permute_diff_cor=self.diffCorelationCopy.to_json()
+        #     object.permute_sig_corr=self.count_permuteSig.to_json()
+        #     object.save()
+        #
 
-
-
+        self.saveTheResultsInDB()
 
 
     def createNewCaseControlCopyCorelation(self):
@@ -151,3 +154,14 @@ class DCA_Helper:
                 return False
             else:
                 return True
+
+
+
+    def saveTheResultsInDB(self):
+        self.daa.diff_cor=self.diffCorelation.to_json()
+        self.daa.permute_diff_cor=self.diffCorelationCopy.to_json()
+        self.daa.permute_sig_corr=self.count_permuteSig.to_json()
+        self.daa.save()
+
+        self.job.status=2
+        self.job.save()
