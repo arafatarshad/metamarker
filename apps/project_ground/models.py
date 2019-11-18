@@ -203,25 +203,13 @@ class Project(models.Model):
 
 
 
-class DaaJobParameters(models.Model):
-    sig_count = models.IntegerField(blank=True, null=True)
-    job = models.ForeignKey('Job', models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'daa_job_parameters'
-        unique_together = (('id', 'job'),)
-
-
-
-class Result1(models.Model):
-    diff_cor = models.TextField(blank=True, null=True)  # This field type is a guess.
+class DaaResultAndParameter(models.Model):
     permute_diff_cor = models.TextField(blank=True, null=True)  # This field type is a guess.
     permute_sig_corr = models.TextField(blank=True, null=True)  # This field type is a guess.
-    daa_job_parameters = models.ForeignKey(DaaJobParameters, models.DO_NOTHING)
-    daa_job_parameters_job = models.ForeignKey(DaaJobParameters, models.DO_NOTHING)
+    sig_count = models.IntegerField(blank=True, null=True)
+    job = models.ForeignKey('Job', models.DO_NOTHING)
+    scaler_scale = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'result_1'
-        unique_together = (('id', 'daa_job_parameters', 'daa_job_parameters_job'),)
+        db_table = 'daa_result_and_parameter'

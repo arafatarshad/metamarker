@@ -14,7 +14,7 @@ from django.http import HttpResponse
 from datetime import datetime
 
 
-from apps.project_ground.models import Extradataset as ExtraDataset, PreprocessingTasks , Project,Job , PcaJobParameters
+from apps.project_ground.models import Extradataset as ExtraDataset, PreprocessingTasks , Project,Job , PcaJobParameters,DaaResultAndParameter
 
 import pandas as pd
 import os
@@ -64,10 +64,16 @@ class DCA(APIView):
             html = "<html><body>It is now %s.</body></html>" % now
             return    HttpResponse(html)
 
-        def saveTheJob(self,request):
+        def saveTheJob(self,request): 
             project = Project.objects.get(reference_id=request.session['reference_id'])
             if request.POST['dataset_id'] == '00000':
                 job= Job(status=0,created_at=datetime.now(),processing_algorithm_id=settings.DCA,project_id=project.id)
             else:
                 job= Job(status=0,created_at=datetime.now(),processing_algorithm_id=settings.DCA,extradataset_id=request.POST['dataset_id'],project_id=project.id)
             job.save()
+
+            if 'scaler_scale_check' in request.POST:
+                daa_job=DaaResultAndParameter(sig_count=request.POST['sig_count'],scaler_scale=request.POST['scaler_scale_check'],job_id=job.id)
+            else:
+                daa_job=DaaResultAndParameter(sig_count=request.POST['sig_count'],job_id=job.id)
+            daa_job.save()

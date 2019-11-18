@@ -4,7 +4,7 @@
 <form name="options_form" id="options_form" class="" action="{% url 'dca_processing' %}"  method="post">
 <div class="box box-default">
  <div class="box-header with-border">
-   <h3 class="box-title">Principal Components Analysis</h3>
+   <h3 class="box-title">Differential Correlation Analysis</h3>
 
    <div class="box-tools pull-right">
      <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -24,10 +24,22 @@
        </div>
      </div>
 
+     <div class="col-md-6">
+       <div class="form-group">
+           <label>Marginal Significance  </label>
+           <select class="form-control select2" style="width: 100%;" name="sig_count">
+
+             <option value="70">0.7</option>
+             <option value="60">0.6</option>
+             <option selected="selected" value="50">0.5</option>
+             <option value="40">0.4</option>
+           </select>
+       </div>
+     </div>
 
      <div class="col-md-12">
        <div class="form-group">
-             <input type="checkbox" name="scaler_scale_check" class="minimal" value="1">       <label> Apply Scaler Scaling with PCA</label>  <br>
+             <input type="checkbox" name="scaler_scale_check" class="minimal" value="1">       <label> Apply Scaler Scaling</label>  <br>
         </div>
      </div>
 
