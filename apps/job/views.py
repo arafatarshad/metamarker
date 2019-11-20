@@ -51,7 +51,8 @@ class JOB(APIView):
                     query["dataset_name"]=single_job.extradataset.name
 
                 query["processing_algorithm"]=single_job.processing_algorithm.name
-
+                query["created_at"]=single_job.created_at.strftime('%d  %b , %Y - %H : %M : %S')
+ 
                 data.append(query)
             return HttpResponse(json.dumps(data), content_type='application/json')
 
