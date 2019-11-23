@@ -48,8 +48,22 @@
                    {
                         data: 'id',
                         render: function ( data, type, row ) {
-                          var url = "{% url 'deleteSinglejob' 123 %}".replace('123',data);
-                          return "<a href="+url+" class='btn btn-danger btn-xs' >Delete</a>"
+                          console.log(row.status)
+                          if (row.status=='Complete') {
+
+                            var url = "{% url 'deleteSinglejob' 123 %}".replace('123',data);
+                            var url2 = "{% url 'showJobReult' 123 %}".replace('123',data);
+                            var buttons= " <a href="+url+" class='btn btn-danger btn-xs' >Delete</a> " + "  <a href="+url2+" class='btn btn-success btn-xs' >Show Result</a>"
+                            return buttons
+                          } else if (row.status=='Processsing') {
+// do nothing
+                          } else {
+                              // alert("asds")
+                            var url = "{% url 'deleteSinglejob' 123 %}".replace('123',data);
+
+                            var buttons= "<a href="+url+" class='btn btn-danger btn-xs' >Delete</a>"
+                              return buttons
+                          }
                         }
                     }
                  ]

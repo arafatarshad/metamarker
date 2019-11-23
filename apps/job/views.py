@@ -9,7 +9,7 @@ from django.shortcuts import get_object_or_404
 from django.forms.utils import ErrorList
 from django.http import HttpResponse
 
-from apps.project_ground.models import Extradataset, PreprocessingTasks , Project,Job
+from apps.project_ground.models import Extradataset, PreprocessingTasks , Project,Job,DaaResultAndParameter
 
 import json
 from django.core import serializers
@@ -21,11 +21,11 @@ from .email_update import email_update
 
 
 from .lib.pca_processor import PCA_Helper
-from .lib.dca_processor import DCA_Helper
+from .lib.dca_processor import DCA_Helper,DCA_Result
 
 
-
-
+from django.http import JsonResponse
+import json
 class JOB(APIView):
         def get(self, request, *args, **kwargs):
             return render(request,"job/job.html",{"page_title":"Task-Manager"})
@@ -52,7 +52,7 @@ class JOB(APIView):
 
                 query["processing_algorithm"]=single_job.processing_algorithm.name
                 query["created_at"]=single_job.created_at.strftime('%d  %b , %Y - %H : %M : %S')
- 
+
                 data.append(query)
             return HttpResponse(json.dumps(data), content_type='application/json')
 
@@ -62,19 +62,45 @@ class JOB(APIView):
             job.save()
             return render(request,"job/job.html",{"page_title":"Task-Manager"})
 
-
+        def showJobReult(self,request,id):
+            job = Job.objects.get(pk=id)
+            dca_result=DCA_Result(job)
+            # div=dca_result.getMeDiffCorTable()
+            tables=dca_result.getMeHeatMaps()
+            return render(request,"job/result/daa_result.html",{"title":"Dashboard",'table' : tables[0],'table1' : tables[1],'table2' : tables[2]})
 
         def ProcessJobs(self):
             print("I am here____________")
             newjob=Job.objects.filter(status=0).first()
             email_update.tellThemProjectStarts(newjob)
 
-
-
         def job1(self):
         	print("inside job1")
         	self.checkBackgroundTask(repeat=10, repeat_until=None)
         	print("on the way out job one")
+
+
+        def getDiffCorApi(self,id):
+            job = Job.objects.get(pk=id)
+            dca=DaaResultAndParameter.objects.filter(job_id=job)[0]
+            d = json.loads(dca.diff_cor)
+            return JsonResponse(d,safe=False)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
