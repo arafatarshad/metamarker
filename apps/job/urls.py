@@ -18,6 +18,7 @@ urlpatterns = [
 
 
     path('api/get_diff_cor/<int:id>/',views.JOB.getDiffCorApi,name="api_get_diff_cor"),
+    path('api/get_sig_cor/<int:id>/',views.JOB.getSigCorApi,name="api_get_sig_cor"),
 
     # path('check_dca/<int:id>/',views.Master.runThisJob(),name="run_this_job"),
 

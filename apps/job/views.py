@@ -67,7 +67,7 @@ class JOB(APIView):
             dca_result=DCA_Result(job)
             # div=dca_result.getMeDiffCorTable()
             tables=dca_result.getMeHeatMaps()
-            return render(request,"job/result/daa_result.html",{"title":"Dashboard",'table' : tables[0],'table1' : tables[1],'table2' : tables[2]})
+            return render(request,"job/result/daa_result.html",{"title":"Dashboard",'table' : tables[0],'table1' : tables[1],'table2' : tables[2],'job':id})
 
         def ProcessJobs(self):
             print("I am here____________")
@@ -87,7 +87,12 @@ class JOB(APIView):
             return JsonResponse(d,safe=False)
 
 
-
+        def getSigCorApi(self,id):
+            job = Job.objects.get(pk=id)
+            dca=DaaResultAndParameter.objects.filter(job_id=job)[0]
+            d = json.loads(dca.permute_sig_corr)
+            return JsonResponse(d,safe=False)
+            # return HttpResponse(d, content_type='application/json')
 
 
 

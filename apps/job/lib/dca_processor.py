@@ -189,7 +189,6 @@ class DCA_Result:
 
 
     def getMeHeatMaps(self):
-        print("I am here ---------------")
         diff_cor=pd.read_json(self.dca.diff_cor)
         permute_diff_cor=pd.read_json(self.dca.permute_diff_cor)
         permute_sig_corr=pd.read_json(self.dca.permute_sig_corr)
@@ -237,6 +236,9 @@ class DCA_Result:
         div3=opy.plot(figure3, auto_open=False, output_type='div')
 
         return [div1,div2,div3]
+
+ 
+
 
     # def getMeDiffCorTable(self):
     #     diff_cor=pd.read_json(self.dca.diff_cor)
