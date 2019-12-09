@@ -5,18 +5,14 @@
 {% block content %}
 
 
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.9.4/cytoscape.min.js"></script>
 <style media="screen">
   body {
   font-family: 'Open Sans', sans-serif;
   font-weight: 300;
 }
 .tabs {
-  /* max-width: 640px;
-   */
-   /* min-height: 500px;
-    */
 
-    /* height:500px; */
   margin: 0 auto;
   padding: 0 20px;
   max-height:800px;
@@ -81,44 +77,47 @@
 
 
 
-  .node {
-    stroke: #fff;
-    stroke-width: 1.5px;
-  }
 
-  .link {
-    fill: none;
-    stroke: #bbb;
-  }
+.wrap1{
+  display:relative !important;
+
+  border: 5px solid red;
+ width:100%;
+ height:1000px;
+}
+
+.wrap:after{
+  display:table;
+  clear:both;
+}
+
+
+}
+
+#cy {
+  position: static;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  height:1000px;
+ border:5px solid green !important;
+}
+
+
+
+/* Important part */
+.modal-dialog{
+   width: 100%;
+    overflow-y: initial !important
+}
+.modal-body{
+    height: 450px;
+    width:100%;
+    overflow-y: auto;
+}
+
 </style>
-
-
-
-
-<div class="box box-default">
-  <div class="box-header with-border">
-    <h3 class="box-title">A glimpse of the uploaded dataset</h3>
-    <div class="box-tools pull-right">
-      <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-    </div>
-  </div>
-  <div class="box-body">
-
-      <svg width="1960" height="600"></svg>
-
-  </div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -190,10 +189,108 @@
 
 
 
+<div class="box box-default">
+  <div class="box-header with-border">
+    <h3 class="box-title">A glimpse of the uploaded dataset on a Network</h3>
+    <div class="box-tools pull-right">
+      <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+    </div>
+  </div>
+  <div class="box-body">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+            <label>Select Layout Type</label>
+            <select class="form-control select2" style="width: 100%;" name="layout_type" id="layout_type">
+              <option selected="selected" value="circle">Circle</option>
+                  <option value="grid">Grid</option>
+                  <option value="concentric">Concentric</option>
+                  <option value="breadthfirst">Breadth First</option>
+            </select>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+            <label>Generate Centrality Measures</label>
+            <select class="form-control select2" style="width: 100%;" name="centrality_type" id="centrality_type">
+              <option selected="selected" value="all">All</option>
+                  <option value="degree">Degree</option>
+                  <option value="closeness">Closeness Centrality</option>
+                  <option value="betweenness">Betweenness Centrality</option>
+                  <option value="pagerank">Page Rank Centrality</option>
+            </select>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="form-group">
+            <label>Show nodes that belong to </label>
+            <select class="form-control select2" style="width: 100%;" name="node_visibility_type">
+              <option selected="selected" value="none">N/A </option>
+                  <option value="90">90% central</option>
+                  <option value="80">Most 80% central</option>
+                  <option value="70">Most 70% central</option>
+                  <option value="60">Most 60% central</option>
+                  <option value="50">Most 50% central</option>
+                  <option value="40">Most 40% central</option>
+            </select>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="form-group">
+            <label>Reset  Network</label>
+            <button type="button" name="reset" id="reset" class="btn btn-danger form-control" style="width: 100%;" value="create">Reset</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<div class="box box-default">
+  <div class="box-body">
+    <div class="wrap1 container">
+      <div id="cy"></div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+<div class="modal modal-info fade" id="modal-info">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Information</h4>
+      </div>
+      <div class="modal-body">
+        <p>Please Wait, this may take a while &hellip;</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+        <!-- <button type="button" class="btn btn-outline">Save changes</button> -->
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+
+      <!-- <div id="cy"></div> -->
 {% endblock%}
 
 {%block scripts %}
-
 <script type="text/javascript">
   let margin = {top: 30, right: 10, bottom: 10, left: 0};
 
@@ -241,148 +338,293 @@
 
 
 
+ let layout_option={ name: 'circle',fit:true,avoidOverlap: true,avoidOverlapPadding: 10};
+ let basic_style=[
+     {
+       selector: 'node',
+       style: {
+         'background-color': '#666',
+         'label': 'data(id)'
+       }
+     },
+
+     {
+       selector: 'edge',
+       style: {
+         'width': 3,
+         'line-color': '#ccc',
+         'target-arrow-color': '#ccc',
+         'target-arrow-shape': 'triangle'
+       }
+     },
+     {
+       selector: 'node',
+       style: {
+         // 'background-color': 'green'
+       }
+     }
+   ];
+   let datas=[
+   {
+     "data": { "id": "n100", "weight": 85},
+     "group": "nodes"
+   },{
+     "data": { "id": "n101", "weight": 8},
+     "group": "nodes"
+   },{
+     "data": { "id": "n102", "weight": 123},
+     "group": "nodes"
+   },{
+     "data": { "id": "n103", "weight": 32},
+     "group": "nodes"
+   },{
+     "data": { "id": "n104", "weight": 67},
+     "group": "nodes"
+   },{
+     "data": { "id": "n105", "weight": 11},
+     "group": "nodes"
+   },{
+     "data": { "id": "n106", "weight": 111},
+     "group": "nodes"
+   },{
+     "data": { "id": "n107", "weight": 21},
+     "group": "nodes"
+   },{
+     "data": { "id": "n108", "weight": 61},
+     "group": "nodes"
+   },{
+     "data": { "id": "n109", "weight": 11},
+     "group": "nodes"
+   },
 
 
 
 
 
 
+    {"data": { "id": "e638",  "source": "n100", "target": "n104"},"group": "edges"},
+    {"data": { "id": "e639",  "source": "n101", "target": "n104"},"group": "edges"},
+    {"data": { "id": "e640",  "source": "n101", "target": "n100"},"group": "edges"},
+    {"data": { "id": "e641",  "source": "n103", "target": "n102"},"group": "edges"},
+    {"data": { "id": "e642",  "source": "n102", "target": "n105"},"group": "edges"},
+    {"data": { "id": "e643",  "source": "n102", "target": "n100"},"group": "edges"},
+
+    {"data": { "id": "e648",  "source": "n105", "target": "n104"},"group": "edges"},
+    {"data": { "id": "e649",  "source": "n106", "target": "n104"},"group": "edges"},
+    {"data": { "id": "e650",  "source": "n108", "target": "n104"},"group": "edges"},
+    {"data": { "id": "e651",  "source": "n109", "target": "n103"},"group": "edges"},
+    {"data": { "id": "e652",  "source": "n109", "target": "n108"},"group": "edges"},
+
+
+  ];
 
 
 
 
 
+ var cy;
+ function generate_cy(){
+   cy = cytoscape({
+   container: document.getElementById('cy'),
+   elements:datas,
+   style: basic_style,
+   layout: layout_option,
+   zoom: 1,
 
-
-
-
-
-
-
-
-
-
-
- function getRandomInt(max) {
-   return Math.floor(Math.random() * Math.floor(max));
+ });
  }
 
-var nodes=[]
-var links=[]
 
+ $( document ).ready(function() {
 
+    generate_cy();
 
- var svg = d3.select("svg"),
-     width = +svg.attr("width"),
-     height = +svg.attr("height");
- var color = d3.scaleOrdinal(d3.schemeCategory20);
- var simulation = d3.forceSimulation()
-     .force("link", d3.forceLink().id(function(d) { return d.id; }))
-     .force("charge", d3.forceManyBody())
-     .force("center", d3.forceCenter(width / 2, height / 2));
+    cy.on('tap', 'node', function(evt){
+      var jname =  evt.target.data().id;
+      cy.reset();
+      cy.elements().style('background-color','grey');
+      var j = cy.$('#'+jname).neighbourhood();
+      cy.$('#'+jname).style('background-color','red');
 
-
-d3.json("{% url 'api_get_sig_cor' 123 %}".replace('123',"{{ job }}"), function(error, data) {
-  if (error) throw error;
-   const dimensions=Object.keys(data)
-
-
-  dimensions.forEach(function(element){
-    nodes.push({"id":element,"group":getRandomInt(21)})
-    var stack=data[element]
-    dimensions.forEach(function(again_element){
-      if (element != again_element && stack[again_element]==1)
-        // console.log(element+"--------------->"+again_element+"========="+);
-        links.push({"source":element,"target":again_element,"value":stack[again_element]})
+      j.forEach(function(item,index){
+        item.style('background-color','red');
+      });
     });
 
-  })//dimensions for each
 
 
-    var nodeById = d3.map(nodes, function(d) { return d.id; }),
-        bilinks = [];
+ });
 
-    links.forEach(function(link) {
-      var s = link.source = nodeById.get(link.source),
-          t = link.target = nodeById.get(link.target),
-          i = {}; // intermediate node
-      nodes.push(i);
-      links.push({source: s, target: i}, {source: i, target: t});
-      bilinks.push([s, i, t]);
-    });
 
-    var link = svg.selectAll(".link")
-      .data(bilinks)
-      .enter().append("path")
-        .attr("class", "link");
 
-    var node = svg.selectAll(".node")
-      .data(nodes.filter(function(d) { return d.id; }))
-      .enter().append("circle")
-        .attr("class", "node")
-        .attr("r", 5)
-        .attr("fill", function(d) { return color(d.group); })
-        .call(d3.drag()
-            .on("start", dragstarted)
-            .on("drag", dragged)
-            .on("end", dragended));
 
-    node.append("title")
-        .text(function(d) { return d.id; });
 
-    simulation
-        .nodes(nodes)
-        .on("tick", ticked);
 
-    simulation.force("link")
-        .links(links);
 
-    function ticked() {
-      link.attr("d", positionLink);
-      node.attr("transform", positionNode);
+
+
+
+
+
+ $("#layout_type").change(function(){
+   layout_option.name=$( this ).val();
+   cy.reset();
+   generate_cy();
+ });
+
+
+
+ $("#centrality_type").change(function(){
+
+ $('#modal-info').modal("show");
+ generateModalBody($( this ).val());
+ });
+
+
+function generateModalBody(tableType){
+  switch(tableType) {
+    case 'all':
+        $('#modal-info').find('.modal-body').html(generateAllTable());
+        break;
+    case 'degree':
+        $('#modal-info').find('.modal-body').html(generateDegreeCentralityTable());
+      break;
+    case 'closeness':
+        $('#modal-info').find('.modal-body').html(generateClosenessCentralityTable());
+      break;
+    case 'betweenness':
+        $('#modal-info').find('.modal-body').html(generateBetweenNessCentralityTable());
+      break;
+    default:
+        $('#modal-info').find('.modal-body').html(generatePageRankCentralityTable());
+}
+
+}
+
+
+
+
+
+
+function generateDegreeCentralityTable(){
+  var table='<table id="example" class="table table-bordered nowrap" style="width:100%">'
+            +'<thead>  <tr> <th>Name</th> <th>Degree Centrality</th></tr></thead><tbody>'
+              +generateDegreeCentrality()+'</tbody></table>';
+  return table;
+}
+function generateDegreeCentrality(){
+  var table_row="";
+  var dcn = cy.$().dcn();
+  cy.elements().forEach(function(item,index){
+    if(item.isNode()){
+      table_row=table_row+'<tr><td>'+item.id()+'</td><td>'+ dcn.degree('#'+item.id())+'</td></tr>';
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-});//d3.json forEach
-
-
-function positionLink(d) {
-  return "M" + d[0].x + "," + d[0].y
-       + "S" + d[1].x + "," + d[1].y
-       + " " + d[2].x + "," + d[2].y;
+  });
+  return table_row;
 }
 
-function positionNode(d) {
-  return "translate(" + d.x + "," + d.y + ")";
+
+
+
+
+function generateClosenessCentralityTable(){
+  var table='<table id="example" class="table table-bordered nowrap" style="width:100%">'
+            +'<thead>  <tr> <th>Name</th> <th>Closeness Centrality</th></tr></thead><tbody>'
+              +generateClosenessCentrality()+'</tbody></table>';
+  return table;
+}
+function generateClosenessCentrality(){
+  var table_row="";
+    var ccn = cy.$().ccn();
+  cy.elements().forEach(function(item,index){
+    if(item.isNode()){
+      table_row=table_row+'<tr><td>'+item.id()+'</td><td>'+ ccn.closeness('#'+item.id())+'</td></tr>';
+    }
+
+  });
+  return table_row;
 }
 
-function dragstarted(d) {
-  if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-  d.fx = d.x, d.fy = d.y;
+
+
+
+
+function generateBetweenNessCentralityTable(){
+  var table='<table id="example" class="table table-bordered nowrap" style="width:100%">'
+            +'<thead>  <tr> <th>Name</th> <th>Betweenness Centrality</th></tr></thead><tbody>'
+              +generateBetweenNessCentrality()+'</tbody></table>';
+  return table;
+}
+function generateBetweenNessCentrality(){
+  var table_row="";
+  var bc = cy.$().bc();
+  cy.elements().forEach(function(item,index){
+    if(item.isNode()){
+      table_row=table_row+'<tr><td>'+item.id()+'</td><td>'+ bc.betweenness('#'+item.id())+'</td></tr>';
+    }
+
+  });
+  return table_row;
 }
 
-function dragged(d) {
-  d.fx = d3.event.x, d.fy = d3.event.y;
+
+
+
+
+
+
+function generatePageRankCentralityTable(){
+  var table='<table id="example" class="table table-bordered nowrap" style="width:100%">'
+            +'<thead>  <tr> <th>Name</th> <th>PageRank Centrality</th></tr></thead><tbody>'
+              +generatePageRankCentrality()+'</tbody></table>';
+  return table;
+}
+function generatePageRankCentrality(){
+  var table_row="";
+  var pr = cy.elements().pageRank();
+  cy.elements().forEach(function(item,index){
+    if(item.isNode()){
+      table_row=table_row+'<tr><td>'+item.id()+'</td><td>'+ pr.rank('#'+item.id())+'</td></tr>';
+    }
+
+  });
+  return table_row;
 }
 
-function dragended(d) {
-  if (!d3.event.active) simulation.alphaTarget(0);
-  d.fx = null, d.fy = null;
+
+
+
+
+
+
+
+
+
+
+function generateAllTable(){
+  var table='<table id="example" class="table table-bordered nowrap" style="width:100%">'
+            +'<thead>  <tr> <th>Name</th> <th>Degree Centrality</th> <th>Closeness Centrality</th><th>Betweenness Centrality</th><th>Page rank Centrality</th></tr></thead><tbody>'
+              +generateAllCentrality()+'</tbody></table>';
+  return table;
 }
 
+
+function generateAllCentrality(){
+  var table_row="";
+  var dcn = cy.$().dcn();
+  var bc = cy.$().bc();
+  var ccn = cy.$().ccn();
+  var pr = cy.elements().pageRank();
+
+  cy.elements().forEach(function(item,index){
+    if(item.isNode()){
+      table_row=table_row+'<tr><td>'+item.id()+'</td><td>'+ dcn.degree('#'+item.id())+'</td><td>'+ccn.closeness('#'+item.id())+'</td><td>'+bc.betweenness('#'+item.id())+'</td><td>'+pr.rank('#'+item.id())+'</td></tr>';
+    }
+
+  });
+  return table_row;
+}
 </script>
 
 {% endblock%}
