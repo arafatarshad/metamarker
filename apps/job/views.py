@@ -123,17 +123,19 @@ class JOB(APIView):
 class Master(APIView):
 
     def get(self, request, *args, **kwargs):
-        checkBackgroundTask(repeat=600, repeat_until=None)
+        self.checkBackgroundTask(repeat=10, repeat_until=None)
         return render(request,"job/job.html",{"page_title":"Task-Manager"})
 
     @background(queue='my-queue')
-    def checkBackgroundTask():
+    def checkBackgroundTask(self):
+        print("the timer is working")
         if Job.objects.filter(status=1).exists()==False:
             self.processNextInLine()
         if Job.objects.filter(status=2).exists()==True:
             email_update.notifyCompleteTakUser()
 
     def processNextInLine(self):
+        print("this method is working now")
         newjob=Job.objects.filter(status=0).first()
         newjob.status=1
         newjob.save()
@@ -143,11 +145,11 @@ class Master(APIView):
             dca=DCA_Helper(newjob)
 
 
-    def runThisJob(self,request,id):
-        job = Job.objects.get(pk=id)
-        dca=DCA_Helper(job)
-        dca.getUsCaseAndControl()
-        return render(request,"job/job.html",{"page_title":"Task-Manager"})
+    # def runThisJob(self,request,id):
+    #     job = Job.objects.get(pk=id)
+    #     dca=DCA_Helper(job)
+    #     dca.getUsCaseAndControl()
+    #     return render(request,"job/job.html",{"page_title":"Task-Manager"})
 
     #
     #

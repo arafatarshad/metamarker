@@ -48,7 +48,7 @@
                    {
                         data: 'id',
                         render: function ( data, type, row ) {
-                          console.log(row.status)
+                          // console.log(row.status)
                           if (row.status=='Complete') {
 
                             var url = "{% url 'deleteSinglejob' 123 %}".replace('123',data);

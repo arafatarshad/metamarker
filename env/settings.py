@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'apps.data_processing',
     'apps.job',
     'background_task',
-    'apps.master_processor', 
+    'apps.master_processor',
 ]
 
 MIDDLEWARE = [
@@ -196,5 +196,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'aarafat@mun.ca'
-EMAIL_HOST_PASSWORD = 'Pigpiepoe5*'
+EMAIL_HOST_PASSWORD = 'Backingame5*'
 EMAIL_PORT = 587
