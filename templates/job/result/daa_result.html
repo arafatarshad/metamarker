@@ -81,7 +81,7 @@
 .wrap1{
   display:relative !important;
 
-  border: 5px solid red;
+  border: 5px solid #ddd;
  width:100%;
  height:1000px;
 }
@@ -101,7 +101,7 @@
   bottom: 0;
   right: 0;
   height:1000px;
- border:5px solid green !important;
+ /* border:5px solid green !important; */
 }
 
 
@@ -225,7 +225,7 @@
       <div class="col-md-3">
         <div class="form-group">
             <label>Show nodes that belong to </label>
-            <select class="form-control select2" style="width: 100%;" name="node_visibility_type">
+            <select class="form-control select2" style="width: 100%;" name="node_visibility_type" id="node_visibility_type">
               <option selected="selected" value="none">N/A </option>
                   <option value="90">90% central</option>
                   <option value="80">Most 80% central</option>
@@ -240,7 +240,7 @@
       <div class="col-md-3">
         <div class="form-group">
             <label>Reset  Network</label>
-            <button type="button" name="reset" id="reset" class="btn btn-danger form-control" style="width: 100%;" value="create">Reset</button>
+            <button type="button" name="reset" id="reset" class="btn btn-danger form-control" style="width: 100%;" >Reset</button>
         </div>
       </div>
 
@@ -452,7 +452,7 @@
     });
 
 
-
+// stockCentralityMeasure();
  });
 
 
@@ -479,6 +479,7 @@
  $('#modal-info').modal("show");
  generateModalBody($( this ).val());
  });
+
 
 
 function generateModalBody(tableType){
@@ -610,6 +611,8 @@ function generateAllTable(){
 }
 
 
+
+
 function generateAllCentrality(){
   var table_row="";
   var dcn = cy.$().dcn();
@@ -625,6 +628,57 @@ function generateAllCentrality(){
   });
   return table_row;
 }
+
+
+$("#node_visibility_type").change(function(){
+  // console.log($( this ).val());
+  stockCentralityMeasure($( this ).val());
+});
+
+
+function stockCentralityMeasure(mlength){
+
+  var node_centrality_positive=[]
+  var node_centrality_remove=[]
+
+
+    var dcn = cy.$().dcn();
+    datas.forEach(function(item,index){
+      if (item.group=='nodes'){
+        var temp={};
+        temp["name"]=item.data.id;
+        temp["centrality"]=dcn.degree('#'+item.data.id);
+        node_centrality_positive.push(temp);
+      }
+
+    });
+    // console.log();
+    node_centrality_positive.sort(compare);
+
+    mlength=Math.floor(node_centrality_positive.length*mlength/100.00);
+
+    for(index =mlength;index<node_centrality_positive.length;index++){
+      // console.log();
+      cy.remove('#'+node_centrality_positive[index]['name']);
+    }
+}
+
+
+function compare(a, b) {
+  if (a.centrality < b.centrality) return 1;
+  if (b.centrality < a.centrality) return -1;
+
+  return 0;
+}
+
+
+
+$("#reset").click(function(){
+  console.log("asds");
+  // cy.elements.remove();
+  // cy.destroy();
+  generate_cy();
+});
 </script>
 
 {% endblock%}
