@@ -95,6 +95,15 @@ class JOB(APIView):
             # return HttpResponse(d, content_type='application/json')
 
 
+        def getUsNetworkData(self,id):
+            job = Job.objects.get(pk=id)
+            dca=DCA_Helper(job)
+            dca.getUsCaseAndControl();
+            # d = json.loads(dca.permute_sig_corr)
+            return JsonResponse(id,safe=False)
+            # return HttpResponse(d, content_type='application/json')
+
+
 
 
 

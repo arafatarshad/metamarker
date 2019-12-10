@@ -119,14 +119,7 @@ class DCA_Helper:
             for j in range(0,self.m):
                 if(abs(float(self.diffCorelation.iat[i,j]))<abs(float(self.diffCorelationCopy.iat[i,j]))):
                     self.count_permuteSig.iat[i,j]+=1
-
-        # for object in self.daa:
-        #     object.diff_cor=self.diffCorelation.to_json()
-        #     object.permute_diff_cor=self.diffCorelationCopy.to_json()
-        #     object.permute_sig_corr=self.count_permuteSig.to_json()
-        #     object.save()
-        #
-
+        # self.generateNetworkData()
         self.saveTheResultsInDB()
 
 
@@ -158,9 +151,23 @@ class DCA_Helper:
             else:
                 return True
 
-
+    def generateNetworkData(self):
+        iterator=1
+        network_array=[]
+        for feature in self.features:
+            network_array.append({"data": { "id": feature},"group": "nodes"})
+            for feature1 in self.features:
+                if self.count_permuteSig[feature][feature1]==1:
+                     network_array.append({
+                                            "data": { "id": "e"+str(iterator),  "source": feature, "target": feature1},
+                                            "group": "edges"
+                                            })
+                     iterator=iterator+1
+        self.daa.network_data=json.dumps(network_array)
+        self.daa.save()
 
     def saveTheResultsInDB(self):
+        self.generateNetworkData()
         self.daa.diff_cor=self.diffCorelation.to_json()
         self.daa.permute_diff_cor=self.diffCorelationCopy.to_json()
         self.daa.permute_sig_corr=self.count_permuteSig.to_json()
@@ -237,7 +244,7 @@ class DCA_Result:
 
         return [div1,div2,div3]
 
- 
+
 
 
     # def getMeDiffCorTable(self):
