@@ -337,7 +337,6 @@
 
 
 
-
  let layout_option={ name: 'circle',fit:true,avoidOverlap: true,avoidOverlapPadding: 10};
  let basic_style=[
      {
@@ -437,20 +436,33 @@
 
  $( document ).ready(function() {
 
-    generate_cy();
 
-    cy.on('tap', 'node', function(evt){
-      var jname =  evt.target.data().id;
-      cy.reset();
-      cy.elements().style('background-color','grey');
-      var j = cy.$('#'+jname).neighbourhood();
-      cy.$('#'+jname).style('background-color','red');
 
-      j.forEach(function(item,index){
-        item.style('background-color','red');
+
+    $.ajax({
+            url: "{% url 'api_network_data' 123 %}".replace('123',36),
+            type: 'GET',
+            dataType: "json",
+            async:false,
+            success: function(data){
+              datas= JSON.parse(data);
+              generate_cy();
+
+            }
+        });
+
+ 
+      cy.on('tap', 'node', function(evt){
+        var jname =  evt.target.data().id;
+        cy.reset();
+        cy.elements().style('background-color','grey');
+        var j = cy.$('#'+jname).neighbourhood();
+        cy.$('#'+jname).style('background-color','red');
+
+        j.forEach(function(item,index){
+          item.style('background-color','red');
+        });
       });
-    });
-
 
 // stockCentralityMeasure();
  });

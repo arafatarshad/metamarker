@@ -97,10 +97,12 @@ class JOB(APIView):
 
         def getUsNetworkData(self,id):
             job = Job.objects.get(pk=id)
-            dca=DCA_Helper(job)
-            dca.getUsCaseAndControl();
+            # dca=DCA_Helper(job)
+            # dca.getUsCaseAndControl();
             # d = json.loads(dca.permute_sig_corr)
-            return JsonResponse(id,safe=False)
+            dca=DaaResultAndParameter.objects.filter(job_id=job)[0]
+            d = dca.network_data
+            return JsonResponse(d,safe=False)
             # return HttpResponse(d, content_type='application/json')
 
 
