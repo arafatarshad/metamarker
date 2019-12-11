@@ -3,7 +3,7 @@ from .models import Project,Extradataset,PreprocessingTasks
 # Register your models here.
 
 class ProjectAdmin(admin.ModelAdmin):
-    list_display=('id','author_first_name','author_last_name','description','email','reference_id','dataset')
+    list_display=('id','author_first_name','author_last_name','description','email','reference_id')
 
 
 

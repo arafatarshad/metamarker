@@ -15,13 +15,13 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.CreateModel(
-            name='DatasetType',
-            fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('name', models.CharField(max_length=100)),
-            ],
-        ),
+        # migrations.CreateModel(
+        #     name='DatasetType',
+        #     fields=[
+        #         ('id', models.AutoField(primary_key=True, serialize=False)),
+        #         ('name', models.CharField(max_length=100)),
+        #     ],
+        # ),
         migrations.CreateModel(
             name='Project',
             fields=[
@@ -34,7 +34,7 @@ class Migration(migrations.Migration):
                 ('dataset', models.FileField(null=True, upload_to=apps.project_ground.models.Project.upload_path, validators=[django.core.validators.FileExtensionValidator(allowed_extensions=['csv'])])),
                 ('uploaded_at', models.DateTimeField(auto_now_add=True)),
                 ('basefilename', models.TextField(blank=True)),
-                ('dataset_type_id', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='project_ground.DatasetType')),
+                # ('dataset_type_id', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='project_ground.DatasetType')),
             ],
         ),
     ]

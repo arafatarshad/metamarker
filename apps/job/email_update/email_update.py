@@ -19,17 +19,17 @@ def tellThemProjectStarts(job):
     email.send()
 
 def tellThemProjectCompletes(job):
-    subject= "Update: Project Processing About tor start"
+    subject= "Update: Project ProcessingCompleted and ready for you to see"
     body="Dear Client the task that you have created for the projct with reference id " + job.project.reference_id + " is complete. !";
     to=[job.project.email]
     email = EmailMessage(subject, body, to=to)
     email.send()
 
 def notifyCompleteTakUser():
-    all_complete_jobs = Job.objects.filter(status=0)
+    all_complete_jobs = Job.objects.filter(status=2)
     for job in all_complete_jobs:
         tellThemProjectCompletes(job)
-        job.status=0
+        job.status=3
         job.save()
 
     # print(all_complete_jobs)
