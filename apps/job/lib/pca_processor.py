@@ -41,6 +41,7 @@ class PCA_Helper:
         # self.Y= self.X.fillna(self.X.mean())
         self.StandardScale()
 
+
     def StandardScale(self):
         job_params= PcaJobParameters.objects.filter(job_id=self.job.id)[0]
         if job_params.standard_scale==1:
@@ -84,8 +85,10 @@ class PCA_Helper:
                 feature_list[self.features[location-1]]=value
             ComponentResult(component_id=i,result=json.dumps(feature_list),pca_result_id=pca_result.id).save()
 
-            self.job.status=2
-            self.job.save()
+        print("-------------pca applied success-----------")
+        self.job.status=2
+        self.job.save()
+
 
 
 

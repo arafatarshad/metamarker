@@ -36,6 +36,8 @@ class JOB(APIView):
             data = []
             for single_job in job:
                 query={}
+                query["id"]=single_job.id
+
                 if single_job.status == 0:
                     query["status"]="Pending"
                 elif  single_job.status == 1:
@@ -43,12 +45,10 @@ class JOB(APIView):
                 elif  single_job.status == 2:
                     query["status"]="Complete"
                 elif  single_job.status == 3:
-                    query["status"]="Complete and Result Generated"
+                    query["status"]="Complete_and_Result_Generated"
                 else:
                     query["status"]="Deleted"
-
-                query["id"]=single_job.id
-
+                    
                 if single_job.extradataset_id==None:
                     query["dataset_name"]="Main Dataset"
                 else:
@@ -75,7 +75,7 @@ class JOB(APIView):
                 return render(request,"job/result/daa_result.html",{"title":"Dashboard",'table' : tables[0],'table1' : tables[1],'table2' : tables[2],'job':id})
 
             return render(request,"job/job.html",{"page_title":"Task-Manager"})
-            
+
         # def ProcessJobs(self):
         #     print("I am here____________")
         #     newjob=Job.objects.filter(status=0).first()
@@ -134,7 +134,7 @@ def getAutomationAGo(request):
 @background(queue='my-queue')
 def checkBackgroundTask():
     if Job.objects.filter(status=1).exists()==False:
-        print("--------------------------------something already under the proess -----------------------------")
+            # print("--------------------------------something already under the proess -----------------------------")
         processNextInLine()
     if Job.objects.filter(status=2).exists()==True:
         email_update.notifyCompleteTakUser()

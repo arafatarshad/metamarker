@@ -49,7 +49,7 @@
                         data: 'id',
                         render: function ( data, type, row ) {
                           // console.log(row.status)
-                          if (row.status=='Complete') {
+                          if (row.status=='Complete_and_Result_Generated') {
 
                             var url = "{% url 'deleteSinglejob' 123 %}".replace('123',data);
                             var url2 = "{% url 'showJobReult' 123 %}".replace('123',data);
