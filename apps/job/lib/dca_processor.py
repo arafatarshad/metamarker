@@ -47,14 +47,20 @@ class DCA_Helper:
     diffCorelationCopy=None
     count_permuteSig=None
 
+    p_value=0.05
+
     def __init__(self,job):
         self.job=job
         self.daa=DaaResultAndParameter.objects.filter(job_id=self.job.id)[0]
         self.df=self.getUsProperDf(job)._get_numeric_data()
+
+        # the following line may needs to be commented
         # self.df=self.df.replace(to_replace=[None], value=np.nan, inplace=True)
+
         self.features=list(self.df.columns.values)
         self.target=self.features[-1]
         self.features.remove(self.target)
+        self.getUsCaseAndControl()
 
     def getUsCaseAndControl(self):
         self.job.status=1
@@ -73,18 +79,36 @@ class DCA_Helper:
         self.n2=self.control.shape[0]
         self.n=self.n1+self.n2
         self.m=self.case.shape[1]
+        rows, cols = (self.m,self.m)
+        # self.count_permuteSig=pd.DataFrame([[0]*cols]*rows)
 
 
         self.getUsDiffCorelation()
-        self.createPermutedCaseControl()
+        # self.createPermutedCaseControl()
+        self.runThousandPermutationTest()
 
     def getUsDiffCorelation(self):
         zcase=np.log((self.caseCorelation+1)/(1-self.caseCorelation))*0.5
         zcontrol=np.log((self.controlCorelation+1)/(1-self.controlCorelation))*0.5
         self.diffCorelation=(math.sqrt((self.n1-3)/2)*zcase)-(math.sqrt((self.n2-3)/2)*zcontrol)
-
-
         # print(self.diffCorelation)
+
+
+    def runThousandPermutationTest(self):
+        self.count_permuteSig=abs(self.diffCorelation)*0
+        print(self.diffCorelation)
+
+        for i in range (0,1000):
+            self.createPermutedCaseControl()
+            self.createNewCaseControlCopyCorelation()
+            self.generatecount_permuteSig_with_strategyA()
+
+        self.count_permuteSig=self.count_permuteSig/1000
+        print("===========================================================")
+        print(self.count_permuteSig)
+
+
+        # self.saveTheResultsInDB()
 
     def createPermutedCaseControl(self):
         new_df=self.getUsProperDf(self.job)._get_numeric_data()
@@ -110,17 +134,8 @@ class DCA_Helper:
         self.controlCopy=control
         self.caseCopy.drop(self.target,axis=1, inplace=True)
         self.controlCopy.drop(self.target,axis=1, inplace=True)
-        self.count_permuteSig=abs(self.controlCopy.corr())*0
-        self.createNewCaseControlCopyCorelation()
+        # self.count_permuteSig=abs(self.controlCopy.corr())*0
 
-    def generatecount_permuteSig(self):
-
-        for i in range(0,self.m):
-            for j in range(0,self.m):
-                if(abs(float(self.diffCorelation.iat[i,j]))<abs(float(self.diffCorelationCopy.iat[i,j]))):
-                    self.count_permuteSig.iat[i,j]+=1
-        # self.generateNetworkData()
-        self.saveTheResultsInDB()
 
 
     def createNewCaseControlCopyCorelation(self):
@@ -133,7 +148,20 @@ class DCA_Helper:
         zcontrol=np.log((self.controlCorelationCopy+1)/(1-self.controlCorelationCopy))*0.5
         self.diffCorelationCopy=(math.sqrt((n1-3)/2)*zcase)-(math.sqrt((n2-3)/2)*zcontrol)
         # print(self.diffCorelationCopy)
-        self.generatecount_permuteSig()
+
+
+
+
+    def generatecount_permuteSig_with_strategyA(self):
+        for i in range(0,self.m):
+            for j in range(0,self.m):
+                if(abs(float(self.diffCorelation.iat[i,j]))<abs(float(self.diffCorelationCopy.iat[i,j]))):
+                    self.count_permuteSig.iat[i,j]+=1
+
+    def generatecount_permuteSig_with_strategyB(self):
+         df1=self.diffCorelation
+         df2=self.diffCorelationCopy
+         self.count_permuteSig = self.count_permuteSig+((abs(df2)<abs(df1))*1)
 
 
 

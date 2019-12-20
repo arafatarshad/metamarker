@@ -25,7 +25,7 @@
 
 {% endblock%}
 
-
+                 <!-- "url": "{% url 'alljob' %}", -->
 
 {%block scripts %}
 <script type="text/javascript" src="{% static 'vendor/jquery-datatable/jquery.dataTables.min.js' %}"></script>
@@ -37,7 +37,7 @@
              "processing": true,
              "ajax": {
                  "processing": true,
-                 "url": "{% url 'alljob' %}",
+                 "url": "{% url 'alljob_with_parameter' 123%}".replace('123',{{project_id}}),
                  "dataSrc": ""
              },
              "columns": [
@@ -46,17 +46,21 @@
                    { "data": "status" },
                    { "data": "processing_algorithm" },
                    {
-                        data: 'id',
-                        render: function ( data, type, row ) {
-                          // console.log(row.status)
+                        data: "id",
+                        render: function ( data, type,row,meta ) {
+
+                          // console.log(row)
                           if (row.status=='Complete_and_Result_Generated') {
 
                             var url = "{% url 'deleteSinglejob' 123 %}".replace('123',data);
                             var url2 = "{% url 'showJobReult' 123 %}".replace('123',data);
+
                             var buttons= " <a href="+url+" class='btn btn-danger btn-xs' >Delete</a> " + "  <a href="+url2+" class='btn btn-success btn-xs' >Show Result</a>"
                             return buttons
-                          } else if (row.status=='Processsing') {
-// do nothing
+                          } else if (row.status=='Processsing' ) {
+      // do nothing
+                          } else if (row.status=='Complete' ) {
+      // do nothing
                           } else {
                               // alert("asds")
                             var url = "{% url 'deleteSinglejob' 123 %}".replace('123',data);
@@ -64,6 +68,9 @@
                             var buttons= "<a href="+url+" class='btn btn-danger btn-xs' >Delete</a>"
                               return buttons
                           }
+
+
+
                         }
                     }
                  ]

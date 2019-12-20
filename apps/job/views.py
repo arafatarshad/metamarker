@@ -28,10 +28,14 @@ from django.http import JsonResponse
 import json
 class JOB(APIView):
         def get(self, request, *args, **kwargs):
-            return render(request,"job/job.html",{"page_title":"Task-Manager"})
+            # print()
+            project=Project.objects.filter(reference_id=request.session['reference_id']).first()
+            # print(project.id)
+            return render(request,"job/job.html",{"page_title":"Task-Manager","project_id":project.id})
 
         def getJobData(request,id):
-            job=Job.objects.filter(status__in=[0,1,2,3])
+
+            job=Job.objects.filter(status__in=[0,1,2,3],project_id=id)
 
             data = []
             for single_job in job:
@@ -48,7 +52,7 @@ class JOB(APIView):
                     query["status"]="Complete_and_Result_Generated"
                 else:
                     query["status"]="Deleted"
-                    
+
                 if single_job.extradataset_id==None:
                     query["dataset_name"]="Main Dataset"
                 else:
@@ -58,33 +62,33 @@ class JOB(APIView):
                 query["created_at"]=single_job.created_at.strftime('%d  %b , %Y - %H : %M : %S')
 
                 data.append(query)
+
+                # print(data)
             return HttpResponse(json.dumps(data), content_type='application/json')
 
         def deleteJOB(self,request,id):
+            # print("they sent me to be deleted ------------------>"+str(id))
             job = Job.objects.get(pk=id)
             job.status=50
             job.save()
-            return render(request,"job/job.html",{"page_title":"Task-Manager"})
+            project=Project.objects.filter(reference_id=request.session['reference_id']).first()
+            return render(request,"job/job.html",{"page_title":"Task-Manager","project_id":project.id})
 
         def showJobReult(self,request,id):
             job = Job.objects.get(pk=id)
 
-            if job.processing_algorithm.reference_id == 'pc_002':
-                dca_result=DCA_Result(job)
-                tables=dca_result.getMeHeatMaps()
-                return render(request,"job/result/daa_result.html",{"title":"Dashboard",'table' : tables[0],'table1' : tables[1],'table2' : tables[2],'job':id})
+            # if job.processing_algorithm.reference_id == 'pc_002':
+            #     dca_result=DCA_Result(job)
+            #     tables=dca_result.getMeHeatMaps()
+            #     return render(request,"job/result/daa_result.html",{"title":"Dashboard",'table' : tables[0],'table1' : tables[1],'table2' : tables[2],'job':id})
 
-            return render(request,"job/job.html",{"page_title":"Task-Manager"})
+            dca=DCA_Helper(job)
+            project=Project.objects.filter(reference_id=request.session['reference_id']).first()
+            return render(request,"job/job.html",{"page_title":"Task-Manager","project_id":project.id})
 
-        # def ProcessJobs(self):
-        #     print("I am here____________")
-        #     newjob=Job.objects.filter(status=0).first()
-        #     email_update.tellThemProjectStarts(newjob)
 
-        # def job1(self):
-        # 	print("inside job1")
-        # 	self.checkBackgroundTask(repeat=10, repeat_until=None)
-        # 	print("on the way out job one")
+
+
 
 
         def getDiffCorApi(self,id):
@@ -99,34 +103,29 @@ class JOB(APIView):
             dca=DaaResultAndParameter.objects.filter(job_id=job)[0]
             d = json.loads(dca.permute_sig_corr)
             return JsonResponse(d,safe=False)
-            # return HttpResponse(d, content_type='application/json')
 
 
         def getUsNetworkData(self,id):
             job = Job.objects.get(pk=id)
-            # dca=DCA_Helper(job)
-            # dca.getUsCaseAndControl();
-            # d = json.loads(dca.permute_sig_corr)
             dca=DaaResultAndParameter.objects.filter(job_id=job)[0]
             d = dca.network_data
             return JsonResponse(d,safe=False)
-            # return HttpResponse(d, content_type='application/json')
 
 
 
 
-        # def manualAutomation(self,request):
-        #     print("request added")
-        #     ipman=Master()
-        #     ipman.checkBackgroundTask(repeat=10, repeat_until=None)
-        #     return render(request,"job/job.html",{"page_title":"Task-Manager"})
-        #
-        #
-        #
 
 
 
 
+
+
+
+
+
+
+
+# the folowwing lines of codes are responsible for automation
 def getAutomationAGo(request):
     checkBackgroundTask(repeat=40, repeat_until=None)
     return render(request,"job/job.html",{"page_title":"Task-Manager"})
@@ -140,17 +139,16 @@ def checkBackgroundTask():
         email_update.notifyCompleteTakUser()
 
 def processNextInLine():
-
     newjob=Job.objects.filter(status=0).first()
     newjob.status=1
     newjob.save()
 
     if newjob.processing_algorithm.reference_id == 'pc_001':
-        print("-----------------status updated from pending to complete for id --------------------"+str(newjob.id))
+        # print("-----------------status updated from pending to complete for id --------------------"+str(newjob.id))
         pca=PCA_Helper(newjob)
 
     if newjob.processing_algorithm.reference_id == 'pc_002':
-        print("-----------------status updated from pending to complete for id --------------------"+str(newjob.id))
+        # print("-----------------status updated from pending to complete for id --------------------"+str(newjob.id))
         dca=DCA_Helper(newjob)
 
 
