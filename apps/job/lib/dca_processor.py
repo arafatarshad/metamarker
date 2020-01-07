@@ -52,6 +52,7 @@ class DCA_Helper:
     def __init__(self,job):
         self.job=job
         self.daa=DaaResultAndParameter.objects.filter(job_id=self.job.id)[0]
+        print(self.daa)
         self.df=self.getUsProperDf(job)._get_numeric_data()
 
         # the following line may needs to be commented
@@ -203,6 +204,9 @@ class DCA_Helper:
 
         self.job.status=2
         self.job.save()
+
+
+
 
 
 class DCA_Result:

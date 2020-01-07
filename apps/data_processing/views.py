@@ -55,8 +55,7 @@ class DCA(APIView):
             dataset=ExtraDataset.objects.filter(project_id=project)
             return render(request,"processing/dca/dca_processing.html",{"page_title":"DCA-processing","project":project,"dataset":dataset})
 
-        def post(self, request, *args, **kwargs):
-            # print(request.POST)
+        def post(self, request, *args, **kwargs): 
             self.saveTheJob(request)
             now = datetime.now()
             html = "<html><body>It is now %s.</body></html>" % now

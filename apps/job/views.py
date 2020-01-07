@@ -129,22 +129,16 @@ def processNextInLine():
 
     if newjob != None:
         newjob.status=1
-        newjob.save() 
+        newjob.save()
         if newjob.processing_algorithm.reference_id == 'pc_001':
             print("-----------------status updated from pending to complete for id --------------------"+str(newjob.id))
             pca=PCA_Helper(newjob)
 
-        # if newjob.processing_algorithm.reference_id == 'pc_002':
-        #     print("-----------------status updated from pending to complete for id --------------------"+str(newjob.id))
-        #     dca=DCA_Helper(newjob)
-        #
-        #
-        #
+        if newjob.processing_algorithm.reference_id == 'pc_002':
+            print("-----------------status updated from pending to complete for id --------------------"+str(newjob.id))
+            dca=DCA_Helper(newjob)
 
-
-
-
-
+ 
 
 
 
