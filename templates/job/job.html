@@ -58,11 +58,10 @@
                             var buttons= " <a href="+url+" class='btn btn-danger btn-xs' >Delete</a> " + "  <a href="+url2+" class='btn btn-success btn-xs' >Show Result</a>"
                             return buttons
                           } else if (row.status=='Processsing' ) {
-      // do nothing
+                            return "<p>Please Wait till the task gets processed</p>" 
                           } else if (row.status=='Complete' ) {
-      // do nothing
+                            return "<p>We are updatting the settings</p>"
                           } else {
-                              // alert("asds")
                             var url = "{% url 'deleteSinglejob' 123 %}".replace('123',data);
 
                             var buttons= "<a href="+url+" class='btn btn-danger btn-xs' >Delete</a>"

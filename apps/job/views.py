@@ -26,17 +26,16 @@ from .lib.dca_processor import DCA_Helper,DCA_Result
 
 from django.http import JsonResponse
 import json
+
+
 class JOB(APIView):
         def get(self, request, *args, **kwargs):
-            # print()
             project=Project.objects.filter(reference_id=request.session['reference_id']).first()
-            # print(project.id)
             return render(request,"job/job.html",{"page_title":"Task-Manager","project_id":project.id})
 
+
         def getJobData(request,id):
-
-            job=Job.objects.filter(status__in=[0,1,2,3],project_id=id)
-
+            job=Job.objects.filter(status__in=[0,2,3],project_id=id)
             data = []
             for single_job in job:
                 query={}
@@ -44,8 +43,8 @@ class JOB(APIView):
 
                 if single_job.status == 0:
                     query["status"]="Pending"
-                elif  single_job.status == 1:
-                    query["status"]="Processsing"
+                # elif  single_job.status == 1:
+                #     query["status"]="Processsing"
                 elif  single_job.status == 2:
                     query["status"]="Complete"
                 elif  single_job.status == 3:
@@ -57,17 +56,14 @@ class JOB(APIView):
                     query["dataset_name"]="Main Dataset"
                 else:
                     query["dataset_name"]=single_job.extradataset.name
-
                 query["processing_algorithm"]=single_job.processing_algorithm.name
                 query["created_at"]=single_job.created_at.strftime('%d  %b , %Y - %H : %M : %S')
-
                 data.append(query)
-
-                # print(data)
+                # print(query)
             return HttpResponse(json.dumps(data), content_type='application/json')
 
+
         def deleteJOB(self,request,id):
-            # print("they sent me to be deleted ------------------>"+str(id))
             job = Job.objects.get(pk=id)
             job.status=50
             job.save()
@@ -77,12 +73,12 @@ class JOB(APIView):
         def showJobReult(self,request,id):
             job = Job.objects.get(pk=id)
 
-            # if job.processing_algorithm.reference_id == 'pc_002':
-            #     dca_result=DCA_Result(job)
-            #     tables=dca_result.getMeHeatMaps()
-            #     return render(request,"job/result/daa_result.html",{"title":"Dashboard",'table' : tables[0],'table1' : tables[1],'table2' : tables[2],'job':id})
+            if job.processing_algorithm.reference_id == 'pc_002':
+                dca_result=DCA_Result(job)
+                tables=dca_result.getMeHeatMaps()
+                return render(request,"job/result/daa_result.html",{"title":"Dashboard",'table' : tables[0],'table1' : tables[1],'table2' : tables[2],'job':id})
 
-            dca=DCA_Helper(job)
+            # dca=DCA_Helper(job)
             project=Project.objects.filter(reference_id=request.session['reference_id']).first()
             return render(request,"job/job.html",{"page_title":"Task-Manager","project_id":project.id})
 
@@ -113,43 +109,68 @@ class JOB(APIView):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 # the folowwing lines of codes are responsible for automation
 def getAutomationAGo(request):
-    checkBackgroundTask(repeat=40, repeat_until=None)
+    checkBackgroundTask(repeat=600, repeat_until=None)
     return render(request,"job/job.html",{"page_title":"Task-Manager"})
 
 @background(queue='my-queue')
 def checkBackgroundTask():
     if Job.objects.filter(status=1).exists()==False:
-            # print("--------------------------------something already under the proess -----------------------------")
+        print("--------------------------------Processor ready-----------------------------")
         processNextInLine()
+
     if Job.objects.filter(status=2).exists()==True:
         email_update.notifyCompleteTakUser()
 
+
 def processNextInLine():
     newjob=Job.objects.filter(status=0).first()
-    newjob.status=1
-    newjob.save()
 
-    if newjob.processing_algorithm.reference_id == 'pc_001':
-        # print("-----------------status updated from pending to complete for id --------------------"+str(newjob.id))
-        pca=PCA_Helper(newjob)
+    if newjob != None:
+        newjob.status=1
+        newjob.save() 
+        if newjob.processing_algorithm.reference_id == 'pc_001':
+            print("-----------------status updated from pending to complete for id --------------------"+str(newjob.id))
+            pca=PCA_Helper(newjob)
 
-    if newjob.processing_algorithm.reference_id == 'pc_002':
-        # print("-----------------status updated from pending to complete for id --------------------"+str(newjob.id))
-        dca=DCA_Helper(newjob)
+        # if newjob.processing_algorithm.reference_id == 'pc_002':
+        #     print("-----------------status updated from pending to complete for id --------------------"+str(newjob.id))
+        #     dca=DCA_Helper(newjob)
+        #
+        #
+        #
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # def processNextInLine():

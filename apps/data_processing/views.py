@@ -32,8 +32,6 @@ class PCA(APIView):
             return render(request,"processing/pca/pca_processing.html",{"page_title":"PCA-processing","project":project,"dataset":dataset,"total_columns":totalColumns})
 
         def post(self, request, *args, **kwargs):
-            print(request.POST)
-
             self.saveTheJob(request)
             now = datetime.now()
             html = "<html><body>It is now %s.</body></html>" % now
@@ -58,13 +56,13 @@ class DCA(APIView):
             return render(request,"processing/dca/dca_processing.html",{"page_title":"DCA-processing","project":project,"dataset":dataset})
 
         def post(self, request, *args, **kwargs):
-            print(request.POST)
+            # print(request.POST)
             self.saveTheJob(request)
             now = datetime.now()
             html = "<html><body>It is now %s.</body></html>" % now
             return    HttpResponse(html)
 
-        def saveTheJob(self,request): 
+        def saveTheJob(self,request):
             project = Project.objects.get(reference_id=request.session['reference_id'])
             if request.POST['dataset_id'] == '00000':
                 job= Job(status=0,created_at=datetime.now(),processing_algorithm_id=settings.DCA,project_id=project.id)

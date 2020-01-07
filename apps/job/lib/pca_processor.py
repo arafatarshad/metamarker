@@ -18,6 +18,7 @@ import math
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 from apps.project_ground.models import Extradataset, PreprocessingTasks , Project,Job,PcaJobParameters,PcaResult, ComponentResult
+
 class PCA_Helper:
     df=None
     X=None
@@ -38,12 +39,23 @@ class PCA_Helper:
         self.X.drop(self.target,axis=1, inplace=False)
 
         self.X= self.X.fillna(self.X.mean())
-        # self.Y= self.X.fillna(self.X.mean())
         self.StandardScale()
+        # self.Y= self.X.fillna(self.X.mean())
+
+    def getUsProperDf(self,job):
+        project = Project.objects.get(id=job.project.id)
+        if job.extradataset_id ==None:
+            return pd.read_csv(project.dataset)
+        else:
+            filename=job.extradataset.basefilename
+            return pd.read_csv("uploads/"+filename)
 
 
     def StandardScale(self):
+        # print("we are currently here ---------------->")
         job_params= PcaJobParameters.objects.filter(job_id=self.job.id)[0]
+        print(job_params)
+
         if job_params.standard_scale==1:
             self.X = StandardScaler().fit_transform(self.X)
 
@@ -53,13 +65,6 @@ class PCA_Helper:
 
         self.updateDB(pca,job_params)
 
-    def getUsProperDf(self,job):
-        project = Project.objects.get(id=job.project.id)
-        if job.extradataset_id ==None:
-            return pd.read_csv(project.dataset)
-        else:
-            filename=job.extradataset.basefilename
-            return pd.read_csv("uploads/"+filename)
 
     def updateDB(self,pca,job_params):
 
@@ -85,7 +90,7 @@ class PCA_Helper:
                 feature_list[self.features[location-1]]=value
             ComponentResult(component_id=i,result=json.dumps(feature_list),pca_result_id=pca_result.id).save()
 
-        print("-------------pca applied success-----------")
+        # print("-------------pca applied success-----------")
         self.job.status=2
         self.job.save()
 
