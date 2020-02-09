@@ -363,6 +363,8 @@
        }
      }
    ];
+
+
    let datas=[
    {
      "data": { "id": "n100", "weight": 85},
@@ -440,7 +442,7 @@
 
 
     $.ajax({
-            url: "{% url 'api_network_data' 123 %}".replace('123',36),
+            url: "{% url 'api_network_data' 123 %}".replace('123',{{ job }}),
             type: 'GET',
             dataType: "json",
             async:false,

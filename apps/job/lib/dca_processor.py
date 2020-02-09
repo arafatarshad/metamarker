@@ -52,7 +52,7 @@ class DCA_Helper:
     def __init__(self,job):
         self.job=job
         self.daa=DaaResultAndParameter.objects.filter(job_id=self.job.id)[0]
-        print(self.daa)
+        # print(self.daa)
         self.df=self.getUsProperDf(job)._get_numeric_data()
 
         # the following line may needs to be commented
@@ -64,8 +64,8 @@ class DCA_Helper:
         self.getUsCaseAndControl()
 
     def getUsCaseAndControl(self):
-        self.job.status=1
-        self.job.save()
+        # self.job.status=1
+        # self.job.save()
 
         self.unique_labels=self.df[self.target].unique()
         case,control = [x for _, x in self.df.groupby(self.df[self.target] ==self.unique_labels[0])]
@@ -98,18 +98,18 @@ class DCA_Helper:
     def runThousandPermutationTest(self):
         self.count_permuteSig=abs(self.diffCorelation)*0
         print(self.diffCorelation)
-
+        # iter=1
         for i in range (0,1000):
+            print("------->")
             self.createPermutedCaseControl()
             self.createNewCaseControlCopyCorelation()
             self.generatecount_permuteSig_with_strategyA()
-
         self.count_permuteSig=self.count_permuteSig/1000
         print("===========================================================")
         print(self.count_permuteSig)
 
 
-        # self.saveTheResultsInDB()
+        self.saveTheResultsInDB()
 
     def createPermutedCaseControl(self):
         new_df=self.getUsProperDf(self.job)._get_numeric_data()
@@ -279,21 +279,21 @@ class DCA_Result:
 
 
 
-    # def getMeDiffCorTable(self):
-    #     diff_cor=pd.read_json(self.dca.diff_cor)
-    #     cell_column=self.TableCellsOnly(diff_cor)
-    #
-    #     trace= go.Table(
-    #         header = dict(values=cell_column[0],fill=dict(color='#C2D4FF'),font=dict(size=10),align="left"),
-    #         cells = dict(values=cell_column[1],fill=dict(color='#F5F8FF'),align="left")
-    #         )
-    #     data=[trace]
-    #     layout = None
-    #
-    #     if len(diff_cor.columns) > 50 :
-    #         layout=go.Layout(title="Your Uploaded DataSet", width=12500,height=750)
-    #     else :
-    #         layout=go.Layout(title="Your Uploaded DataSet", height=750)
-    #
-    #     figure=go.Figure(data=data,layout=layout)
-    #     return  opy.plot(figure, auto_open=False, output_type='div')
+            # def getMeDiffCorTable(self):
+            #     diff_cor=pd.read_json(self.dca.diff_cor)
+            #     cell_column=self.TableCellsOnly(diff_cor)
+            #
+            #     trace= go.Table(
+            #         header = dict(values=cell_column[0],fill=dict(color='#C2D4FF'),font=dict(size=10),align="left"),
+            #         cells = dict(values=cell_column[1],fill=dict(color='#F5F8FF'),align="left")
+            #         )
+            #     data=[trace]
+            #     layout = None
+            #
+            #     if len(diff_cor.columns) > 50 :
+            #         layout=go.Layout(title="Your Uploaded DataSet", width=12500,height=750)
+            #     else :
+            #         layout=go.Layout(title="Your Uploaded DataSet", height=750)
+            #
+            #     figure=go.Figure(data=data,layout=layout)
+            #     return  opy.plot(figure, auto_open=False, output_type='div')

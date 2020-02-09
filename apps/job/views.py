@@ -31,6 +31,7 @@ import json
 class JOB(APIView):
         def get(self, request, *args, **kwargs):
             project=Project.objects.filter(reference_id=request.session['reference_id']).first()
+            # checkBackgroundTask(repeat=60, repeat_until=None)
             return render(request,"job/job.html",{"page_title":"Task-Manager","project_id":project.id})
 
 
@@ -43,8 +44,8 @@ class JOB(APIView):
 
                 if single_job.status == 0:
                     query["status"]="Pending"
-                # elif  single_job.status == 1:
-                #     query["status"]="Processsing"
+                elif  single_job.status == 1:
+                    query["status"]="Processsing"
                 elif  single_job.status == 2:
                     query["status"]="Complete"
                 elif  single_job.status == 3:
@@ -111,11 +112,13 @@ class JOB(APIView):
 
 # the folowwing lines of codes are responsible for automation
 def getAutomationAGo(request):
-    checkBackgroundTask(repeat=600, repeat_until=None)
-    return render(request,"job/job.html",{"page_title":"Task-Manager"})
+    project=Project.objects.filter(reference_id=request.session['reference_id']).first()
+    checkBackgroundTask(repeat=60, repeat_until=None)
+    return render(request,"job/job.html",{"page_title":"Task-Manager","project_id":project.id})
 
 @background(queue='my-queue')
 def checkBackgroundTask():
+    # print("atlesat------------>")
     if Job.objects.filter(status=1).exists()==False:
         print("--------------------------------Processor ready-----------------------------")
         processNextInLine()
@@ -138,7 +141,7 @@ def processNextInLine():
             print("-----------------status updated from pending to complete for id --------------------"+str(newjob.id))
             dca=DCA_Helper(newjob)
 
- 
+
 
 
 
