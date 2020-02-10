@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'^preprocessing/', include('apps.preprocessing.urls')),
     url(r'^data_processing/', include('apps.data_processing.urls')),
     url(r'^job/', include('apps.job.urls')),
+    
+    url(r'^job_result/', include('apps.result_generate.urls')),
     # url(r'^automate/', include('apps.master_processor.urls')),
 ]
- 

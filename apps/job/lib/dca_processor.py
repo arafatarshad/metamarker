@@ -186,7 +186,8 @@ class DCA_Helper:
         for feature in self.features:
             network_array.append({"data": { "id": feature},"group": "nodes"})
             for feature1 in self.features:
-                if self.count_permuteSig[feature][feature1]==1:
+                # if self.count_permuteSig[feature][feature1]==1:
+                if self.count_permuteSig[feature][feature1]>=1:
                      network_array.append({
                                             "data": { "id": "e"+str(iterator),  "source": feature, "target": feature1},
                                             "group": "edges"

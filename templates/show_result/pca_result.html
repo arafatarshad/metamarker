@@ -1,0 +1,70 @@
+{% extends "dashboard_main_template/dashboard_main.html" %}
+{% load staticfiles %}
+{%block style%}
+{% endblock %}
+{% block content %}
+<div class="box box-default">
+  <div class="box-header with-border">
+    <h3 class="box-title">A glimpse of the uploaded dataset</h3>
+    <div class="box-tools pull-right">
+      <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+    </div>
+  </div>
+  <div class="box-body">
+      {% if pie_chart %}
+        <div >
+        {{ pie_chart|safe }}
+        </div>
+      {% endif %}
+  </div>
+</div>
+
+
+
+
+
+
+
+
+<div class="box box-default">
+  <div class="box-header with-border">
+    <h3 class="box-title">A glimpse of the uploaded dataset</h3>
+    <div class="box-tools pull-right">
+      <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+    </div>
+  </div>
+  <div class="box-body">
+
+    <div class="row">
+
+
+      <div class="col-md-9">
+        <div class="form-group">
+            <label>Select a Componet</label>
+            <select class="form-control select2" style="width: 100%;" name="node_visibility_type" id="node_visibility_type">
+              <option selected="selected" value="none">N/A </option>
+              {% for key in pc_id %}
+
+                  <option value="{{ key }}">PC_{{ key }}</option>
+              {% endfor %}
+            </select>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="form-group">
+            <label>Reset  Network</label>
+            <button type="button" name="reset" id="reset" class="btn btn-primary form-control" style="width: 100%;" >Go</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock%}
+{%block scripts %}
+
+{% endblock%}
