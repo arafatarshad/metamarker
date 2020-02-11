@@ -41,11 +41,10 @@
       <div class="col-md-9">
         <div class="form-group">
             <label>Select a Componet</label>
-            <select class="form-control select2" style="width: 100%;" name="node_visibility_type" id="node_visibility_type">
-              <option selected="selected" value="none">N/A </option>
+            <select class="form-control select2" style="width: 100%;" name="component_id" id="component_id">
+              <option selected="selected" value="None">N/A </option>
               {% for key in pc_id %}
-
-                  <option value="{{ key }}">PC_{{ key }}</option>
+                  <option value="{{ key.id }}">{{key.name}}</option>
               {% endfor %}
             </select>
         </div>
@@ -53,10 +52,17 @@
 
       <div class="col-md-3">
         <div class="form-group">
-            <label>Reset  Network</label>
-            <button type="button" name="reset" id="reset" class="btn btn-primary form-control" style="width: 100%;" >Go</button>
+            <label>Selection</label>
+            <button type="button" name="selection" id="selection" class="btn btn-primary form-control" style="width: 100%;" >Go</button>
         </div>
       </div>
+
+    </div>
+    <div class="row" >
+      <div class="col-md-12 main">
+        <iframe id="bar_chart_row"  src="" id="frame" frameborder="0" style="width: 100%; height: 700px;overflow:scroll"></iframe>
+  </div>
+
 
     </div>
   </div>
@@ -66,5 +72,25 @@
 
 {% endblock%}
 {%block scripts %}
+<script type="text/javascript">
+  $( document ).ready(function() {
+    // var pc_id=None
+    $("#selection").click(function(){
+      pc_id=$("#component_id option:selected").val();
+      if(pc_id!="None"){
+        // alert(pc_id);
+        // url="{% url 'get_component_result' 123 %}".replace(123,int("31"))
+        url="/job_result/get_component_result/"+pc_id+"/"
+        // alert(url);
+        $('#bar_chart_row').attr('src', url);
+      }
+    })
 
+
+
+  });
+
+
+
+</script>
 {% endblock%}
