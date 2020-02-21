@@ -36,7 +36,7 @@ class PCA_Helper:
 
         self.X=self.df
         self.Y=self.df[self.target]
-        self.X.drop(self.target,axis=1, inplace=False)
+        self.X.drop(self.target,axis=1, inplace=True)
 
         self.X= self.X.fillna(self.X.mean())
         self.StandardScale()

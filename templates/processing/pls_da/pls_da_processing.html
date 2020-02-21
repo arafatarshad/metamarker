@@ -1,0 +1,158 @@
+{% extends "dashboard_main_template/dashboard_main.html" %}
+{% block content %}
+
+<form name="options_form" id="options_form" class="" action="{% url 'pls_da_processing' %}"  method="post">
+<div class="box box-default">
+ <div class="box-header with-border">
+   <h3 class="box-title">PLS Discriminant Analysis (PLS-DA)</h3>
+
+   <div class="box-tools pull-right">
+     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+   </div>
+ </div>
+ <div class="box-body">
+   <div class="row">
+     <div class="col-md-6">
+       <div class="form-group">
+           <label>Select your Dataset</label>
+           <select class="form-control select2" style="width: 100%;" name="dataset_id">
+             <option selected="selected" value="00000">Main File</option>
+             {% for x in dataset %}
+                 <option value="{{ x.id }}">{{ x.name }}</option>
+             {% endfor %}
+           </select>
+       </div>
+     </div>
+     <div class="col-md-6">
+       <div class="form-group">
+           <label>Choose the number of components you want </label>
+           <select class="form-control select2" style="width: 100%;" name="no_of_components">
+             <option selected="selected" value="2">2</option>
+             {% for i in total_columns %}
+               {%if i > 2 %}
+                 <option value={{ i }}>{{ i }}</option>
+               {% endif %}
+             {% endfor %}
+           </select>
+       </div>
+     </div>
+
+     <div class="col-md-12">
+       <div class="form-group">
+             <input type="checkbox" name="scaler_scale_check" class="minimal" value="1">       <label> Apply Scaler Scaling with PLS DA</label>  <br>
+        </div>
+     </div>
+
+   </div>
+
+   <div class="row">
+     <div class="col-md-12">
+       <div class="form-group">
+           <label>Hit Submit to Apply your changes</label>
+           <button type="button" class="btn btn-small btn-success form-control"name="button" data-toggle="modal" data-target="#modal-confirm">Submit</button>
+         </div>
+     </div>
+   </div>
+ </div>
+</div>
+
+
+<div class="modal modal-default fade" id="modal-confirm">
+ <div class="modal-dialog">
+   <div class="modal-content">
+     <div class="modal-header">
+       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+         <span aria-hidden="true">&times;</span></button>
+       <h4 class="modal-title">Alert</h4>
+     </div>
+     <div class="modal-body">
+       <p>Please Be advised that this may take a while to process your data ( in case of large dataset ).
+         Once the processing is done you will be automatically redirected to new page</p>
+       <input type="submit" class="btn btn-small btn-success form-control" value="Submit">
+     </div>
+     <div class="modal-footer">
+       <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+       <!-- <button type="button" class="btn btn-outline">Save changes</button> -->
+     </div>
+   </div>
+   <!-- /.modal-content -->
+ </div>
+ <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+</form>
+
+
+
+
+<div class="modal modal-info fade" id="modal-info">
+ <div class="modal-dialog">
+   <div class="modal-content">
+     <div class="modal-header">
+       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+         <span aria-hidden="true">&times;</span></button>
+       <h4 class="modal-title">Information</h4>
+     </div>
+     <div class="modal-body">
+       <p>Your Task Has been added to the server job queue. \n You will be notified by email once the server processes the entire dataset and generates the result</p>
+     </div>
+     <div class="modal-footer">
+       <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+       <!-- <button type="button" class="btn btn-outline">Save changes</button> -->
+     </div>
+   </div>
+   <!-- /.modal-content -->
+ </div>
+ <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+
+
+{% endblock%}
+
+{%block scripts %}
+<script type="text/javascript">
+ $( document ).ready(function() {
+       $('li#pls_da_processing').addClass("active");
+   });
+
+
+$(document).ready(function(){
+  $("#options_form").submit(function(e) {
+      e.preventDefault();
+      var token = '{{csrf_token}}';
+      var form = $(this);
+      var url = form.attr('action');
+
+        $('#modal-confirm').modal("hide");
+
+      $.ajax({
+             headers: { "X-CSRFToken": token },
+             type: "POST",
+             url: url,
+             data: form.serialize(),
+             beforesend:function(){
+
+             },
+             success: function(data)
+             {
+               // $('#modal-info').modal("hide");
+               $('#options_form')[0].reset();
+               $('#options_form')[0].reset();
+               $('#modal-info').modal("show");
+             },error:function(e){
+               alert("Sorry We could not process your request ");
+             }
+           });
+
+      });
+})
+</script>
+
+
+
+
+
+
+{% endblock%}

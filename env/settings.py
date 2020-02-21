@@ -178,6 +178,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 # id used for different processing algorithm
 PCA=1
 DCA=2
+PLS_DA=3
 
 
 

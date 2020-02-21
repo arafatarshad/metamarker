@@ -22,6 +22,7 @@ from .email_update import email_update
 
 from .lib.pca_processor import PCA_Helper
 from .lib.dca_processor import DCA_Helper,DCA_Result
+from .lib.pls_da_processor import PlsDa_Helper
 
 
 from django.http import JsonResponse
@@ -78,6 +79,10 @@ class JOB(APIView):
                 dca_result=DCA_Result(job)
                 tables=dca_result.getMeHeatMaps()
                 return render(request,"job/result/daa_result.html",{"title":"Dashboard",'table' : tables[0],'table1' : tables[1],'table2' : tables[2],'job':id})
+            if job.processing_algorithm.reference_id == 'pc_003':
+                pls_da_result=PlsDa_Helper(job)
+                # tables=dca_result.getMeHeatMaps()
+                # return render(request,"job/result/daa_result.html",{"title":"Dashboard",'table' : tables[0],'table1' : tables[1],'table2' : tables[2],'job':id})
 
             # dca=DCA_Helper(job)
             project=Project.objects.filter(reference_id=request.session['reference_id']).first()
@@ -140,6 +145,10 @@ def processNextInLine():
         if newjob.processing_algorithm.reference_id == 'pc_002':
             print("-----------------status updated from pending to complete for id --------------------"+str(newjob.id))
             dca=DCA_Helper(newjob)
+
+        if newjob.processing_algorithm.reference_id == 'pc_003':
+            print("-----------------status updated from pending to complete for id --------------------"+str(newjob.id))
+            dca=PlsDa_Helper(newjob)
 
 
 

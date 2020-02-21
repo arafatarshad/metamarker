@@ -215,3 +215,13 @@ class DaaResultAndParameter(models.Model):
     class Meta:
         managed = False
         db_table = 'daa_result_and_parameter'
+
+class PlsDa(models.Model):
+    scaler_scale = models.IntegerField(blank=True, null=True)
+    job = models.ForeignKey(Job, models.DO_NOTHING)
+    no_of_components = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'pls_da'
+        unique_together = (('id', 'job'),)

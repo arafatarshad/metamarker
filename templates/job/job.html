@@ -31,6 +31,9 @@
 <script type="text/javascript" src="{% static 'vendor/jquery-datatable/jquery.dataTables.min.js' %}"></script>
 
 <script type="text/javascript" language="javascript" class="init">
+  $( document ).ready(function() {
+        $('li#job').addClass("active");
+    });
      $(document).ready(function() {
          $('#example').DataTable( {
              "select": true,
