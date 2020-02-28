@@ -28,7 +28,7 @@ def tellThemProjectCompletes(job):
 def notifyCompleteTakUser():
     all_complete_jobs = Job.objects.filter(status=2)
     for job in all_complete_jobs:
-        tellThemProjectCompletes(job)
+        # tellThemProjectCompletes(job)
         job.status=3
         job.save()
 

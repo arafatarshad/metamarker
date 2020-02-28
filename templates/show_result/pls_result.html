@@ -1,0 +1,130 @@
+{% extends "dashboard_main_template/dashboard_main.html" %}
+{% load staticfiles %}
+{%block style%}
+{% endblock %}
+{% block content %}
+
+
+<div class="box box-default">
+  <div class="box-header with-border">
+    <h3 class="box-title">A glimpse of the uploaded dataset</h3>
+    <div class="box-tools pull-right">
+      <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+    </div>
+  </div>
+  <div class="box-body">
+
+    <div class="row">
+      <input type="hidden" name="pls_da_id" id="pls_da_id" value="{{pls_da_id}}">
+
+      <div class="col-md-4">
+        <div class="form-group">
+            <label>Select Result Type</label>
+            <select class="form-control select2" style="width: 100%;" name="result_type" id="result_type">
+              <option selected="selected" value="None">N/A </option>
+              <option value="2">X Loadings</option>
+              <option value="0">X Weights</option>
+            </select>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+            <label>Select a Componet</label>
+            <select class="form-control select2" style="width: 100%;" name="component_id" id="component_id">
+              <option selected="selected" value="None">N/A </option>
+              {% for key in pls_components %}
+                  <option value="{{ key.id }}">{{key.name}}</option>
+              {% endfor %}
+            </select>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="form-group">
+            <label>Selection</label>
+            <button type="button" name="selection" id="selection" class="btn btn-primary form-control" style="width: 100%;" >Go</button>
+        </div>
+      </div>
+
+    </div>
+    <div class="row" >
+      <div class="col-md-12 main" id="bar_chart_div">
+        <!-- <iframe id="bar_chart_row"  src="" id="frame" frameborder="0"  allowFullScreen scrolling="yes"></iframe>
+        <iframe id="bar_chart_row"  src="" id="frame" frameborder="0"  allowFullScreen scrolling="yes"></iframe> -->
+  </div>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock%}
+{%block scripts %}
+<script type="text/javascript">
+
+  $( document ).ready(function() {
+
+    // $("#selection").click(function(){
+    //   component_id=$("#component_id option:selected").val();
+    //   result_type=$("#result_type option:selected").val();
+    //   pls_da_id=parseInt($("#pls_da_id").val());
+    //   if(component_id!="None" && result_type!="None"){
+    //     url="/job_result/get_pls_component_result/"+component_id+"/"+result_type+"/"+pls_da_id+"/"
+    //     // alert(url)
+    //     $('#bar_chart_row').attr('src', url);
+    //   }
+    // })
+
+    $('#selection').click(function () {
+
+      component_id=$("#component_id option:selected").val();
+      result_type=$("#result_type option:selected").val();
+      pls_da_id=parseInt($("#pls_da_id").val());
+
+
+
+      if(component_id!="None" && result_type!="None"){
+        // console.log(component_id)
+        // console.log(result_type)
+        // console.log(pls_da_id)
+        url="/job_result/get_pls_component_result/"+component_id+"/"+result_type+"/"+pls_da_id+"/"
+        $.ajax({
+            url: url,
+            // data: {
+            //     txtsearch: $('#appendedInputButton').val()
+            // },
+            type: "GET",
+            dataType: "html",
+            success: function (data) {
+                // var result = $('<div />').append(data).find('#bar_chart_div').html();
+                $('#bar_chart_div').append(data);
+                console.log(data);
+
+                $('#bar_chart_div div').css({
+                  overflow: 'auto',
+                  // width:'1500px',
+                  overflowX: 'scroll',
+                });
+                alert("success !! haha ")
+            },
+            error: function (xhr, status) {
+                alert("Sorry, there was a problem!");
+            },
+            complete: function (xhr, status) {
+                //$('#showresults').slideDown('slow')
+            }
+        });
+      }
+
+    });
+
+
+  });
+
+
+
+</script>
+{% endblock%}

@@ -225,3 +225,15 @@ class PlsDa(models.Model):
         managed = False
         db_table = 'pls_da'
         unique_together = (('id', 'job'),)
+
+
+class PlsComponentResult(models.Model):
+    component_id = models.IntegerField(blank=True, null=True)
+    result = models.TextField(blank=True, null=True)  # This field type is a guess.
+    pls_da = models.ForeignKey('PlsDa', models.DO_NOTHING)
+    result_type = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'pls_component_result'
+        unique_together = (('id', 'pls_da'),)
