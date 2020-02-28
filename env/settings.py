@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'apps.result_generate',
     'background_task',
     'apps.master_processor',
+    'apps.settings',
 ]
 
 MIDDLEWARE = [

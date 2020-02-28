@@ -19,18 +19,9 @@ from django.urls import path
 from django.views import generic
 from django.conf.urls import url,include
 
+from . import views
 # from apps.job.views import hello
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    url(r'^$',generic.TemplateView.as_view(template_name='home/home.html')),            #main homepage
-    url(r'^project_ground/', include('apps.project_ground.urls')),
-    url(r'^dashboard/', include('apps.dashboard.urls')),
-    url(r'^preprocessing/', include('apps.preprocessing.urls')),
-    url(r'^data_processing/', include('apps.data_processing.urls')),
-    url(r'^job/', include('apps.job.urls')),
-
-    url(r'^job_result/', include('apps.result_generate.urls')),
-    url(r'^settings/', include('apps.settings.urls')),
-    # url(r'^automate/', include('apps.master_processor.urls')),
+    path('',views.Settings.as_view(),name="settings"),
 ]
