@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'background_task',
     'apps.master_processor',
     'apps.settings',
+    'apps.validate_and_report',
 ]
 
 MIDDLEWARE = [
