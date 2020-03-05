@@ -24,6 +24,6 @@ from . import views
 
 urlpatterns = [
     path('',views.Main.as_view(),name="validate_and_report"),
-    path('showResult/<int:id>/',views.Main.showResult,name="download_report_result"),
+    path('showResult/<int:id>/',views.ShowResult().showResult,name="download_report_result"),
     path('api/alljob_with_validation/<int:id>/',views.Main.getJobData,name="alljob_with_validation"),
 ]
