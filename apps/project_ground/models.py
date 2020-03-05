@@ -237,3 +237,14 @@ class PlsComponentResult(models.Model):
         managed = False
         db_table = 'pls_component_result'
         unique_together = (('id', 'pls_da'),)
+        
+class Report(models.Model):
+    name = models.CharField(max_length=100, blank=True, null=True)
+    created_at = models.DateTimeField(blank=True, null=True)
+    delete = models.IntegerField(blank=True, null=True)
+    job = models.ForeignKey(Job, models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'report'
+        unique_together = (('id', 'job'),)

@@ -9,17 +9,51 @@
 {% endblock %}
 {% block content %}
 <link rel="stylesheet" href="{% static 'vendor/jquery-datatable/jquery.datatable.min.css' %}">
-<table id="example"  class="cell-border" class="display" style="width:100%">
-      <thead>
-          <tr>
-              <th>Dataset Name</th>
-              <th>Date Created</th>
-              <th>Procssing Model Name</th>
-              <th>Action</th>
-          </tr>
-      </thead>
-      <tbody></tbody>
-</table>
+
+<div class="box box-default">
+  <div class="box-header with-border">
+    <h3 class="box-title">Tasks available for report generation</h3>
+    <div class="box-tools pull-right">
+      <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+    </div>
+  </div>
+  <div class="box-body">
+
+    <table id="example"  class="cell-border" class="display" style="width:100%">
+          <thead>
+              <tr>
+                  <th>Dataset Name</th>
+                  <th>Date Created</th>
+                  <th>Procssing Model Name</th>
+                  <th>Action</th>
+              </tr>
+          </thead>
+          <tbody></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="box box-default">
+  <div class="box-header with-border">
+    <h3 class="box-title">Existing report</h3>
+    <div class="box-tools pull-right">
+      <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+    </div>
+  </div>
+  <div class="box-body">
+
+    <table id="example1"  class="cell-border" class="display" style="width:100%">
+          <thead>
+              <tr>
+                  <th>Date Created</th>
+                  <th>Dataset name</th>
+                  <th>Action</th>
+              </tr>
+          </thead>
+          <tbody></tbody>
+    </table>
+  </div>
+</div>
 
 {% endblock%}
 {%block scripts %}

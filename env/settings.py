@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'apps.master_processor',
     'apps.settings',
     'apps.validate_and_report',
+    # 'reportlab',
 ]
 
 MIDDLEWARE = [
