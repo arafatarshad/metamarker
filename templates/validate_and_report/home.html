@@ -80,7 +80,7 @@
                         data: "id",
                         render: function ( data, type,row,meta ) {
                             var url2 = "{% url 'download_report_result' 123 %}".replace('123',data);
-                            var buttons=  "  <a href="+url2+" class='btn btn-success btn-xs' >Generate Report</a>"
+                            var buttons=  "  <a href="+url2+" class='btn btn-success btn-xs' >Manage Downloads</a>"
                             return buttons
                         }
                     }

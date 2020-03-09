@@ -26,4 +26,7 @@ urlpatterns = [
     path('',views.Main.as_view(),name="validate_and_report"),
     path('showResult/<int:id>/',views.ShowResult().showResult,name="download_report_result"),
     path('api/alljob_with_validation/<int:id>/',views.Main.getJobData,name="alljob_with_validation"),
+    path('api/download_for_dca/',views.downloadResultDCA().dcaDownloadSelect,name="dca_downloads"),
+    path('api/download_for_pca/',views.downloadResultPCA().pcaDownloadSelect,name="pca_downloads"),
+    path('api/download_for_pls/',views.downloadResultPLS().plsDownloadSelect,name="pls_downloads"),
 ]

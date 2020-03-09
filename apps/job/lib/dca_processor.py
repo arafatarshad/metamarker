@@ -97,16 +97,16 @@ class DCA_Helper:
 
     def runThousandPermutationTest(self):
         self.count_permuteSig=abs(self.diffCorelation)*0
-        print(self.diffCorelation)
+        # print(self.diffCorelation)
         # iter=1
         for i in range (0,1000):
-            print("------->")
+            # print("------->")
             self.createPermutedCaseControl()
             self.createNewCaseControlCopyCorelation()
             self.generatecount_permuteSig_with_strategyA()
         self.count_permuteSig=self.count_permuteSig/1000
-        print("===========================================================")
-        print(self.count_permuteSig)
+        # print("===========================================================")
+        # print(self.count_permuteSig)
 
 
         self.saveTheResultsInDB()

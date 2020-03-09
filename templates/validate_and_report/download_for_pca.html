@@ -1,0 +1,49 @@
+{% extends "dashboard_main_template/dashboard_main.html" %}
+{% load staticfiles %}
+
+
+{%block style%}
+
+
+
+{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'vendor/jquery-datatable/jquery.datatable.min.css' %}">
+
+<div class="box box-default">
+  <div class="box-header with-border">
+    <h3 class="box-title">Available Downloads Option</h3>
+    <div class="box-tools pull-right">
+      <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+    </div>
+  </div>
+  <div class="box-body">
+    <form name="options_form" id="dca_downloads" class="" action="{% url 'pca_downloads' %}"  method="post">
+      {% csrf_token %}
+      <input type="hidden" name="job_id" value="{{job.id}}">
+      <input type="hidden" name="pca_result_id" value="{{pca_result_id}}">
+
+      <div class="form-group">
+          <label>Select your Component</label>
+          <select class="form-control select2" style="width: 100%;" name="component_id" required>
+            {% for x in components %}
+                <option value="{{ x }}" >Component {{x}}</option>
+            {% endfor %}
+          </select>
+      </div>
+
+
+      <input type="submit" name="submit" value="submit"  class="btn btn-small btn-success form-control">
+
+    </form>
+  </div>
+</div>
+
+{% endblock%}
+{%block scripts %}
+<!-- <script type="text/javascript" src="{% static 'vendor/jquery-datatable/jquery.dataTables.min.js' %}"></script> -->
+
+<script type="text/javascript" language="javascript" class="init">
+
+ </script>
+{% endblock%}

@@ -1,0 +1,48 @@
+{% extends "dashboard_main_template/dashboard_main.html" %}
+{% load staticfiles %}
+
+
+{%block style%}
+
+
+
+{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'vendor/jquery-datatable/jquery.datatable.min.css' %}">
+
+<div class="box box-default">
+  <div class="box-header with-border">
+    <h3 class="box-title">Available Downloads Option</h3>
+    <div class="box-tools pull-right">
+      <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+    </div>
+  </div>
+  <div class="box-body">
+    <form name="options_form" id="dca_downloads" class="" action="{% url 'dca_downloads' %}"  method="post">
+      {% csrf_token %}
+      <input type="hidden" name="job_id" value="{{job.id}}">
+      <div class="radio">
+        <label><input type="radio" name="dca_option" value="network_data" required>Network Data</label>
+      </div>
+      <div class="radio">
+        <label><input type="radio" name="dca_option" value="init_dc">Initial Differential Corellation</label>
+      </div>
+      <div class="radio">
+        <label><input type="radio" name="dca_option" value="final_dc">Final Differential Corellation</label>
+      </div>
+      <div class="radio">
+        <label><input type="radio" name="dca_option" value="sig_count">Significance count</label>
+      </div>
+      <input type="submit" name="submit" value="submit"  class="btn btn-small btn-success form-control">
+    </form>
+  </div>
+</div>
+
+{% endblock%}
+{%block scripts %}
+<!-- <script type="text/javascript" src="{% static 'vendor/jquery-datatable/jquery.dataTables.min.js' %}"></script> -->
+
+<script type="text/javascript" language="javascript" class="init">
+
+ </script>
+{% endblock%}
