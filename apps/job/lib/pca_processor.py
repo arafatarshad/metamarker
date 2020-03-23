@@ -52,8 +52,8 @@ class PCA_Helper:
 
 
     def StandardScale(self):
-        # print("we are currently here ---------------->")
-        job_params= PcaJobParameters.objects.filter(job_id=self.job.id)[0]
+        print("we are currently here ---------------->")
+        job_params= PcaJobParameters.objects.get(job_id=self.job.id)
         print(job_params)
 
         if job_params.standard_scale==1:

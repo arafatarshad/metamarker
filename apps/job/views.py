@@ -32,7 +32,7 @@ import json
 class JOB(APIView):
         def get(self, request, *args, **kwargs):
             project=Project.objects.filter(reference_id=request.session['reference_id']).first()
-            # checkBackgroundTask(repeat=60, repeat_until=None)
+            checkBackgroundTask(repeat=60, repeat_until=None)
             return render(request,"job/job.html",{"page_title":"Task-Manager","project_id":project.id})
 
 

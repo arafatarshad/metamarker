@@ -6,6 +6,7 @@
 
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.9.4/cytoscape.min.js"></script>
+<script src="{% static 'js/excellentexport.js' %}"></script>
 <style media="screen">
   body {
   font-family: 'Open Sans', sans-serif;
@@ -436,6 +437,12 @@
  }
 
 
+
+
+
+
+
+
  $( document ).ready(function() {
 
 
@@ -489,9 +496,9 @@
 
 
  $("#centrality_type").change(function(){
-
- $('#modal-info').modal("show");
- generateModalBody($( this ).val());
+$('#modal-info').modal("show");
+// $('#modal-info').html("");
+ generateModalBody($(this).val());
  });
 
 
@@ -500,18 +507,28 @@ function generateModalBody(tableType){
   switch(tableType) {
     case 'all':
         $('#modal-info').find('.modal-body').html(generateAllTable());
+        // $('#modal-info').find('.modal-body').html("generating all table");
+        console.log("clicked all table");
         break;
     case 'degree':
         $('#modal-info').find('.modal-body').html(generateDegreeCentralityTable());
+                // $('#modal-info').find('.modal-body').html("generating degree table");
+        console.log("clicked Degree table")
       break;
     case 'closeness':
         $('#modal-info').find('.modal-body').html(generateClosenessCentralityTable());
+                // $('#modal-info').find('.modal-body').html("generating closeness table");
+        console.log("clicked closeness table")
       break;
     case 'betweenness':
         $('#modal-info').find('.modal-body').html(generateBetweenNessCentralityTable());
+                // $('#modal-info').find('.modal-body').html("generating betweenness table");
+        console.log("clicked betweenness table")
       break;
     default:
         $('#modal-info').find('.modal-body').html(generatePageRankCentralityTable());
+        // $('#modal-info').find('.modal-body').html("generating pagerank table");
+        console.log("clicked pagerank table")
 }
 
 }
@@ -522,7 +539,7 @@ function generateModalBody(tableType){
 
 
 function generateDegreeCentralityTable(){
-  var table='<table id="example" class="table table-bordered nowrap" style="width:100%">'
+  var table='<a download="somedata.csv" href="#" onclick="return ExcellentExport.csv(this,'+"'datatable'"+');">Export to CSV</a>'+'<table id="example" class="table table-bordered nowrap" style="width:100%">'
             +'<thead>  <tr> <th>Name</th> <th>Degree Centrality</th></tr></thead><tbody>'
               +generateDegreeCentrality()+'</tbody></table>';
   return table;
@@ -532,6 +549,7 @@ function generateDegreeCentrality(){
   var dcn = cy.$().dcn();
   cy.elements().forEach(function(item,index){
     if(item.isNode()){
+
       table_row=table_row+'<tr><td>'+item.id()+'</td><td>'+ dcn.degree('#'+item.id())+'</td></tr>';
     }
 
@@ -544,7 +562,7 @@ function generateDegreeCentrality(){
 
 
 function generateClosenessCentralityTable(){
-  var table='<table id="example" class="table table-bordered nowrap" style="width:100%">'
+  var table='<a download="somedata.csv" href="#" onclick="return ExcellentExport.csv(this,'+"'datatable'"+');">Export to CSV</a>'+'<table id="example" class="table table-bordered nowrap" style="width:100%">'
             +'<thead>  <tr> <th>Name</th> <th>Closeness Centrality</th></tr></thead><tbody>'
               +generateClosenessCentrality()+'</tbody></table>';
   return table;
@@ -552,10 +570,24 @@ function generateClosenessCentralityTable(){
 function generateClosenessCentrality(){
   var table_row="";
     var ccn = cy.$().ccn();
-  cy.elements().forEach(function(item,index){
-    if(item.isNode()){
-      table_row=table_row+'<tr><td>'+item.id()+'</td><td>'+ ccn.closeness('#'+item.id())+'</td></tr>';
-    }
+
+    console.log(ccn);
+    cy.elements().forEach(function(item,index){
+      if(item.isNode()){
+
+        try {
+                table_row=table_row+'<tr><td>'+item.id()+'</td><td>'+ ccn.closeness('#'+item.id())+'</td></tr>';
+        }
+        catch(err) {
+            // table_row=table_row+'<tr><td>'+item.id()+'</td><td>'+ "Could not generate centrality measure"+'</td></tr>';
+            table_row=table_row+'<tr><td>'+item.id()+'</td><td>'+ "NAN"+'</td></tr>';
+          // console.log("couldnot generate it for "+item.id());
+        }
+
+
+
+      }
+
 
   });
   return table_row;
@@ -566,7 +598,7 @@ function generateClosenessCentrality(){
 
 
 function generateBetweenNessCentralityTable(){
-  var table='<table id="example" class="table table-bordered nowrap" style="width:100%">'
+  var table='<a download="somedata.csv" href="#" onclick="return ExcellentExport.csv(this,'+"'datatable'"+');">Export to CSV</a>'+'<table id="example" class="table table-bordered nowrap" style="width:100%">'
             +'<thead>  <tr> <th>Name</th> <th>Betweenness Centrality</th></tr></thead><tbody>'
               +generateBetweenNessCentrality()+'</tbody></table>';
   return table;
@@ -590,7 +622,7 @@ function generateBetweenNessCentrality(){
 
 
 function generatePageRankCentralityTable(){
-  var table='<table id="example" class="table table-bordered nowrap" style="width:100%">'
+  var table='<a download="somedata.csv" href="#" onclick="return ExcellentExport.csv(this,'+"'datatable'"+');">Export to CSV</a>'+'<table id="example" class="table table-bordered nowrap" style="width:100%">'
             +'<thead>  <tr> <th>Name</th> <th>PageRank Centrality</th></tr></thead><tbody>'
               +generatePageRankCentrality()+'</tbody></table>';
   return table;
@@ -600,7 +632,18 @@ function generatePageRankCentrality(){
   var pr = cy.elements().pageRank();
   cy.elements().forEach(function(item,index){
     if(item.isNode()){
-      table_row=table_row+'<tr><td>'+item.id()+'</td><td>'+ pr.rank('#'+item.id())+'</td></tr>';
+
+
+
+              try {
+                table_row=table_row+'<tr><td>'+item.id()+'</td><td>'+ pr.rank('#'+item.id())+'</td></tr>';
+              }
+              catch(err) {
+                  table_row=table_row+'<tr><td>'+item.id()+'</td><td>'+ "Could not generate centrality measure"+'</td></tr>';
+                console.log("couldnot generate it for "+item.id());
+              }
+
+
     }
 
   });
@@ -618,9 +661,9 @@ function generatePageRankCentrality(){
 
 
 function generateAllTable(){
-  var table='<table id="example" class="table table-bordered nowrap" style="width:100%">'
+  var table='<a download="somedata.csv" href="#" onclick="return ExcellentExport.csv(this,'+"'datatable'"+');">Export to CSV</a>'+'<table id="example" class="table table-bordered nowrap" style="width:100%">'
             +'<thead>  <tr> <th>Name</th> <th>Degree Centrality</th> <th>Closeness Centrality</th><th>Betweenness Centrality</th><th>Page rank Centrality</th></tr></thead><tbody>'
-              +generateAllCentrality()+'</tbody></table>';
+              +generateAllCentrality()+'</tbody></table>'+'<a download="somedata.csv" href="#" onclick="return ExcellentExport.csv(this,'+"'example'"+');">Export to CSV</a>';
   return table;
 }
 
@@ -645,7 +688,6 @@ function generateAllCentrality(){
 
 
 $("#node_visibility_type").change(function(){
-  // console.log($( this ).val());
   stockCentralityMeasure($( this ).val());
 });
 
@@ -688,7 +730,7 @@ function compare(a, b) {
 
 
 $("#reset").click(function(){
-  console.log("asds");
+  // console.log("asds");
   // cy.elements.remove();
   // cy.destroy();
   generate_cy();

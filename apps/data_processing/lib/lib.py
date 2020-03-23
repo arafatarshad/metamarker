@@ -45,5 +45,5 @@ class PCA_Helper:
         # # self.myplot(x_new[:,0:n],np.transpose(pca.components_[0:n, :]))
         # print(x_new[:,0:len(self.X)])
         # print(40*'-')
-        print(pca.components_[0:len(self.X), :][0])
+        # print(pca.components_[0:len(self.X), :][0])
         # print(pca.components_)

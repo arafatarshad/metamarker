@@ -48,11 +48,11 @@ class DCA_Helper:
     count_permuteSig=None
 
     p_value=0.05
+    sig_count=50
 
     def __init__(self,job):
         self.job=job
         self.daa=DaaResultAndParameter.objects.filter(job_id=self.job.id)[0]
-        # print(self.daa)
         self.df=self.getUsProperDf(job)._get_numeric_data()
 
         # the following line may needs to be commented
@@ -61,11 +61,13 @@ class DCA_Helper:
         self.features=list(self.df.columns.values)
         self.target=self.features[-1]
         self.features.remove(self.target)
+        self.sig_count=self.daa.sig_count
         self.getUsCaseAndControl()
 
     def getUsCaseAndControl(self):
-        # self.job.status=1
-        # self.job.save()
+        self.job.status=1
+        self.job.save()
+        print("reached get us case control")
 
         self.unique_labels=self.df[self.target].unique()
         case,control = [x for _, x in self.df.groupby(self.df[self.target] ==self.unique_labels[0])]
@@ -93,20 +95,22 @@ class DCA_Helper:
         zcontrol=np.log((self.controlCorelation+1)/(1-self.controlCorelation))*0.5
         self.diffCorelation=(math.sqrt((self.n1-3)/2)*zcase)-(math.sqrt((self.n2-3)/2)*zcontrol)
         # print(self.diffCorelation)
+        print("reached get us case control")
 
 
     def runThousandPermutationTest(self):
         self.count_permuteSig=abs(self.diffCorelation)*0
         # print(self.diffCorelation)
         # iter=1
+        # for i in range (0,1000):
         for i in range (0,1000):
-            # print("------->")
+            print("------->"+str(i))
             self.createPermutedCaseControl()
             self.createNewCaseControlCopyCorelation()
             self.generatecount_permuteSig_with_strategyA()
-        self.count_permuteSig=self.count_permuteSig/1000
-        # print("===========================================================")
-        # print(self.count_permuteSig)
+        # self.count_permuteSig=self.count_permuteSig/1000
+        print("===========================================================")
+        print(self.count_permuteSig)
 
 
         self.saveTheResultsInDB()
@@ -120,7 +124,7 @@ class DCA_Helper:
         while flag:
             r1 = random.randint(0, self.n1)
             r2 = random.randint(0, self.n2)
-
+            temp=None
             if case_swap>0 and new_df[self.target][r1] == self.unique_labels[0]:
                 new_df[self.target][r1]=self.unique_labels[1]
                 case_swap=case_swap-1
@@ -144,7 +148,8 @@ class DCA_Helper:
         self.controlCorelationCopy=self.controlCopy.corr()
 
         n1=self.caseCorelationCopy.shape[0]
-        n2=self.caseCorelationCopy.shape[0]
+        # n2=self.caseCorelationCopy.shape[0]
+        n2=self.controlCorelationCopy.shape[0]
         zcase=np.log((self.caseCorelationCopy+1)/(1-self.caseCorelationCopy))*0.5
         zcontrol=np.log((self.controlCorelationCopy+1)/(1-self.controlCorelationCopy))*0.5
         self.diffCorelationCopy=(math.sqrt((n1-3)/2)*zcase)-(math.sqrt((n2-3)/2)*zcontrol)
@@ -157,8 +162,8 @@ class DCA_Helper:
         for i in range(0,self.m):
             for j in range(0,self.m):
                 if(abs(float(self.diffCorelation.iat[i,j]))<abs(float(self.diffCorelationCopy.iat[i,j]))):
-                    self.count_permuteSig.iat[i,j]+=1
-
+                    self.count_permuteSig.iat[i,j]=self.count_permuteSig.iat[i,j]+1
+        print(self.count_permuteSig)
     def generatecount_permuteSig_with_strategyB(self):
          df1=self.diffCorelation
          df2=self.diffCorelationCopy
@@ -187,7 +192,8 @@ class DCA_Helper:
             network_array.append({"data": { "id": feature},"group": "nodes"})
             for feature1 in self.features:
                 # if self.count_permuteSig[feature][feature1]==1:
-                if self.count_permuteSig[feature][feature1]>=1:
+                # if self.count_permuteSig[feature][feature1]>=1:
+                if self.count_permuteSig[feature][feature1]<=self.sig_count:
                      network_array.append({
                                             "data": { "id": "e"+str(iterator),  "source": feature, "target": feature1},
                                             "group": "edges"

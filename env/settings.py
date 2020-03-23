@@ -121,7 +121,7 @@ DATABASES = {
        'ENGINE': 'django.db.backends.mysql',
        'NAME': 'metamarker_database',
        'USER': 'root',
-       'PASSWORD': 'root',
+       'PASSWORD': 'rootroot',
        'HOST': 'localhost',
        'PORT': '3306',
        'default-character-set':'utf8'

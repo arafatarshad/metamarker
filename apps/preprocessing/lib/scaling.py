@@ -18,6 +18,7 @@ class ScalingDatasethandler:
             df[c]=pre.scale(numeric_df[c])
 
         return df
+        
     def UnivariateScaling(self,df):
         # numeric_df = df._get_numeric_data()
 
