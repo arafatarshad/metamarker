@@ -7,6 +7,7 @@
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.9.4/cytoscape.min.js"></script>
 <script src="{% static 'js/excellentexport.js' %}"></script>
+<link rel="stylesheet" href="{% static 'css/select2.css/' %}">
 <style media="screen">
   body {
   font-family: 'Open Sans', sans-serif;
@@ -104,6 +105,15 @@
   height:1000px;
  /* border:5px solid green !important; */
 }
+#cy_second {
+  position: static;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  height:1000px;
+ /* border:5px solid green !important; */
+}
 
 
 
@@ -132,7 +142,7 @@
   </div>
   <div class="box-body">
 
-
+<!-- 
     <div class=" table-container" style="width:auto;overflow:auto;margin-top:30px">
 
           <div class="tabs">
@@ -183,8 +193,50 @@
               </div>
 
           </div>
-    </div>
+    </div> -->
 
+
+
+    <div class=" table-container" style="width:auto;overflow:auto;margin-top:30px">
+
+          <div class="tabs">
+           <div class="tab-button-outer">
+             <ul id="tab-button">
+               <li><a href="#tab01">Initial Differential Correlation Matrix</a></li> 
+               <li><a href="#tab02">Significance matrix</a></li>
+             </ul>
+           </div>
+           <div class="tab-select-outer">
+             <select id="tab-select">
+               <option value="#tab01"></option> 
+               <option value="#tab02"></option>
+
+             </select>
+           </div>
+
+           <div id="tab01" class="tab-contents">
+
+             <h2>Tab 1</h2>
+             <div class=" table-container" style="width:auto;overflow:auto;margin-top:30px">
+               {% if table %}
+                 <div >
+                 {{ table|safe }}
+                 </div>
+               {% endif %}
+             </div>
+           </div> 
+           <div id="tab02" class="tab-contents">
+             <h2>Tab 3</h2>
+             {% if table1 %}
+               <div >
+               {{ table1|safe }}
+               </div>
+             {% endif %}
+
+              </div>
+
+          </div>
+    </div>
   </div>
 </div>
 
@@ -265,6 +317,40 @@
 
 
 
+
+<div class="box box-default">
+  <div class="box-header with-border">
+    <h3 class="box-title">Neighbourhood Network</h3>
+    <div class="box-tools pull-right">
+      <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+    </div>
+  </div>
+
+  <div class="box-body">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+              <label>Select a node to see the neighbours</label>
+              <select class="form-control select2" style="width: 100%;" name="neighbour_node" id="neighbour_node">
+              </select>
+          </div>
+        </div>  
+       </div> 
+<!--        <div class="wrap1 container">
+      <div id="cy_second"></div>
+    </div> -->
+  </div>
+</div>
+
+ <div class="box box-default">
+  <div class="box-body">
+    <div class="wrap1 container">
+      <div id="cy_second"></div>
+    </div>
+  </div>
+</div>
+
+
 <div class="modal modal-info fade" id="modal-info">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -292,6 +378,7 @@
 {% endblock%}
 
 {%block scripts %}
+<script src="{% static 'js/select2.js' %}"></script>
 <script type="text/javascript">
   let margin = {top: 30, right: 10, bottom: 10, left: 0};
 
@@ -343,7 +430,7 @@
      {
        selector: 'node',
        style: {
-         'background-color': '#666',
+         'background-color': '#666666',
          'label': 'data(id)'
        }
      },
@@ -355,12 +442,6 @@
          'line-color': '#ccc',
          'target-arrow-color': '#ccc',
          'target-arrow-shape': 'triangle'
-       }
-     },
-     {
-       selector: 'node',
-       style: {
-         // 'background-color': 'green'
        }
      }
    ];
@@ -397,12 +478,7 @@
    },{
      "data": { "id": "n109", "weight": 11},
      "group": "nodes"
-   },
-
-
-
-
-
+   }, 
 
     {"data": { "id": "e638",  "source": "n100", "target": "n104"},"group": "edges"},
     {"data": { "id": "e639",  "source": "n101", "target": "n104"},"group": "edges"},
@@ -425,6 +501,7 @@
 
 
  var cy;
+ var cy_second;
  function generate_cy(){
    cy = cytoscape({
    container: document.getElementById('cy'),
@@ -436,14 +513,46 @@
  });
  }
 
+ function generate_cy_second(){ 
+
+   cy_second = cytoscape({
+   container: document.getElementById('cy_second'),
+   elements:datas,
+   style: basic_style,
+   layout: layout_option,
+   zoom: 1,
+
+ });
+ 
+ }
+
+ function change_cy_second(){ 
+      // cy_second.reset();
+      generate_cy_second();
+      var target_node=$('#neighbour_node').val();
+
+          var temp=[]
+          var j = cy.$(target_node).neighbourhood(); 
+          j.forEach(function(item,index){  
+            item.style('background-color','red');
+            temp.push(item.id());
+          });
+
+           cy.elements().forEach(function(d){ 
+              if(temp.includes(d.id())){
+                console.log(d.id()+" removed");
+                 cy_second.remove(d);
+              }
+           });
+           cy_second.$(target_node).style('background-color','green'); 
+    }
 
 
 
 
 
 
-
- $( document ).ready(function() {
+ $( document ).ready(function(){
 
 
 
@@ -454,26 +563,49 @@
             dataType: "json",
             async:false,
             success: function(data){
-              datas= JSON.parse(data);
+              datas= JSON.parse(data); 
               generate_cy();
-
+              generate_cy_second();
             }
         });
 
+       cy.on('tap', 'node', function(evt){
 
-      cy.on('tap', 'node', function(evt){
-        var jname =  evt.target.data().id;
-        cy.reset();
-        cy.elements().style('background-color','grey');
-        var j = cy.$('#'+jname).neighbourhood();
-        cy.$('#'+jname).style('background-color','red');
+        var jname =  evt.target.data().id; 
+        // cy.reset();
+        cy.elements().style('background-color','#666666');
+        // var j = cy.$('#'+jname).neighbourhood();
+        var j = cy.$(jname).neighbourhood();
+        // console.log(j.data());
+        cy.$(jname).style('background-color','green');
+        // cy.$(jname).style('background-color','green');
 
         j.forEach(function(item,index){
+          // console.log(item.id());
           item.style('background-color','red');
         });
+        // console.log("painted red")
+
       });
 
-// stockCentralityMeasure();
+      $("#neighbour_node").select2({
+          placeholder: "Select a feature from the list",
+          allowClear: true
+      });
+
+      datas.forEach(function(d){
+        if(d.group=="nodes"){ 
+          $('#example').append();
+          var newOption = '<option value="'+d.data.id+'" >'+d.data.id+'</option>';
+          $('#neighbour_node').append(newOption);
+        } 
+      });
+
+      $('#neighbour_node').change(function(){
+        change_cy_second();
+        // console.log()
+      });
+      
  });
 
 

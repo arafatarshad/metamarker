@@ -78,7 +78,10 @@ class JOB(APIView):
             if job.processing_algorithm.reference_id == 'pc_002':
                 dca_result=DCA_Result(job)
                 tables=dca_result.getMeHeatMaps()
-                return render(request,"job/result/daa_result.html",{"title":"Dashboard",'table' : tables[0],'table1' : tables[1],'table2' : tables[2],'job':id})
+                
+                return render(request,"job/result/daa_result.html",{"title":"Dashboard",'table' : tables[0],'table1' : tables[1],'job':id})
+                # return render(request,"job/result/daa_result.html",{"title":"Dashboard",'table' : tables[0],'table1' : tables[1],'job':id})
+
             if job.processing_algorithm.reference_id == 'pc_003':
                 pls_da_result=PlsDa_Helper(job)
                 # tables=dca_result.getMeHeatMaps()

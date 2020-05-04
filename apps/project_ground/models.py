@@ -208,9 +208,14 @@ class DaaResultAndParameter(models.Model):
     permute_sig_corr = models.TextField(blank=True, null=True)  # This field type is a guess.
     network_data = models.TextField(blank=True, null=True)  # This field type is a guess.
     sig_count = models.IntegerField(blank=True, null=True)
+    # sig_count = models.IntegerField(blank=True, null=True)
+
     job = models.ForeignKey('Job', models.DO_NOTHING)
     scaler_scale = models.IntegerField(blank=True, null=True)
     diff_cor = models.TextField(blank=True, null=True) # This field type is a guess.
+    p_value_cutoff = models.FloatField()
+    number_of_permutation = models.IntegerField(db_column='number_of_permutation')  # Field renamed to remove unsuitable characters.
+
 
     class Meta:
         managed = False

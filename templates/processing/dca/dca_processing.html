@@ -24,7 +24,7 @@
        </div>
      </div>
 
-     <div class="col-md-6">
+<!--      <div class="col-md-6">
        <div class="form-group">
            <label>Marginal Significance  </label>
            <select class="form-control select2" style="width: 100%;" name="sig_count">
@@ -33,6 +33,42 @@
              <option value="60">0.6</option>
              <option selected="selected" value="50">0.5</option>
              <option value="40">0.4</option>
+           </select>
+       </div>
+     </div>   --> 
+       <div class="col-md-6">
+       <div class="form-group">
+           <label>P-Value (Bonferroni Co efficient for Significance)  </label>
+           <select class="form-control select2" style="width: 100%;" name="p_value_cutoff">
+
+             <option value="0.09">0.09</option>
+             <option value="0.08">0.08</option>
+             <option value="0.07">0.07</option>
+             <option value="0.06">0.06</option>
+             <option selected="selected" value="0.05">0.05</option>
+             <option value="0.04">0.04</option>
+             <option value="0.03">0.03</option>
+             <option value="0.02">0.02</option>
+             <option value="0.01">0.01</option>
+           </select>
+       </div>
+     </div>
+
+     <div class="col-md-6">
+       <div class="form-group">
+           <label>Number Of Permutations</label>
+           <select class="form-control select2" style="width: 100%;" name="number_of_permutation">
+
+             <option  selected="selected" value="1000">1000</option>
+             <option value="900">900</option>
+             <option value="800">800</option>
+             <option value="700">700</option>
+             <option value="600">600</option>
+             <option value="500">500</option>
+             <option value="400">400</option>
+             <option value="300">300</option>
+             <option value="200">200</option>
+             <option value="100">100</option>
            </select>
        </div>
      </div>

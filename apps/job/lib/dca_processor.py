@@ -47,9 +47,12 @@ class DCA_Helper:
     diffCorelationCopy=None
     count_permuteSig=None
 
+    # p_value=0.05
+    # sig_count=50
+
     p_value=0.05
     sig_count=50
-
+    number_of_permutation=1000
     def __init__(self,job):
         self.job=job
         self.daa=DaaResultAndParameter.objects.filter(job_id=self.job.id)[0]
@@ -61,14 +64,16 @@ class DCA_Helper:
         self.features=list(self.df.columns.values)
         self.target=self.features[-1]
         self.features.remove(self.target)
-        self.sig_count=self.daa.sig_count
+        # self.sig_count=self.daa.sig_count
+        self.p_value=self.daa.p_value_cutoff
+        self.number_of_permutation=self.daa.number_of_permutation
+        self.sig_count=self.daa.p_value_cutoff*self.daa.number_of_permutation
         self.getUsCaseAndControl()
+
 
     def getUsCaseAndControl(self):
         self.job.status=1
-        self.job.save()
-        print("reached get us case control")
-
+        self.job.save()  
         self.unique_labels=self.df[self.target].unique()
         case,control = [x for _, x in self.df.groupby(self.df[self.target] ==self.unique_labels[0])]
         self.case=case
@@ -95,21 +100,20 @@ class DCA_Helper:
         zcontrol=np.log((self.controlCorelation+1)/(1-self.controlCorelation))*0.5
         self.diffCorelation=(math.sqrt((self.n1-3)/2)*zcase)-(math.sqrt((self.n2-3)/2)*zcontrol)
         # print(self.diffCorelation)
-        print("reached get us case control")
+        # print("reached get us case control")
 
 
     def runThousandPermutationTest(self):
         self.count_permuteSig=abs(self.diffCorelation)*0
         # print(self.diffCorelation)
         # iter=1
-        # for i in range (0,1000):
-        for i in range (0,1000):
+        # for i in range (0,1000): 
+        for i in range (0,self.number_of_permutation):
             print("------->"+str(i))
             self.createPermutedCaseControl()
             self.createNewCaseControlCopyCorelation()
             self.generatecount_permuteSig_with_strategyA()
-        # self.count_permuteSig=self.count_permuteSig/1000
-        print("===========================================================")
+        # self.count_permuteSig=self.count_permuteSig/1000 
         print(self.count_permuteSig)
 
 
@@ -134,7 +138,7 @@ class DCA_Helper:
 
             if control_swap ==0 and case_swap ==0:
                 flag=False
-        case,control = [x for _, x in self.df.groupby(new_df[self.target] ==self.unique_labels[0])]
+        case,control = [x for _, x in self.df.groupby(new_df[self.target]==self.unique_labels[0])]
         self.caseCopy=case
         self.controlCopy=control
         self.caseCopy.drop(self.target,axis=1, inplace=True)
@@ -163,7 +167,13 @@ class DCA_Helper:
             for j in range(0,self.m):
                 if(abs(float(self.diffCorelation.iat[i,j]))<abs(float(self.diffCorelationCopy.iat[i,j]))):
                     self.count_permuteSig.iat[i,j]=self.count_permuteSig.iat[i,j]+1
-        print(self.count_permuteSig)
+
+        for i in range(0,self.m):
+            for j in range(0,self.m): 
+                self.count_permuteSig.iat[i,j]=self.count_permuteSig.iat[i,j]/self.number_of_permutation
+                # self.count_permuteSig.iat[i,j]=self.count_permuteSig.iat[i,j]
+
+        # print(self.count_permuteSig)
     def generatecount_permuteSig_with_strategyB(self):
          df1=self.diffCorelation
          df2=self.diffCorelationCopy
@@ -194,6 +204,7 @@ class DCA_Helper:
                 # if self.count_permuteSig[feature][feature1]==1:
                 # if self.count_permuteSig[feature][feature1]>=1:
                 if self.count_permuteSig[feature][feature1]<=self.sig_count:
+                # if self.count_permuteSig[feature][feature1]<=self.p_value:
                      network_array.append({
                                             "data": { "id": "e"+str(iterator),  "source": feature, "target": feature1},
                                             "group": "edges"
@@ -235,31 +246,23 @@ class DCA_Result:
 
 
     def getMeHeatMaps(self):
-        diff_cor=pd.read_json(self.dca.diff_cor)
-        permute_diff_cor=pd.read_json(self.dca.permute_diff_cor)
+        diff_cor=pd.read_json(self.dca.diff_cor) 
         permute_sig_corr=pd.read_json(self.dca.permute_sig_corr)
 
-        cell_column1=self.TableCellsOnly(diff_cor)
-        cell_column2=self.TableCellsOnly(permute_diff_cor)
+        cell_column1=self.TableCellsOnly(diff_cor) 
         cell_column3=self.TableCellsOnly(permute_sig_corr)
-
+ 
         trace1= go.Heatmap(
             x=cell_column1[0],
             y=cell_column1[0],
             z=cell_column1[1]
             )
-        data1=[trace1]
-
-        trace2= go.Heatmap(
-            x=cell_column2[0],
-            y=cell_column2[0],
-            z=cell_column2[1]
-            )
-        data2=[trace2]
+        data1=[trace1] 
         trace3= go.Heatmap(
             x=cell_column3[0],
             y=cell_column3[0],
-            z=cell_column3[1]
+            z=cell_column3[1]/self.daa.number_of_permutation
+            # z=cell_column3[1]
             )
         data3=[trace3]
 
@@ -272,16 +275,64 @@ class DCA_Result:
         # else :
         #     layout=go.Layout(title="Your Uploaded DataSet")
         layout1=go.Layout(title="Correlation Matrix", width=width,height=height)
-        layout2=go.Layout(title="1000 Fold Permutaed Correlation Matrix", width=width,height=height)
         layout3=go.Layout(title="Significance Matrix", width=width,height=height)
+        
         figure1=go.Figure(data=data1,layout=layout1)
-        figure2=go.Figure(data=data2,layout=layout2)
         figure3=go.Figure(data=data3,layout=layout3)
+        
         div1=opy.plot(figure1, auto_open=False, output_type='div')
-        div2=opy.plot(figure2, auto_open=False, output_type='div')
         div3=opy.plot(figure3, auto_open=False, output_type='div')
 
-        return [div1,div2,div3]
+        return [div1,div3]
+
+    # def getMeHeatMaps(self):
+    #     diff_cor=pd.read_json(self.dca.diff_cor)
+    #     permute_diff_cor=pd.read_json(self.dca.permute_diff_cor)
+    #     permute_sig_corr=pd.read_json(self.dca.permute_sig_corr)
+
+    #     cell_column1=self.TableCellsOnly(diff_cor)
+    #     cell_column2=self.TableCellsOnly(permute_diff_cor)
+    #     cell_column3=self.TableCellsOnly(permute_sig_corr)
+
+    #     trace1= go.Heatmap(
+    #         x=cell_column1[0],
+    #         y=cell_column1[0],
+    #         z=cell_column1[1]
+    #         )
+    #     data1=[trace1]
+
+    #     trace2= go.Heatmap(
+    #         x=cell_column2[0],
+    #         y=cell_column2[0],
+    #         z=cell_column2[1]
+    #         )
+    #     data2=[trace2]
+    #     trace3= go.Heatmap(
+    #         x=cell_column3[0],
+    #         y=cell_column3[0],
+    #         z=cell_column3[1]
+    #         )
+    #     data3=[trace3]
+
+
+    #     layout = None
+    #     width= len(diff_cor.columns) * 20
+    #     height= len(diff_cor.columns) * 20
+    #     # if len(diff_cor.columns) > 50 :
+    #     #     layout=go.Layout(title="Your Uploaded DataSet", width=width,height=height)
+    #     # else :
+    #     #     layout=go.Layout(title="Your Uploaded DataSet")
+    #     layout1=go.Layout(title="Correlation Matrix", width=width,height=height)
+    #     layout2=go.Layout(title="1000 Fold Permutaed Correlation Matrix", width=width,height=height)
+    #     layout3=go.Layout(title="Significance Matrix", width=width,height=height)
+    #     figure1=go.Figure(data=data1,layout=layout1)
+    #     figure2=go.Figure(data=data2,layout=layout2)
+    #     figure3=go.Figure(data=data3,layout=layout3)
+    #     div1=opy.plot(figure1, auto_open=False, output_type='div')
+    #     div2=opy.plot(figure2, auto_open=False, output_type='div')
+    #     div3=opy.plot(figure3, auto_open=False, output_type='div')
+
+    #     return [div1,div2,div3]
 
 
 

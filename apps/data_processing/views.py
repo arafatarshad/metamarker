@@ -70,9 +70,9 @@ class DCA(APIView):
             job.save()
 
             if 'scaler_scale_check' in request.POST:
-                daa_job=DaaResultAndParameter(sig_count=request.POST['sig_count'],scaler_scale=request.POST['scaler_scale_check'],job_id=job.id)
+                daa_job=DaaResultAndParameter(p_value_cutoff=request.POST['p_value_cutoff'],number_of_permutation=request.POST['number_of_permutation'],scaler_scale=request.POST['scaler_scale_check'],job_id=job.id)
             else:
-                daa_job=DaaResultAndParameter(sig_count=request.POST['sig_count'],job_id=job.id)
+                daa_job=DaaResultAndParameter(p_value_cutoff=request.POST['p_value_cutoff'],number_of_permutation=request.POST['number_of_permutation'],job_id=job.id)
             daa_job.save()
 
 
