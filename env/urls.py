@@ -33,5 +33,6 @@ urlpatterns = [
     url(r'^job_result/', include('apps.result_generate.urls')),
     url(r'^settings/', include('apps.settings.urls')),
     url(r'^validate_and_report/', include('apps.validate_and_report.urls')),
+    url(r'^result_compare/', include('apps.result_compare.urls')),
     # url(r'^automate/', include('apps.master_processor.urls')),
 ]

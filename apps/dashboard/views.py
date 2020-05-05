@@ -251,7 +251,7 @@ class parallelPlot(APIView):
 
     def get(self, request, *args, **kwargs):
             project = Project.objects.get(reference_id=request.session['reference_id'])
-            print(project)
+            # print(project)
             df=self.getMeDataFrame(project)
             df=df._get_numeric_data()
             df.fillna(df.mean(),inplace=True)

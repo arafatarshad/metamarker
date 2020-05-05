@@ -1,0 +1,105 @@
+
+{% extends "dashboard_main_template/dashboard_main.html" %}
+{% load staticfiles %}
+
+{% block content %}
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.9.4/cytoscape.min.js"></script>
+<script src="{% static 'js/excellentexport.js' %}"></script>
+<link rel="stylesheet" href="{% static 'css/select2.css/' %}">
+
+<style media="screen">
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300;
+}
+ 
+
+.wrap1{
+  display:relative !important;
+
+  border: 5px solid #ddd;
+ width:100%;
+ height:1000px;
+}
+
+.wrap:after{
+  display:table;
+  clear:both;
+}
+ 
+.modal-dialog{
+   width: 100%;
+    overflow-y: initial !important
+}
+.modal-body{
+    height: 450px;
+    width:100%;
+    overflow-y: auto;
+}
+
+</style>
+
+
+ 
+
+<div class="box box-default">
+  <div class="box-header with-border">
+    <h3 class="box-title">Step 1</h3>
+    <div class="box-tools pull-right">
+      <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+    </div>
+  </div>
+  <div class="box-body">
+    <div class="row">
+       
+      <div class="col-md-4">
+        <div class="form-group">
+            <label>Select The First job</label>
+            <select class="form-control select2" style="width: 100%;" name="job1_select" id="job1_select"> 
+            	{% for job in jobs %}
+            		<option value={{job.id}}>{{job.name}}</option> 
+				{% endfor %}
+            </select>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+            <label>Select The First job</label>
+            <select class="form-control select2" style="width: 100%;" name="job2_select" id="job2_select"> 
+            	            	{% for job in jobs %}
+            		<option value={{job.id}}>{{job.name}}</option> 
+				{% endfor %}
+
+            </select>
+        </div>
+      </div>
+
+      <div class="col-md-2">
+        <div class="form-group">
+            <label>Confirm</label>
+            <button type="button" name="confirm" id="confirm" class="btn btn-success form-control" style="width: 100%;" onclick="all_panel_reset()">Submit</button>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="form-group">
+            <label>Reset</label>
+            <button type="button" name="reset" id="reset" class="btn btn-danger form-control" style="width: 100%;" >Reset</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+ 
+ 
+{% endblock%}
+
+{%block scripts %}
+<script src="{% static 'js/select2.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/result_compare_js_1.js' %}"> </script>
+
+{% endblock%}

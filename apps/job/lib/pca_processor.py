@@ -51,8 +51,7 @@ class PCA_Helper:
             return pd.read_csv("uploads/"+filename)
 
 
-    def StandardScale(self):
-        print("we are currently here ---------------->")
+    def StandardScale(self): 
         job_params= PcaJobParameters.objects.get(job_id=self.job.id)
         print(job_params)
 
@@ -89,8 +88,7 @@ class PCA_Helper:
                 component_values[location]=0
                 feature_list[self.features[location-1]]=value
             ComponentResult(component_id=i,result=json.dumps(feature_list),pca_result_id=pca_result.id).save()
-
-        # print("-------------pca applied success-----------")
+ 
         self.job.status=2
         self.job.save()
 

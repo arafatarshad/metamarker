@@ -42,6 +42,7 @@ class JOB(APIView):
             for single_job in job:
                 query={}
                 query["id"]=single_job.id
+                query["name"]=single_job.name
 
                 if single_job.status == 0:
                     query["status"]="Pending"

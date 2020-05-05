@@ -532,16 +532,19 @@
       var target_node=$('#neighbour_node').val();
 
           var temp=[]
-          var j = cy.$(target_node).neighbourhood(); 
+          var j = cy_second.$(target_node).neighbourhood(); 
           j.forEach(function(item,index){  
             item.style('background-color','red');
             temp.push(item.id());
           });
 
-           cy.elements().forEach(function(d){ 
-              if(temp.includes(d.id())){
-                console.log(d.id()+" removed");
-                 cy_second.remove(d);
+           cy_second.elements().forEach(function(d){ 
+              if(!temp.includes(d.id()) && d.group=="nodes"){
+                console.log(d.id()+"goes");
+                cy_second.remove(d);
+              } 
+              if(d.group=="edges"){
+                cy_second.remove(d);
               }
            });
            cy_second.$(target_node).style('background-color','green'); 

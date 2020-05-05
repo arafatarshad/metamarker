@@ -126,6 +126,7 @@ class Extradataset(models.Model):
         db_table = 'extradataset'
 
 class Job(models.Model):
+    name = models.TextField() #this is a new addition
     status = models.IntegerField()
     created_at = models.DateTimeField(blank=True, null=True)
     processing_algorithm = models.ForeignKey('ProcessingAlgorithm', models.DO_NOTHING)
