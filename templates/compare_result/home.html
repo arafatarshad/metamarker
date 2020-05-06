@@ -53,8 +53,12 @@ body {
     </div>
   </div>
   <div class="box-body">
+  	<form name="panel_1_form" id="panel_1_form" action="{% url 'generate_panel_2' %}">
+  		  	    <div hidden class="col-md-12 alert alert-info" id="selcetion_alert" role="alert">
+           Select job for both the form.
+		</div>  
     <div class="row">
-       
+
       <div class="col-md-4">
         <div class="form-group">
             <label>Select The First job</label>
@@ -80,26 +84,70 @@ body {
       <div class="col-md-2">
         <div class="form-group">
             <label>Confirm</label>
-            <button type="button" name="confirm" id="confirm" class="btn btn-success form-control" style="width: 100%;" onclick="all_panel_reset()">Submit</button>
+            <button type="button" name="confirm" id="confirm" class="btn btn-success form-control" style="width: 100%;" onclick="generate_panel_2()">Submit</button>
         </div>
       </div>
       <div class="col-md-2">
         <div class="form-group">
             <label>Reset</label>
-            <button type="button" name="reset" id="reset" class="btn btn-danger form-control" style="width: 100%;" >Reset</button>
+            <button type="button" name="reset" id="reset" class="btn btn-danger form-control" style="width: 100%;" onclick="all_panel_reset()">Reset</button>
         </div>
       </div>
 
     </div>
+
+  	</form> 
   </div>
 </div>
 
  
- 
+ <div class="box box-default">
+  <div class="box-header with-border">
+    <h3 class="box-title">Step 2</h3>
+    <div class="box-tools pull-right">
+      <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+    </div>
+  </div> 
+	<form name="panel_2_job_form" id="panel_2_job_form" action="{% url 'generate_panel_2' %}">
+  		 
+  	</form>   
+</div>
 {% endblock%}
 
 {%block scripts %}
 <script src="{% static 'js/select2.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/result_compare_js_1.js' %}"> </script>
+<script type="text/javascript">
+function render_panel_2(data){
+	$("#panel_2_job_form").html(data);
+}
+function generate_panel_2(){
+ 	var job1=$('#job1_select').val();
+	var job2=$('#job2_select').val();
 
+	if((job1==null) || (job2==null)){ 
+		console.log("asdsad");
+		$('#selcetion_alert').fadeIn(1000).fadeOut(3000);
+	}else{
+
+		var token = '{{csrf_token}}';
+		$.ajax({
+			headers: { "X-CSRFToken": token },
+			type: "POST",
+            url: $("#panel_1_form").attr('action'), 
+            data: $("#panel_1_form").serialize(),
+            success: function (data) {
+               render_panel_2(data); 
+            },
+            error: function (e) {
+             alert('Error');
+            }
+        });		
+	}
+}		
+
+</script>
+
+<script type="text/javascript" src="{% static 'js/result_compare_js_1.js' %}"> </script>
 {% endblock%}
+
+
