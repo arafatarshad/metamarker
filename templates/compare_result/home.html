@@ -108,7 +108,7 @@ body {
       <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
     </div>
   </div> 
-	<form name="panel_2_job_form" id="panel_2_job_form" action="{% url 'generate_panel_2' %}">
+	<form name="panel_2_job_form" id="panel_2_job_form" action="{% url 'generate_panel_3' %}">
   		 
   	</form>   
 </div>
@@ -120,13 +120,38 @@ body {
 function render_panel_2(data){
 	$("#panel_2_job_form").html(data);
 }
+function go_to_third_panel(){
+	var job1=$('#job1_select').val();
+	var job2=$('#job2_select').val();
+	var job1_param=$('#job1_param').val();
+	var job2_param=$('#job1_param').val();
+	data={job1:job1,job2:job2,job1_param:job1_param,job2_param:job2_param};
+
+	if((job1==null) || (job2==null)){ 
+ 		$('#selcetion_alert').fadeIn(1000).fadeOut(3000);
+	}else{ 
+		var token = '{{csrf_token}}';
+		$.ajax({
+			headers: { "X-CSRFToken": token },
+			type: "POST",
+            url: $("#panel_2_job_form").attr('action'), 
+            data: data,
+            success: function (data) { 
+               console.log(data);
+            },
+            error: function (e) {
+             alert('Error');
+            }
+        });	
+	}	
+}
+
 function generate_panel_2(){
  	var job1=$('#job1_select').val();
 	var job2=$('#job2_select').val();
 
 	if((job1==null) || (job2==null)){ 
-		console.log("asdsad");
-		$('#selcetion_alert').fadeIn(1000).fadeOut(3000);
+ 		$('#selcetion_alert').fadeIn(1000).fadeOut(3000);
 	}else{
 
 		var token = '{{csrf_token}}';

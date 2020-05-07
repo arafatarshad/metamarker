@@ -35,6 +35,10 @@ class compare_result(APIView):
         job2_template=self.switcher(2,job_2)
         return HttpResponse([job1_template,job2_template])
     
+    def generate_panel_3(self, request, *args, **kwargs):
+       print(request.POST) 
+       return HttpResponse("hellow")
+    
     def switcher(self,job_count,job): 
         if(job.processing_algorithm_id==settings.PCA):
             return self.generate_pca_form(job_count,PcaJobParameters.objects.get(job_id=job.id))
@@ -45,9 +49,9 @@ class compare_result(APIView):
 
     def generate_pca_form(self,job_count,pca_job):
         if job_count==1: 
-            part1= '<div class="box-body"><label>parameters For the First Job</label><br><div class="col-md-4"><div class="form-group"><label>Select Component</label><select class="form-control select2" style="width: 100%;" name="pca_component" id="pca_component">'
+            part1= '<div class="box-body"><label>parameters For the First Job</label><br><div class="col-md-4"><div class="form-group"><label>Select Component</label><select class="form-control select2" style="width: 100%;" name="job1_param" id="job1_param">'
         else:
-            part1= '<div class="box-body"><label>parameters For the Second Job</label><br><div class="col-md-4"><div class="form-group"><label>Select Component</label><select class="form-control select2" style="width: 100%;" name="pca_component" id="pca_component">'
+            part1= '<div class="box-body"><label>parameters For the Second Job</label><br><div class="col-md-4"><div class="form-group"><label>Select Component</label><select class="form-control select2" style="width: 100%;" name="job2_param" id="job2_param">'
             
         part_2=''
         for i in range(0,pca_job.no_of_components):
@@ -64,9 +68,9 @@ class compare_result(APIView):
 
     def generate_dca_form(self,job_count,dca):
         if job_count==1: 
-            part1= '<div class="box-body"><label>parameters For the First Job</label><br><div class="col-md-4"><div class="form-group"><label>Type Of Procedures</label><select class="form-control select2" style="width: 100%;" name="centrality_type" id="centrality_type">'
+            part1= '<div class="box-body"><label>parameters For the First Job</label><br><div class="col-md-4"><div class="form-group"><label>Type Of Procedures</label><select class="form-control select2" style="width: 100%;" name="job1_param" id="job1_param">'
         else:
-            part1= '<div class="box-body"><label>parameters For the Second Job</label><br><div class="col-md-4"><div class="form-group"><label>Type Of Procedures</label><select class="form-control select2" style="width: 100%;" name="centrality_type" id="centrality_type">'
+            part1= '<div class="box-body"><label>parameters For the Second Job</label><br><div class="col-md-4"><div class="form-group"><label>Type Of Procedures</label><select class="form-control select2" style="width: 100%;" name="job2_param" id="job2_param">'
             
         part_2='<option value="degree_centrality">Degree Centrality</option><option value="page-rank_centrality">Page Rank Centrality</option><option value="betweenness_centrality">Betweennes Centrality</option><option value="closeness_centrality">Closeness Centrality</option>'
                  
@@ -82,18 +86,14 @@ class compare_result(APIView):
 
     def generate_pls_da_form(self,job_count,pls):
         if job_count==1: 
-            part1= '<div class="box-body"><label>parameters For the First Job</label><br><div class="col-md-4"><div class="form-group"><label>Select Component</label><select class="form-control select2" style="width: 100%;" name="component_id" id="component_id">'
+            part1= '<div class="box-body"><label>parameters For the First Job</label><br><div class="col-md-4"><div class="form-group"><label>Select Component</label><select class="form-control select2" style="width: 100%;" name="job1_param" id="job1_param">'
         else:
-            part1= '<div class="box-body"><label>parameters For the Second Job</label><br><div class="col-md-4"><div class="form-group"><label>Select Component</label><select class="form-control select2" style="width: 100%;" name="component_id" id="component_id">'
+            part1= '<div class="box-body"><label>parameters For the Second Job</label><br><div class="col-md-4"><div class="form-group"><label>Select Component</label><select class="form-control select2" style="width: 100%;" name="job2_param" id="job2_param">'
             
         part_2=''
-        for i in range(0,pca_job.no_of_components):
+        for i in range(0,pls.no_of_components):
             part_2=part_2+'<option value="'+str(i)+'">Component'+str(i+1) +'</option>'
-        part3='</select></div></div>'
-        
-        part4= '<div class="box-body"><div class="col-md-4"><div class="form-group"><label>Select Result Type</label><select class="form-control select2" style="width: 100%;" name="result_type" id="pls_result_type">'+'<option value="weight">Weight</option><option value="score">Score</option>'        
-
-        part6='</div><hr>'
+        part3='</select></div></div></div><hr>'
         part4= '<div class="box-body"><div class="col-md-12"> <div class="form-group"><label>Submit</label><button type="button" id="panel_2_submit" class="btn btn-success form-control" style="width: 100%;" onclick="go_to_third_panel()">Submit</button></div></div></div>'
         if(job_count==2):
             return part1+part_2+part3+part4

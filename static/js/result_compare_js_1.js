@@ -8,8 +8,7 @@
     $("#job2_select").select2({
           placeholder: "Select a feature from the list",
           allowClear: true
-      }); 
-        
+      });    
  });
 
 
@@ -18,3 +17,4 @@ function all_panel_reset(){
 	$('#job2_select').val(null).trigger('change');
 	$("#panel_2_job_form").html("");
 }
+
