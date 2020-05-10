@@ -5,7 +5,9 @@
 {% block content %}
 
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.9.4/cytoscape.min.js"></script>
+<!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.9.4/cytoscape.min.js"></script> -->
+<!-- <script type="text/javascript" src="{% static 'js/cytoscape.js' %}"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
 <script src="{% static 'js/excellentexport.js' %}"></script>
 <link rel="stylesheet" href="{% static 'css/select2.css/' %}">
 
@@ -38,6 +40,19 @@ body {
     height: 450px;
     width:100%;
     overflow-y: auto;
+}
+path { 
+    stroke: steelblue;
+    stroke-width: 2;
+    fill: none;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: grey;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
 }
 
 </style>
@@ -108,25 +123,62 @@ body {
       <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
     </div>
   </div> 
-	<form name="panel_2_job_form" id="panel_2_job_form" action="{% url 'generate_panel_3' %}">
-  		 
-  	</form>   
+  <form id="panel_2_job_form" action="{% url 'generate_panel_3' %}"> </form>
 </div>
+
+
+
+
+
+ <div class="box box-default">
+  <div class="box-header with-border">
+    <h3 class="box-title">Result</h3>
+    <div class="box-tools pull-right">
+      <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+    </div>
+  </div> 
+   <div class="box-body" id="panel_3_svg_container"></div> 
+</div>
+
+
+
+
 {% endblock%}
 
 {%block scripts %}
 <script src="{% static 'js/select2.js' %}"></script>
 <script type="text/javascript">
+  var job_1_parsed_data=[]
+  var job_2_parsed_data=[]
+  var final_parsed_data=[]
+  var keys_1=[]
+  var keys_2=[]
+
+  var job1=null;
+  var job2=null;
+  var job1_param=null;
+  var job2_param=null;  
+  // var job2_param=null;  
+   
 function render_panel_2(data){
 	$("#panel_2_job_form").html(data);
 }
-function go_to_third_panel(){
-	var job1=$('#job1_select').val();
-	var job2=$('#job2_select').val();
-	var job1_param=$('#job1_param').val();
-	var job2_param=$('#job1_param').val();
-	data={job1:job1,job2:job2,job1_param:job1_param,job2_param:job2_param};
 
+function go_to_third_panel(){
+	job1=$('#job1_select').val();
+  job2=$('#job2_select').val();
+  job1_param=$('#job1_param').val();
+  job2_param=$('#job2_param').val();  
+
+  data={job1:job1,job2:job2,job1_param:job1_param,job2_param:job2_param};
+
+  if($('#job_tracker_1').val()==3){ 
+    data.job1_type_param=$('#pls_result_type_1').val();    
+  }
+	if($('#job_tracker_2').val()==3){ 
+    data.job2_type_param=$('#pls_result_type_2').val();
+  }
+	
 	if((job1==null) || (job2==null)){ 
  		$('#selcetion_alert').fadeIn(1000).fadeOut(3000);
 	}else{ 
@@ -136,8 +188,8 @@ function go_to_third_panel(){
 			type: "POST",
             url: $("#panel_2_job_form").attr('action'), 
             data: data,
-            success: function (data) { 
-               console.log(data);
+            success: function (data) {  
+               parse_data_for_chart(data);
             },
             error: function (e) {
              alert('Error');
@@ -145,6 +197,223 @@ function go_to_third_panel(){
         });	
 	}	
 }
+
+
+function parse_data_for_chart(data){
+  parse_helper(1,data.job1);
+  parse_helper(2,data.job2); 
+  // console.log(keys_1);
+  draw_the_chart();
+}
+
+function parse_helper(selecter,values){
+    if(selecter==1){
+      if($('#job_tracker_1').val()==1)
+        parse_pca_job_data(1,values)
+      else if($('#job_tracker_1').val()==2) 
+        parse_dca_job_data(1,values)
+      else 
+        parse_pls_job_data(1,values)
+    }else{
+      if($('#job_tracker_1').val()==1)
+        parse_pca_job_data(2,values)
+      else if($('#job_tracker_1').val()==2) 
+        parse_dca_job_data(2,values)
+      else 
+        parse_pls_job_data(2,values)
+    } 
+}
+
+function parse_pca_job_data(selector,values){
+  values=JSON.parse(values);
+  for(var i in values){
+    
+    if(selector==1){
+      keys_1.push(i);
+      job_1_parsed_data.push(values[i]);
+    }
+    else{ 
+      keys_2.push(i);
+      job_2_parsed_data.push(values[i]);
+    }
+  }  
+}
+
+function parse_pls_job_data(selector,values){
+  values=JSON.parse(values);
+  for(var i in values){ 
+    if(selector==1){
+      keys_1.push(values[i].id);
+      job_1_parsed_data.push(values[i].value);
+    }
+    else{ 
+      keys_2.push(values[i].id);
+      job_2_parsed_data.push(values[i].value);
+    }
+  }  
+}
+
+function parse_dca_job_data(selector,values){  
+  // console.log(values);
+    var cy = cytoscape({
+    elements:JSON.parse(values),
+  }); 
+    if(selector==1){
+      if (job1_param=="degree_centrality") {
+        parse_dca_degree(selector,cy,values);
+      }
+      else if (job1_param=="page-rank_centrality") {
+        parse_dca_pagerank(selector,cy,values);
+      }
+      else if (job1_param=="betweenness_centrality") {
+        parse_dca_betweenness(selector,cy,values);
+      }
+      else{
+        parse_dca_closeness(selector,cy,values);
+      }
+    }
+    else{ 
+      if (job2_param=="degree_centrality") {
+        parse_dca_degree(selector,cy,values);
+      }
+      else if (job2_param=="page-rank_centrality") {
+        parse_dca_pagerank(selector,cy,values);
+      }
+      else if (job2_param=="betweenness_centrality") {
+        parse_dca_betweenness(selector,cy,values);
+      }
+      else{
+        parse_dca_closeness(selector,cy,values);
+      }
+    }
+    // console.log(keys_1);
+    // console.log(job_1_parsed_data);
+}
+
+
+function parse_dca_degree(selector,cy,values){  
+ var dcn = cy.$().dcn();
+  
+    
+    if (selector==1) {
+      cy.elements().forEach(function(item,index){
+        if(item.isNode()){ 
+        keys_1.push(item.id());
+        try { 
+            job_1_parsed_data.push(dcn.degree('#'+item.id()))
+        }
+        catch(err) {
+             job_1_parsed_data.push(0);
+        }
+        
+      }         
+      });
+    }else{
+      cy.elements().forEach(function(item,index){
+        if(item.isNode()){ 
+        keys_2.push(item.id());
+        try { 
+            job_2_parsed_data.push(dcn.degree('#'+item.id()));
+        }
+        catch(err) {
+             job_2_parsed_data.push(0);
+        }
+        
+      }         
+      });
+    } 
+}
+function parse_dca_closeness(selector,cy,values){  
+  var ccn = cy.$().ccn();   
+    if (selector==1) {
+      cy.elements().forEach(function(item,index){
+        if(item.isNode()){ 
+        keys_1.push(item.id());
+        try {
+            job_1_parsed_data.push(ccn.closeness('#'+item.id()));
+        }
+        catch(err) {
+            job_2_parsed_data.push(0);
+        }
+        
+      }         
+      });
+    }else{
+      cy.elements().forEach(function(item,index){
+        if(item.isNode()){ 
+        keys_2.push(item.id());
+        try {
+            job_2_parsed_data.push(ccn.closeness('#'+item.id()));
+        }
+        catch(err) {
+            job_2_parsed_data.push(0);
+        }
+        
+      }         
+      });
+    } 
+}
+function parse_dca_betweenness(selector,cy,values){  
+ var bc = cy.$().bc(); 
+ if (selector==1) {
+      cy.elements().forEach(function(item,index){
+        if(item.isNode()){ 
+        keys_1.push(item.id());
+        try {
+            job_1_parsed_data.push(bc.betweenness('#'+item.id()));
+        }
+        catch(err) {
+            job_2_parsed_data.push(0);
+        }
+        
+      }         
+      });
+    }else{
+      cy.elements().forEach(function(item,index){
+        if(item.isNode()){ 
+        keys_2.push(item.id());
+        try {
+            job_2_parsed_data.push(bc.betweenness('#'+item.id()));
+        }
+        catch(err) {
+            job_2_parsed_data.push(0);
+        }
+        
+      }         
+      });
+    } 
+}
+function parse_dca_pagerank(selector,cy,values){  
+   var pr = cy.elements().pageRank(); 
+    if (selector==1) {
+      cy.elements().forEach(function(item,index){
+        if(item.isNode()){ 
+        keys_1.push(item.id());
+        try {
+            job_1_parsed_data.push(pr.rank('#'+item.id()));
+        }
+        catch(err) {
+            job_2_parsed_data.push(0);
+        }
+        
+      }         
+      });
+    }else{
+      cy.elements().forEach(function(item,index){
+        if(item.isNode()){ 
+        keys_2.push(item.id());
+        try {
+            job_2_parsed_data.push(pr.rank('#'+item.id()));
+        }
+        catch(err) {
+            job_2_parsed_data.push(0);
+        }
+        
+      }         
+      });
+    } 
+}
+
 
 function generate_panel_2(){
  	var job1=$('#job1_select').val();
@@ -170,7 +439,23 @@ function generate_panel_2(){
 	}
 }		
 
+
+function fomrmat_single_dataset(){
+  keys_1.forEach(function(d,i){
+    // console.log(i+"------>"+d);
+    var key2=keys_2.indexOf(d)
+    if(key2 !=-1){ 
+      final_parsed_data.push({id:d,value1:job_1_parsed_data[i],value2:job_2_parsed_data[key2]})
+    }
+  });
+  console.log(final_parsed_data);
+}
+function draw_the_chart(){
+  fomrmat_single_dataset();
+}
 </script>
+
+
 
 <script type="text/javascript" src="{% static 'js/result_compare_js_1.js' %}"> </script>
 {% endblock%}
