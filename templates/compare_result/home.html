@@ -54,6 +54,9 @@ path {
     stroke-width: 1;
     shape-rendering: crispEdges;
 }
+#panel_3_svg_container{
+  overflow: scroll;
+}
 
 </style>
 
@@ -137,6 +140,7 @@ path {
       <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
     </div>
   </div> 
+   <div class="box-body" id="panel_3_selection_container"></div> 
    <div class="box-body" id="panel_3_svg_container"></div> 
 </div>
 
@@ -448,11 +452,70 @@ function fomrmat_single_dataset(){
       final_parsed_data.push({id:d,value1:job_1_parsed_data[i],value2:job_2_parsed_data[key2]})
     }
   });
-  console.log(final_parsed_data);
+  // console.log(final_parsed_data);
+}
+
+function addSelectBar(){
+  $('#panel_3_selection_container').html('')
+  $('#panel_3_selection_container').html('<div class="col-md-9"><select class="form-control" id="scale_selector"><option value="0">Regular Scale</option><option value="1">Reverse Scale</option></select></div><div class="col-md-3"><button class="form-control btn-info" onclick=render_the_chart()>Render</button></div>')
 }
 function draw_the_chart(){
   fomrmat_single_dataset();
+  addSelectBar();
+  render_the_chart();
 }
+
+function render_the_chart(){
+  $("#panel_3_svg_container").html("");  
+  var margin = {top: 30, right: 40, bottom: 90, left: 50},width = 9000 - margin.left - margin.right,height = 770 - margin.top - margin.bottom;
+  // var margin = {top: 30, right: 40, bottom: 30, left: 50},width = $('#panel_3_svg_container').width() - margin.left - margin.right,height = $('#panel_3_svg_container').height() - margin.top - margin.bottom;
+
+  var svg = d3.select("#panel_3_svg_container").append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top +margin.bottom).append("g").attr("transform","translate(" + margin.left + "," + margin.top + ")");
+
+  // var x = d3.scaleBand().domain(d3.extent(final_parsed_data, function(d) { console.log(d); return d.id })).range([0, width]);
+  // var x = d3.scaleBand().domain(d3.extent(final_parsed_data, function(d) { consol;e.return d.id })).range([0, width]).paddingInner(0.3).paddingOuter(0.1);
+      // x.domain(d3.extent(final_parsed_data,function(d){console.log(d.id);return d.id;});
+  
+  keys_temp=[];
+  final_parsed_data.forEach(function(d){keys_temp.push(d.id);});
+  // console.log(keys_temp);
+  var x = d3.scaleBand().domain(keys_temp).range([0, width]);
+  var xAxis = d3.axisBottom().scale(x).tickFormat(function(d,i) { return  d; });
+  svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + height + ")").call(xAxis).selectAll("text").style("text-anchor", "end")
+  .attr("dx", "-.8em").attr("dy", ".15em").attr("transform", function(d) {return "rotate(-65)" });
+
+  // var y0 = d3.scaleLinear().domain([d3.min(value1), d3.max(value1)]).range([height,0]); 
+  var y0 = d3.scaleLinear().domain([d3.min(final_parsed_data, function(d) {return Math.min(d.value1);}), d3.max(final_parsed_data, function(d) {return Math.max(d.value1);})]).range([height,0]); 
+  if($('#scale_selector').val()==1)
+    var y1 = d3.scaleLinear().domain([d3.min(final_parsed_data, function(d) {return Math.min(d.value2);}), d3.max(final_parsed_data, function(d) {return Math.max(d.value2);})]).range([0,height]);
+  else
+    var y1 = d3.scaleLinear().domain([d3.min(final_parsed_data, function(d) {return Math.min(d.value2);}), d3.max(final_parsed_data, function(d) {return Math.max(d.value2);})]).range([height,0]);
+  // var y1 = d3.scaleLinear().domain([d3.min(value2), d3.max(value2)]).range([0,height]);
+
+  var yAxisLeft = d3.axisLeft().scale(y0).ticks(10);
+  var yAxisRight = d3.axisRight().scale(y1).ticks(10);
+
+  var valueline = d3.line().x(function(d) {return x(d.id); }).y(function(d) {return y0(d.value1); })
+  
+  var valueline2 = d3.line().x(function(d) { return x(d.id);}).y(function(d) {return y1(d.value2); });
+// svg.append("path").style("stroke", "blue").attr("d", valueline(dataset));
+  svg.append("path").style("stroke", "red").attr("d", valueline2(final_parsed_data));
+
+
+
+  svg.append("g").attr("class", "y axis").style("fill", "steelblue").call(yAxisLeft)
+    .append("text").attr("transform", "rotate(-90)").attr("y", 6).attr("dy", ".71em").style("text-anchor", "end").text("Bookings");
+
+  svg.append("g").attr("class", "y axis").attr("transform", "translate(" + width + " ,0)").style("fill", "red").call(yAxisRight)
+      .append("text").attr("transform", "rotate(0)").attr("y", 6).attr("dy", ".71em").style("text-anchor", "end").text("Bookings Rev"); 
+
+
+  svg.append("path").style("stroke", "steelblue").attr("d", valueline(final_parsed_data));
+  svg.append("path").style("stroke", "red").attr("d", valueline2(final_parsed_data));
+
+
+}
+
 </script>
 
 
