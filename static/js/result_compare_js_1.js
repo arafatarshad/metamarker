@@ -12,9 +12,5 @@
  });
 
 
-function all_panel_reset(){
- 	$('#job1_select').val(null).trigger('change');
-	$('#job2_select').val(null).trigger('change');
-	$("#panel_2_job_form").html("");
-}
+
 

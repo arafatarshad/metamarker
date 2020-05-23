@@ -36,7 +36,7 @@ class compare_result(APIView):
         return HttpResponse([job1_template,job2_template])
     
     def generate_panel_3(self, request, *args, **kwargs): 
-
+        print(request.POST)
         data={}
         if 'job1_type_param' in request.POST:
             data['job1']=self.gather_data_for_panel3(request.POST['job1'],request.POST['job1_param'],request.POST['job1_type_param'])
@@ -47,7 +47,7 @@ class compare_result(APIView):
             data['job2']=self.gather_data_for_panel3(request.POST['job2'],request.POST['job2_param'],request.POST['job2_type_param'])
         else:
             data['job2']=self.gather_data_for_panel3(request.POST['job2'],request.POST['job2_param'],None)
-        
+        print(data)
         return HttpResponse(json.dumps(data), content_type='application/json')
     
     def gather_data_for_panel3(self,job,param,param2):
@@ -60,10 +60,10 @@ class compare_result(APIView):
             dca=DaaResultAndParameter.objects.get(job_id=job_object.id)  
             return dca.network_data
         else:
-            print(param2)
+            # print(param2)
             pls_da_id=PlsDa.objects.get(job_id=job_object.id).id
             component_result= PlsComponentResult.objects.filter(pls_da_id=pls_da_id,component_id=int(param),result_type=int(param2))[0]
-            print(component_result.result)
+            # print(component_result.result)
             return component_result.result
             # return component_result.result
             
