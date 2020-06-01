@@ -168,9 +168,9 @@ class DCA_Helper:
                 if(abs(float(self.diffCorelation.iat[i,j]))<abs(float(self.diffCorelationCopy.iat[i,j]))):
                     self.count_permuteSig.iat[i,j]=self.count_permuteSig.iat[i,j]+1
 
-        for i in range(0,self.m):
-            for j in range(0,self.m): 
-                self.count_permuteSig.iat[i,j]=self.count_permuteSig.iat[i,j]/self.number_of_permutation
+        # for i in range(0,self.m):
+        #     for j in range(0,self.m): 
+        #         self.count_permuteSig.iat[i,j]=self.count_permuteSig.iat[i,j]/self.number_of_permutation
                 # self.count_permuteSig.iat[i,j]=self.count_permuteSig.iat[i,j]
 
         # print(self.count_permuteSig)

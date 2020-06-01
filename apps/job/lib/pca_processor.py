@@ -53,7 +53,7 @@ class PCA_Helper:
 
     def StandardScale(self): 
         job_params= PcaJobParameters.objects.get(job_id=self.job.id)
-        print(job_params)
+        # print(job_params)
 
         if job_params.standard_scale==1:
             self.X = StandardScaler().fit_transform(self.X)

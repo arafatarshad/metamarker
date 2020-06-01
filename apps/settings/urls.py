@@ -24,5 +24,5 @@ from . import views
 
 urlpatterns = [
     path('',views.Settings.as_view(),name="settings"),
-    path('settings_delete/<int:id>/',views.Settings.deleteProject,name="settings_delete"),
+    path('settings_delete/<int:id>/',views.Settings().deleteProject,name="settings_delete"),
 ]

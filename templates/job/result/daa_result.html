@@ -319,7 +319,7 @@
 
 
 
-<div class="box box-default">
+<!-- <div class="box box-default">
   <div class="box-header with-border">
     <h3 class="box-title">Neighbourhood Network</h3>
     <div class="box-tools pull-right">
@@ -337,9 +337,6 @@
           </div>
         </div>  
        </div> 
-<!--        <div class="wrap1 container">
-      <div id="cy_second"></div>
-    </div> -->
   </div>
 </div>
 
@@ -349,7 +346,7 @@
       <div id="cy_second"></div>
     </div>
   </div>
-</div>
+</div> -->
 
 
 <div class="modal modal-info fade" id="modal-info">
@@ -502,7 +499,7 @@
 
 
  var cy;
- var cy_second;
+
  function generate_cy(){
    cy = cytoscape({
    container: document.getElementById('cy'),
@@ -513,43 +510,43 @@
 
  });
  }
+ // var cy_second;
+ // function generate_cy_second(){ 
 
- function generate_cy_second(){ 
+ //   cy_second = cytoscape({
+ //   container: document.getElementById('cy_second'),
+ //   elements:datas,
+ //   style: basic_style,
+ //   layout: layout_option,
+ //   zoom: 1,
 
-   cy_second = cytoscape({
-   container: document.getElementById('cy_second'),
-   elements:datas,
-   style: basic_style,
-   layout: layout_option,
-   zoom: 1,
-
- });
+ // });
  
- }
+ // }
 
- function change_cy_second(){ 
-      // cy_second.reset();
-      generate_cy_second();
-      var target_node=$('#neighbour_node').val();
+ // function change_cy_second(){ 
+ //      // cy_second.reset();
+ //      generate_cy_second();
+ //      var target_node=$('#neighbour_node').val();
 
-          var temp=[]
-          var j = cy_second.$(target_node).neighbourhood(); 
-          j.forEach(function(item,index){  
-            item.style('background-color','red');
-            temp.push(item.id());
-          });
+ //          var temp=[]
+ //          var j = cy_second.$(target_node).neighbourhood(); 
+ //          j.forEach(function(item,index){  
+ //            item.style('background-color','red');
+ //            temp.push(item.id());
+ //          });
 
-           cy_second.elements().forEach(function(d){ 
-              if(!temp.includes(d.id()) && d.group=="nodes"){
-                console.log(d.id()+"goes");
-                cy_second.remove(d);
-              } 
-              if(d.group=="edges"){
-                cy_second.remove(d);
-              }
-           });
-           cy_second.$(target_node).style('background-color','green'); 
-    }
+ //           cy_second.elements().forEach(function(d){ 
+ //              if(!temp.includes(d.id()) && d.group=="nodes"){
+ //                console.log(d.id()+"goes");
+ //                cy_second.remove(d);
+ //              } 
+ //              if(d.group=="edges"){
+ //                cy_second.remove(d);
+ //              }
+ //           });
+ //           cy_second.$(target_node).style('background-color','green'); 
+ //    }
 
 
 
@@ -569,7 +566,7 @@
             success: function(data){
               datas= JSON.parse(data); 
               generate_cy();
-              generate_cy_second();
+              // generate_cy_second();
             }
         });
 
@@ -592,23 +589,23 @@
 
       });
 
-      $("#neighbour_node").select2({
-          placeholder: "Select a feature from the list",
-          allowClear: true
-      });
+      // $("#neighbour_node").select2({
+      //     placeholder: "Select a feature from the list",
+      //     allowClear: true
+      // });
 
-      datas.forEach(function(d){
-        if(d.group=="nodes"){ 
-          $('#example').append();
-          var newOption = '<option value="'+d.data.id+'" >'+d.data.id+'</option>';
-          $('#neighbour_node').append(newOption);
-        } 
-      });
+      // datas.forEach(function(d){
+      //   if(d.group=="nodes"){ 
+      //     $('#example').append();
+      //     var newOption = '<option value="'+d.data.id+'" >'+d.data.id+'</option>';
+      //     $('#neighbour_node').append(newOption);
+      //   } 
+      // });
 
-      $('#neighbour_node').change(function(){
-        change_cy_second();
-        // console.log()
-      });
+      // $('#neighbour_node').change(function(){
+      //   change_cy_second();
+      //   // console.log()
+      // });
       
  });
 

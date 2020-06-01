@@ -155,6 +155,20 @@ path {
 {%block scripts %}
 <script src="{% static 'js/select2.js' %}"></script>
 <script type="text/javascript">
+
+   $( document ).ready(function(){
+      $('li#compare_result').addClass("active");
+
+      $("#job1_select").select2({
+          placeholder: "Select a feature from the list",
+          allowClear: true
+      }); 
+    $("#job2_select").select2({
+          placeholder: "Select a feature from the list",
+          allowClear: true
+      });    
+ });
+
   var job_1_parsed_data=[]
   var job_2_parsed_data=[]
   var final_parsed_data=[]
@@ -559,21 +573,27 @@ function render_the_chart(){
   // ;
   // svg.selectAll().remove();
 
-  var margin = {top: 30, right: 40, bottom: 90, left: 50},width = 9000 - margin.left - margin.right,height = 770 - margin.top - margin.bottom;
+  // var margin = {top: 30, right: 40, bottom: 90, left: 50},width = 9000 - margin.left - margin.right,height = 770 - margin.top - margin.bottom;
+  // var margin = {top: 30, right: 40, bottom: 90, left: 50}
+  // ,width = 5000 - margin.left - margin.right,height = 770 - margin.top - margin.bottom;
 
 
-
+  keys_temp=[];
+  final_parsed_data.forEach(function(d){keys_temp.push(d.id);});
+  var margin = {top: 30, right: 40, bottom: 90, left: 50},width = (keys_temp.length*22) - margin.left - margin.right,height = 770 - margin.top - margin.bottom;
   // var margin = {top: 30, right: 40, bottom: 30, left: 50},width = $('#panel_3_svg_container').width() - margin.left - margin.right,height = $('#panel_3_svg_container').height() - margin.top - margin.bottom;
   svg = d3.select("#panel_3_svg_container").append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top +margin.bottom).append("g")
   .attr("transform","translate(" + margin.left + "," + margin.top + ")");
 
   svg.selectAll("path").remove();
+
+
+
   // var x = d3.scaleBand().domain(d3.extent(final_parsed_data, function(d) { console.log(d); return d.id })).range([0, width]);
   // var x = d3.scaleBand().domain(d3.extent(final_parsed_data, function(d) { consol;e.return d.id })).range([0, width]).paddingInner(0.3).paddingOuter(0.1);
       // x.domain(d3.extent(final_parsed_data,function(d){console.log(d.id);return d.id;});
   
-  keys_temp=[];
-  final_parsed_data.forEach(function(d){keys_temp.push(d.id);});
+
   // console.log(keys_temp);
   var x = d3.scaleBand().domain(keys_temp).range([0, width]);
   var xAxis = d3.axisBottom().scale(x).tickFormat(function(d,i) { return  d; });
@@ -614,10 +634,10 @@ function render_the_chart(){
 
 
   svg.append("g").attr("class", "y axis").style("fill", "steelblue").call(yAxisLeft)
-    .append("text").attr("transform", "rotate(-90)").attr("y", 6).attr("dy", ".71em").style("text-anchor", "end").text("Bookings");
+    .append("text").attr("transform", "rotate(-90)").attr("y", 6).attr("dy", ".71em").style("text-anchor", "end").text($("#job1_select option:selected").html());
 
   svg.append("g").attr("class", "y axis").attr("transform", "translate(" + width + " ,0)").style("fill", "red").call(yAxisRight)
-      .append("text").attr("transform", "rotate(0)").attr("y", 6).attr("dy", ".71em").style("text-anchor", "end").text("Bookings Rev"); 
+      .append("text").attr("transform", "rotate(0)").attr("y", 6).attr("dy", ".71em").style("text-anchor", "end").text($("#job2_select option:selected").html());
 
 
   svg.append("path").style("stroke", "steelblue").attr("d", valueline(final_parsed_data));
