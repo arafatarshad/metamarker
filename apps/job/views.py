@@ -9,7 +9,7 @@ from django.shortcuts import get_object_or_404
 from django.forms.utils import ErrorList
 from django.http import HttpResponse
 
-from apps.project_ground.models import Extradataset, PreprocessingTasks , Project,Job,DaaResultAndParameter
+from apps.project_ground.models import Extradataset, PreprocessingTasks , Project,Job,DaaResultAndParameter,BackgroundTaskCompletedtask,BackgroundTask
 
 import json
 from django.core import serializers
@@ -134,7 +134,8 @@ def checkBackgroundTask():
 
     if Job.objects.filter(status=2).exists()==True:
         email_update.notifyCompleteTakUser()
-
+    BackgroundTaskCompletedtask.objects.all().delete()
+    BackgroundTask.objects.all().delete()
 
 def processNextInLine():
     newjob=Job.objects.filter(status=0).first()

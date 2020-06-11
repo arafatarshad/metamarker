@@ -513,3 +513,50 @@ class Report(models.Model):
         managed = False
         db_table = 'report'
         unique_together = (('id', 'job'),)
+
+
+class BackgroundTask(models.Model):
+    task_name = models.CharField(max_length=190)
+    task_params = models.TextField()
+    task_hash = models.CharField(max_length=40)
+    verbose_name = models.CharField(max_length=255, blank=True, null=True)
+    priority = models.IntegerField()
+    run_at = models.DateTimeField()
+    repeat = models.BigIntegerField()
+    repeat_until = models.DateTimeField(blank=True, null=True)
+    queue = models.CharField(max_length=190, blank=True, null=True)
+    attempts = models.IntegerField()
+    failed_at = models.DateTimeField(blank=True, null=True)
+    last_error = models.TextField()
+    locked_by = models.CharField(max_length=64, blank=True, null=True)
+    locked_at = models.DateTimeField(blank=True, null=True)
+    creator_object_id = models.PositiveIntegerField(blank=True, null=True)
+    creator_content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'background_task'
+
+
+class BackgroundTaskCompletedtask(models.Model):
+    task_name = models.CharField(max_length=190)
+    task_params = models.TextField()
+    task_hash = models.CharField(max_length=40)
+    verbose_name = models.CharField(max_length=255, blank=True, null=True)
+    priority = models.IntegerField()
+    run_at = models.DateTimeField()
+    repeat = models.BigIntegerField()
+    repeat_until = models.DateTimeField(blank=True, null=True)
+    queue = models.CharField(max_length=190, blank=True, null=True)
+    attempts = models.IntegerField()
+    failed_at = models.DateTimeField(blank=True, null=True)
+    last_error = models.TextField()
+    locked_by = models.CharField(max_length=64, blank=True, null=True)
+    locked_at = models.DateTimeField(blank=True, null=True)
+    creator_object_id = models.PositiveIntegerField(blank=True, null=True)
+    creator_content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'background_task_completedtask'
+
