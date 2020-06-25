@@ -1,4 +1,3 @@
-
 {% extends "dashboard_main_template/dashboard_main.html" %}
 {% load staticfiles %}
 
@@ -141,63 +140,7 @@
       <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
     </div>
   </div>
-  <div class="box-body">
-
-<!-- 
-    <div class=" table-container" style="width:auto;overflow:auto;margin-top:30px">
-
-          <div class="tabs">
-           <div class="tab-button-outer">
-             <ul id="tab-button">
-               <li><a href="#tab01">Tab 1</a></li>
-               <li><a href="#tab02">Tab 2</a></li>
-               <li><a href="#tab03">Tab 3</a></li>
-             </ul>
-           </div>
-           <div class="tab-select-outer">
-             <select id="tab-select">
-               <option value="#tab01">Tab 1</option>
-               <option value="#tab02">Tab 2</option>
-               <option value="#tab03">Tab 3</option>
-
-             </select>
-           </div>
-
-           <div id="tab01" class="tab-contents">
-
-             <h2>Tab 1</h2>
-             <div class=" table-container" style="width:auto;overflow:auto;margin-top:30px">
-               {% if table %}
-                 <div >
-                 {{ table|safe }}
-                 </div>
-               {% endif %}
-             </div>
-           </div>
-           <div id="tab02" class="tab-contents">
-             <h2>Tab 2</h2>
-             {% if table1 %}
-               <div >
-               {{ table1|safe }}
-               </div>
-             {% endif %}
-
-              </div>
-           <div id="tab03" class="tab-contents">
-             <h2>Tab 3</h2>
-             {% if table2 %}
-               <div >
-               {{ table2|safe }}
-               </div>
-             {% endif %}
-
-              </div>
-
-          </div>
-    </div> -->
-
-
-
+  
     <div class=" table-container" style="width:auto;overflow:auto;margin-top:30px">
 
           <div class="tabs">
@@ -317,37 +260,14 @@
 
 
 
-
-
-<!-- <div class="box box-default">
-  <div class="box-header with-border">
-    <h3 class="box-title">Neighbourhood Network</h3>
-    <div class="box-tools pull-right">
-      <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-    </div>
-  </div>
-
-  <div class="box-body">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="form-group">
-              <label>Select a node to see the neighbours</label>
-              <select class="form-control select2" style="width: 100%;" name="neighbour_node" id="neighbour_node">
-              </select>
-          </div>
-        </div>  
-       </div> 
+<div class="box box-default">
+  <div class="box-body"> 
+      <label>For More Networking Option</label>
+            <a href="{% url 'more_networks_options' job%}" class="btn btn-danger form-control">Click On the Button </a> 
   </div>
 </div>
 
- <div class="box box-default">
-  <div class="box-body">
-    <div class="wrap1 container">
-      <div id="cy_second"></div>
-    </div>
-  </div>
-</div> -->
-
+ 
 
 <div class="modal modal-info fade" id="modal-info">
   <div class="modal-dialog">
@@ -570,22 +490,14 @@
             }
         });
 
-       cy.on('tap', 'node', function(evt){
-
-        var jname =  evt.target.data().id; 
-        // cy.reset();
-        cy.elements().style('background-color','#666666');
-        // var j = cy.$('#'+jname).neighbourhood();
-        var j = cy.$(jname).neighbourhood();
-        // console.log(j.data());
-        cy.$(jname).style('background-color','green');
-        // cy.$(jname).style('background-color','green');
-
-        j.forEach(function(item,index){
-          // console.log(item.id());
+       cy.on('tap', 'node', function(evt){ 
+        var jname =  evt.target.data().id;  
+        cy.elements().style('background-color','#666666'); 
+        var j = cy.$(jname).neighbourhood(); 
+        cy.$(jname).style('background-color','green'); 
+        j.forEach(function(item,index){ 
           item.style('background-color','red');
-        });
-        // console.log("painted red")
+        }); 
 
       });
 

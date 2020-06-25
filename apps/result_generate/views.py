@@ -35,27 +35,23 @@ class JobResult(APIView):
                 return render(request,"show_result/pca_result.html",{"page_title":"PCA-Result","project_id":project.id,"pie_chart":pie_chart,"pc_id":pc_id})
 
             if job.processing_algorithm.reference_id == 'pc_002':
+                print(id)
                 dca_result=DCA_Result(job)
                 tables=dca_result.getMeHeatMaps()
                 # return render(request,"job/result/daa_result.html",{"title":"Dashboard",'table' : tables[0],'table1' : tables[1],'table2' : tables[2],'job':id})
                 return render(request,"job/result/daa_result.html",{"title":"Dashboard",'table' : tables[0],'table1' : tables[1],'job':id})
 
-            if job.processing_algorithm.reference_id == 'pc_003':
-                # print(id)
-
+            if job.processing_algorithm.reference_id == 'pc_003': 
                 pls_da=PlsDa.objects.filter(job_id=id)[0]
                 pls_da_result=PlsDaResult(pls_da)
                 pls_da_components=pls_da_result.getMeComponentsId()
-                vip_score_figure=PlsDaComponentResult().returnVIPBarChart(pls_da.id)
-                # print(pls_da_components)
-                # return HttpResponse("hello world")
+                vip_score_figure=PlsDaComponentResult().returnVIPBarChart(pls_da.id) 
                 return render(request,"show_result/pls_result_new.html",{"vip_score_figure":vip_score_figure,"title":"Pls Da Result","pls_components":pls_da_components,'job_id':id,"pls_da_id":pls_da.id})
 
         def getPCAComponentResult(request,id):
             figure=ComponentsResultLib().returnBarChart(id)
             return HttpResponse(figure)
-
-
+        
         def getPLSComponentResult(request):
             # return HttpResponse("hello world")
             # print(request.POST)
@@ -68,6 +64,9 @@ class JobResult(APIView):
             pls_da_result=PlsDaResult(pls_da)
             pls_da_components=pls_da_result.getMeComponentsId()
             return render(request,"show_result/pls_result_new.html",{"vip_score_figure":vip_score_figure,"title":"Pls Da Result","pls_components":pls_da_components,'job_id':request.POST['job_id'],"pls_da_id":pls_da.id,"component_figure":component_figure})
+
+        def MoreNetwork(request,id): 
+            return render(request,"job/result/more_network.html",{"title":"MoreNetwork",'job_id':id})
 
         # def getPLSComponentResult(request,component_id,result_type,pls_id):
         #     # PlsDaComponentResultPlsComponentResult

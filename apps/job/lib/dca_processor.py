@@ -109,12 +109,12 @@ class DCA_Helper:
         # iter=1
         # for i in range (0,1000): 
         for i in range (0,self.number_of_permutation):
-            print("------->"+str(i))
+            # print("------->"+str(i))
             self.createPermutedCaseControl()
             self.createNewCaseControlCopyCorelation()
             self.generatecount_permuteSig_with_strategyA()
         # self.count_permuteSig=self.count_permuteSig/1000 
-        print(self.count_permuteSig)
+        # print(self.count_permuteSig)
 
 
         self.saveTheResultsInDB()
@@ -171,9 +171,8 @@ class DCA_Helper:
         # for i in range(0,self.m):
         #     for j in range(0,self.m): 
         #         self.count_permuteSig.iat[i,j]=self.count_permuteSig.iat[i,j]/self.number_of_permutation
-                # self.count_permuteSig.iat[i,j]=self.count_permuteSig.iat[i,j]
 
-        # print(self.count_permuteSig)
+
     def generatecount_permuteSig_with_strategyB(self):
          df1=self.diffCorelation
          df2=self.diffCorelationCopy
@@ -201,12 +200,14 @@ class DCA_Helper:
         for feature in self.features:
             network_array.append({"data": { "id": feature},"group": "nodes"})
             for feature1 in self.features:
+                p_value_temp=self.count_permuteSig[feature][feature1]
                 # if self.count_permuteSig[feature][feature1]==1:
                 # if self.count_permuteSig[feature][feature1]>=1:
-                if self.count_permuteSig[feature][feature1]<=self.sig_count:
-                # if self.count_permuteSig[feature][feature1]<=self.p_value:
+                if p_value_temp<=self.sig_count:
+
+                # if p_value_temp<=self.p_value:
                      network_array.append({
-                                            "data": { "id": "e"+str(iterator),  "source": feature, "target": feature1},
+                                            "data": { "id": "e"+str(iterator),  "source": feature, "target": feature1,"p_value":p_value_temp/self.number_of_permutation},
                                             "group": "edges"
                                             })
                      iterator=iterator+1

@@ -1,0 +1,233 @@
+
+{% extends "dashboard_main_template/dashboard_main.html" %}
+{% load staticfiles %}
+
+{% block content %}
+ 
+<script type="text/javascript" src="{% static 'js/cytoscape.js' %}"></script>
+<script src="{% static 'js/excellentexport.js' %}"></script>
+<link rel="stylesheet" href="{% static 'css/select2.css' %}">
+<link rel="stylesheet" href="{% static 'css/network_vis.css' %}">
+<style media="screen">
+ 
+</style>
+
+ 
+
+<div class="box box-default">
+  <div class="box-header with-border">
+    <h3 class="box-title">A glimpse of the uploaded dataset on a Network</h3>
+    <div class="box-tools pull-right">
+      <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+    </div>
+  </div>
+  <div class="box-body">
+    <div class="row"> 
+      <div class="col-md-9">
+        <div class="form-group">
+            <label>Filter Edges with Respect to P Value</label>
+            <select class="form-control select2" style="width: 100%;" name="edge_filter" id="edge_filter">
+              <option selected="selected" value="none">N/A </option>  
+                  <option value="0.09">Only keep edges with P value less than 0.09</option>
+                  <option value="0.08">Only keep edges with P value less than  0.08</option>
+                  <option value="0.07">Only keep edges with P value less than  0.07</option>
+                  <option value="0.06">Only keep edges with P value less than  0.06</option>
+                  <option value="0.05">Only keep edges with P value less than  0.05</option>
+                  <option value="0.04">Only keep edges with P value less than  0.04</option>
+                  <option value="0.03">Only keep edges with P value less than  0.03</option>
+                  <option value="0.02">Only keep edges with P value less than  0.02</option>
+                  <option value="0.01">Only keep edges with P value less than  0.01</option>
+            </select>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="form-group">
+            <label>Reset  Network</label>
+            <button type="button" name="reset" id="reset" class="btn btn-danger form-control" style="width: 100%;" >Reset</button>
+        </div>
+      </div>
+
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>Reset  Network</label>
+            <button type="button" name="sort-edges" id="sort-edges" class="btn btn-info form-control" style="width: 100%;" >Show Sorted from high to low p value</button>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="box box-default"> 
+  <div class="box-body">
+    <div class="wrap1 container">
+      <div id="cy"></div>
+    </div>
+  </div>
+</div>
+
+<div class="box box-default"> 
+  <div class="box-body">
+    <div class="wrap2">
+       <!-- <row><div class="alert alert-success" role="alert" name="alert_edge" id="alert_edge" hidden="True"></div></row> -->
+       <row><div class="alert alert-success alert-style" role="alert" name="alert_edge" id="alert_edge" hidden="True" style="height: 100%"></div></row>
+    </div>
+  </div>
+</div>
+
+ {% endblock%}
+
+{%block scripts %}
+<script>
+
+
+
+
+
+
+
+ let layout_option={ name: 'circle',fit:true,avoidOverlap: true,avoidOverlapPadding: 10};
+ let basic_style=[
+     {
+       selector: 'node',
+       style: {
+         // 'background-color': '#666666',
+         'background-color': 'D6D8D9',
+         'label': 'data(id)'
+       }
+     },
+
+     {
+       selector: 'edge',
+       style: {
+         'width': 3,
+         'line-color': '#ccc', 
+         'target-arrow-color': '#ccc',
+         'target-arrow-shape': 'triangle'
+       }
+     }
+   ];
+
+
+   let datas=[];
+
+
+
+
+
+ var cy;
+
+ function generate_cy(){
+   cy = cytoscape({
+   container: document.getElementById('cy'),
+   elements:datas,
+   style: basic_style,
+   layout: layout_option,
+   zoom: 1,
+
+ });
+ }
+
+  function generate_alert_edge(src,target,value){
+  let text='Clicked Item Type : Edge <br> Source Node : <strong><span style="color:blue">'+src+'</span></strong> <br> Destination Node : <strong><span style="color:blue">'+target+'</span></strong><br> P Value :'+value ;
+  // $('#alert_edge').html(text).fadeTo(1000,1).fadeTo(5000,0);
+  $('#alert_edge').html(text).fadeTo(1000,1);
+ }
+
+
+   $(document).ready(function(){
+   
+    $.ajax({
+            url: "{% url 'api_network_data' 123 %}".replace('123',{{ job_id }}),
+            type: 'GET',
+            dataType: "json",
+            async:false,
+            success: function(data){ 
+              datas= JSON.parse(data); 
+              generate_cy(); 
+            }
+        });
+
+
+
+     $("#edge_filter").change(function(){
+        let value=$("#edge_filter").val()
+        var collection = cy.elements('edge[p_value >'+value+']'); 
+        cy.remove( collection ); 
+     });
+ 
+     $("#sort-edges").on('click',function(){
+
+var nodes = cy.edges().sort(function( a, b ){
+  let value1=a.data('p_value') - b.data('p_value');
+  console.log(value1); 
+  return value1;
+});
+
+// show order via animations
+var duration = 1000;
+nodes.removeStyle().forEach(function( node, i ){
+  node.delay( i * duration ).animate({
+    style: { 
+      'line-color': 'green'
+    }
+  }, { duration: duration });
+});
+
+console.log('Animating nodes to show sorted order');
+
+       
+
+     });
+ 
+cy.edges().on('tap', function(e){
+  var clickedEdge = e.target; 
+
+
+let e1=cy.$(clickedEdge).animation({style: { 'line-color': 'blue'},duration: 1000});
+e1.play().promise('completed').then(function(){ e1.reverse().rewind().play();});
+let s1=cy.$(clickedEdge).source().animation({style: { 'background-color': 'red','width': 75,'height':75},duration: 1000});
+s1.play().promise('completed').then(function(){s1.reverse().rewind().play();}); 
+
+let t2=cy.$(clickedEdge).target().animation({style: { 'background-color': 'red','width': 75,'height':75},duration: 1000});
+t2.play().promise('completed').then(function(){ t2.reverse().rewind().play();}); 
+
+
+
+generate_alert_edge(cy.$(clickedEdge).source().id(),cy.$(clickedEdge).target().id(),cy.$(clickedEdge).data().p_value);
+});
+
+
+cy.nodes().on('tap', function(e){ 
+  let clickedNode = e.target; 
+  let text='<table style="width:100%"  class="table"><tr><th>Source Node</th><th>Target Notes</th><th>Connecting Edge P Value</th></tr>'; // </tr></table> 
+
+    cy.$(clickedNode).connectedEdges().forEach(function(item,index){ 
+      // text=text+item.id()+',';
+      let e1=cy.$(item).animation({style: { 'line-color': 'green'},duration: 1000});
+      e1.play().promise('completed').then(function(){ e1.reverse().rewind().play();});  
+      let t2=cy.$(item).target().animation({style: { 'background-color': 'red','width': 75,'height':75},duration: 3000});
+      t2.play().promise('completed').then(function(){ t2.reverse().rewind().play();}); 
+    text=text+'<tr><td>'+clickedNode.id()+'</td><td>'+item.id()+'</td><td>'+item.data().p_value+'</td></tr>'
+  });
+    text=text+'</table>';   
+$('#alert_edge').html(text).fadeTo(1000,1);  
+});
+
+
+
+
+
+
+
+
+
+
+
+   })   // document ready ends 
+ </script>
+
+{% endblock%}
