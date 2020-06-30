@@ -9,7 +9,182 @@
 <link rel="stylesheet" href="{% static 'css/select2.css' %}">
 <link rel="stylesheet" href="{% static 'css/network_vis.css' %}">
 <style media="screen">
- 
+body {
+  font-family: 'Open Sans', 'sans-serif';
+  font-weight: 300;
+  overflow-x: hidden;
+
+}
+.tabs {
+
+  margin: 0 auto;
+  padding: 0 20px;
+  max-height:800px;
+}
+#tab-button {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+#tab-button li {
+  display: table-cell;
+  width: 20%;
+}
+#tab-button li a {
+  display: block;
+  padding: .5em;
+  background: #eee;
+  border: 1px solid #ddd;
+  text-align: center;
+  color: #000;
+  text-decoration: none;
+}
+#tab-button li:not(:first-child) a {
+  border-left: none;
+}
+#tab-button li a:hover,
+#tab-button .is-active a {
+  border-bottom-color: transparent;
+  background: #fff;
+}
+.tab-contents {
+  padding: .5em 2em 1em;
+  border: 1px solid #ddd;
+  /* height:100% */
+}
+
+
+
+.tab-button-outer {
+  display: none;
+}
+.tab-contents {
+  margin-top: 20px;
+}
+@media screen and (min-width: 768px) {
+  .tab-button-outer {
+    position: relative;
+    z-index: 2;
+    display: block;
+  }
+  .tab-select-outer {
+    display: none;
+  }
+  .tab-contents {
+    position: relative;
+    top: -1px;
+    margin-top: 0;
+  }
+
+
+
+
+.wrap1{
+  display:relative !important;
+  /*border: 5px solid #ddd;*/
+ width:100%;
+ height:1000px;
+}
+
+.wrap2{
+  display:relative !important;
+  /*border: 5px solid #ddd;*/
+ width:100%;
+ height:650px;
+ overflow-x: hidden;
+}
+
+.wrap:after{
+  display:table;
+  clear:both;
+}
+
+
+}
+
+#cy {
+  position: static;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  height:1000px;
+ /* border:5px solid green !important; */
+}
+#cy_second {
+  position: static;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  height:1000px;
+ /* border:5px solid green !important; */
+}
+
+
+
+/* Important part */
+.modal-dialog{
+   width: 100%;
+    overflow-y: initial !important
+}
+.modal-body{
+    height: 450px;
+    width:100%;
+    overflow-y: auto;
+}
+.funny{
+  background: red;
+}
+.serious{
+  background: blue;
+}
+
+.alert-style{
+  height: 100%;
+  width: 100%;
+  /*overflow: scroll;*/
+  overflow: hidden;
+}
+.card_header1{
+  background-color: #007bff;
+  width: 100%;
+  background: red !important;
+  font-weight: 1200;
+}
+ .card{
+  position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 0 solid rgba(0,0,0,.125);
+    border-radius: .25rem;
+ }
+.card-header {
+    background-color: transparent;
+    border-bottom: 1px solid rgba(0,0,0,.125);
+    padding: 0rem 2.25rem;
+    position: relative;
+    border-top-left-radius: .25rem;
+    border-top-right-radius: .25rem;
+    color: #fff;
+}
+.card-primary:not(.card-outline)>.card-header {
+    /*background-color: #007bff;*/
+    background-color: #30A2B8;
+}
+
+.wrapper {
+overflow: hidden;
+}
 </style>
 
  
@@ -23,7 +198,7 @@
   </div>
   <div class="box-body">
     <div class="row"> 
-      <div class="col-md-9">
+      <div class="col-md-6">
         <div class="form-group">
             <label>Filter Edges with Respect to P Value</label>
             <select class="form-control select2" style="width: 100%;" name="edge_filter" id="edge_filter">
@@ -41,26 +216,34 @@
         </div>
       </div>
 
-      <div class="col-md-3">
+      <div class="col-md-6">
         <div class="form-group">
-            <label>Reset  Network</label>
-            <button type="button" name="reset" id="reset" class="btn btn-danger form-control" style="width: 100%;" >Reset</button>
+            <label>Select Layout Type</label>
+            <select class="form-control select2" style="width: 100%;" name="layout_type" id="layout_type">
+              <option selected="selected" value="circle">Circle</option>
+                  <option value="grid">Grid</option>
+                  <option value="concentric">Concentric</option>
+                  <option value="breadthfirst">Breadth First</option>
+            </select>
         </div>
       </div>
 
 
     </div>
-
     <div class="row">
-        <div class="col-md-3">
-          <div class="form-group">
+            <div class="col-md-12">
+        <div class="form-group">
             <label>Reset  Network</label>
-            <button type="button" name="sort-edges" id="sort-edges" class="btn btn-info form-control" style="width: 100%;" >Show Sorted from high to low p value</button>
-          </div>
+            <button type="button" name="reset" id="reset" class="btn btn-danger form-control" style="width: 100%;" >Reset</button>
+        </div>
       </div>
     </div>
+
+ 
   </div>
 </div>
+
+
 <div class="box box-default"> 
   <div class="box-body">
     <div class="wrap1 container">
@@ -68,15 +251,91 @@
     </div>
   </div>
 </div>
-
+<!-- 
 <div class="box box-default"> 
-  <div class="box-body">
-    <div class="wrap2">
-       <!-- <row><div class="alert alert-success" role="alert" name="alert_edge" id="alert_edge" hidden="True"></div></row> -->
-       <row><div class="alert alert-success alert-style" role="alert" name="alert_edge" id="alert_edge" hidden="True" style="height: 100%"></div></row>
+         <div class="row">
+
+          <div class="col-md-6"> 
+                  <div class="card_header1"><h3>Clicked Object Information</h3></div>
+                  <div class="wrap2">
+                  <row><div class="alert alert-success alert-style" role="alert" name="alert_edge" id="alert_edge" hidden="True" style="height: 100%"></div></row>
+                </div> 
+        </div> 
+        <div class="col-md-6"> 
+          <div class="card card-primary">
+            <div class="card-header"> <h3 class="card-title">hello</h3></div>
+            <div class="card-body"> <h3></h3>world</div>
+            <div class="card-footer"> <h3></h3>world</div>
+
+          </div>
+         </div>
     </div>
   </div>
-</div>
+   -->
+
+
+ 
+
+ <div class="container-fluid">  
+        <div class="row">
+
+        <div class="col-md-6"> 
+            <div class="card card-primary">
+                  <div class="card-header"><h3>Clicked Object Information</h3></div>
+                  <div class="card-body wrap2">
+                    <row><div class="alert  alert-style" role="alert" name="alert_edge" id="alert_edge" hidden="True" style="height: 100%"></div></row>
+                  </div>
+   
+            </div>
+        </div>
+
+        <div class="col-md-6"> 
+          <div class="card card-primary">
+            <div class="card-header"> <h3 class="card-title">More Options For the clicket element</h3></div>
+            <div class="card-body wrap2">  
+                  <div class="container-fluid" id="alert_edge_2"> 
+
+                </div> 
+
+            </div>
+            <div class="card-footer"></div>
+
+          </div> 
+        </div>
+
+
+
+    </div> 
+ </div> 
+
+
+
+   
+    <div class="container-fluid" style="margin-top: 20px"> 
+      <div class="row">
+        <div class="col-md-12"> 
+            <div class="card card-primary">
+                  <div class="card-header"><h3>Centrality Options</h3></div>
+                  <div class="card-body wrap2">
+                          <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Filter Edges with Respect to P Value</label>
+                                <select class="form-control select2" style="width: 100%;" name="centrality_distribution" id="centrality_distribution">
+                                  <option selected="selected" value="none">N/A </option>  
+                                      <option value="1">Degree Centrality</option>
+                                      <option value="2">Closeness Centrality</option>
+                                      <option value="3">Betweenness Centrality</option>
+                                      <option value="4">Page Rank Centrality</option>
+                                       
+                                </select>
+                            </div>
+                          </div>
+                  </div>
+   
+            </div>
+        </div>
+      </div>
+    </div> 
 
  {% endblock%}
 
@@ -132,8 +391,7 @@
  }
 
   function generate_alert_edge(src,target,value){
-  let text='Clicked Item Type : Edge <br> Source Node : <strong><span style="color:blue">'+src+'</span></strong> <br> Destination Node : <strong><span style="color:blue">'+target+'</span></strong><br> P Value :'+value ;
-  // $('#alert_edge').html(text).fadeTo(1000,1).fadeTo(5000,0);
+  let text='Clicked Item Type : Edge <br> Source Node : <strong><span style="color:blue">'+src+'</span></strong> <br> Destination Node : <strong><span style="color:blue">'+target+'</span></strong><br> P Value :'+value ; 
   $('#alert_edge').html(text).fadeTo(1000,1);
  }
 
@@ -152,36 +410,90 @@
         });
 
 
-
+ 
      $("#edge_filter").change(function(){
         let value=$("#edge_filter").val()
         var collection = cy.elements('edge[p_value >'+value+']'); 
         cy.remove( collection ); 
+     }); 
+
+
+      $(document).on('change','#elements_color_change',function(){ 
+        let value=$("#elements_color_change").val();
+        let id=$("#hidden_clicked_item_id").val();
+        if($("#hidden_clicked_item_type").val()==1){
+          cy.$("#"+id).style({'line-color':value});
+        }else{
+
+
+          cy.getElementById(id).style({'background-color':value}); 
+          cy.getElementById(id).style({'background-color':value}); 
+        }
      });
+
+
+      $(document).on('click','#remove_element_edge',function(){  
+        let id=$("#hidden_clicked_item_id").val();  
+        cy.remove(cy.$('#'+id)); 
+            $('#alert_edge').html("").fadeTo(100,1);
+    $('#alert_edge_2').html("").fadeTo(100,1);
+     }); 
+      $(document).on('click','#remove_element_node',function(){ 
+        
+        let id=$("#hidden_clicked_item_id").val();
+        let clickedNode1=cy.getElementById(id); 
+        clickedNode1.connectedEdges().forEach(function(item,index){ 
+          cy.remove(cy.$('#'+item.id())); 
+        });  
+        cy.remove(clickedNode1);
+            $('#alert_edge').html("").fadeTo(100,1);
+    $('#alert_edge_2').html("").fadeTo(100,1);
+     });
+
+
+
+
+
+
+      $(document).on('change','#show_other_edges',function(){
  
-     $("#sort-edges").on('click',function(){
+        let id=$("#hidden_clicked_item_id").val();
+        let text5='<br>'+'<table style="width:100%"  class="table"><tr><th>Source Node</th><th>Target Notes</th><th>Connecting Edge P Value</th></tr>';
+        let text='';
+        if($("#hidden_clicked_item_type").val()==1){
+        let value=$("#show_other_edges").val();
+        let p_value=cy.$('#'+id).data().p_value;
+          if(value=='2'){
+               similar_edges=cy.$('edge[p_value='+p_value+']'); 
+               similar_edges.forEach(function(item,index){
+                text5=text5+'<tr><td>'+item.source().id()+'</td><td>'+item.target().id()+'</td><td>'+item.data().p_value+'</td></tr>'
+                let e1=cy.$(item).animation({style: { 'line-color': 'purple'},duration: 3000});
+                e1.play().promise('completed').then(function(){ e1.reverse().rewind().play();});   
+               });
+          }else if(value=='3'){
+                similar_edges=cy.$('edge[p_value<'+p_value+']'); 
+               similar_edges.forEach(function(item,index){
+                 text5=text5+'<tr><td>'+item.source().id()+'</td><td>'+item.target().id()+'</td><td>'+item.data().p_value+'</td></tr>'
+                let e1=cy.$(item).animation({style: { 'line-color': 'purple'},duration: 3000});
+                e1.play().promise('completed').then(function(){ e1.reverse().rewind().play();});  
+               });
+          }else if(value=='4'){
+                similar_edges=cy.$('edge[p_value>'+p_value+']'); 
+               similar_edges.forEach(function(item,index){
+                 text5=text5+'<tr><td>'+item.source().id()+'</td><td>'+item.target().id()+'</td><td>'+item.data().p_value+'</td></tr>'
+                let e1=cy.$(item).animation({style: { 'line-color': 'purple'},duration: 3000});
+                e1.play().promise('completed').then(function(){ e1.reverse().rewind().play();});  
+               });
+          }else{
 
-var nodes = cy.edges().sort(function( a, b ){
-  let value1=a.data('p_value') - b.data('p_value');
-  console.log(value1); 
-  return value1;
-});
+          }
+          text=text+'Clicked Item Type : Edge <br> Source Node : <strong><span style="color:blue">'+cy.$('#'+id).source().id()+'</span></strong> <br> Destination Node : <strong><span style="color:blue">'+cy.$('#'+id).id()+'</span></strong><br> P Value :'+p_value;
 
-// show order via animations
-var duration = 1000;
-nodes.removeStyle().forEach(function( node, i ){
-  node.delay( i * duration ).animate({
-    style: { 
-      'line-color': 'green'
-    }
-  }, { duration: duration });
-});
-
-console.log('Animating nodes to show sorted order');
-
-       
-
-     });
+        }
+    text5=text5+'</table>';  
+    $('#alert_edge').html(text+text5).fadeTo(1000,1);            
+     }); 
+ 
  
 cy.edges().on('tap', function(e){
   var clickedEdge = e.target; 
@@ -197,11 +509,46 @@ t2.play().promise('completed').then(function(){ t2.reverse().rewind().play();});
 
 
 
-generate_alert_edge(cy.$(clickedEdge).source().id(),cy.$(clickedEdge).target().id(),cy.$(clickedEdge).data().p_value);
+let text3= '<input type="hidden" id="hidden_clicked_item_type" value="1"><input type="hidden" id="hidden_clicked_item_id" value="'+clickedEdge.id()+'"><div class="col-md-12"><div class="form-group"><label>Change color of this item</label><select class="form-control mr-2" id="elements_color_change"><option value="#1abc9c">Turquoise</option><option value="#16a085">green-sea</option><option value="#2ecc71">emerald</option><option value="#27ae60">Nephritis</option><option value="#3498db">Peter-river</option><option value="#2980b9">Belize-hole</option><option value="#9b59b6">Amethyst</option><option value="#8e44ad">wisteria</option><option value="#34495e">Wet-asphalt</option><option value="#e67e22">carrot</option><option value="#f39c12">Orange</option><option value="#f1c40f">Sunflower</option><option value="#d35400">pumpkin</option><option value="#e74c3c">alizarin</option><option value="#c0392b">pomegranate</option></select></div></div><div class="col-md-12"><div class="form-group"><label>Remove This Element</label><input type="button" class="form-control mr-2 btn btn-danger" id="remove_element_edge" value="Remove"></div></div>'; 
+
+let text4= '<div class="col-md-12"><div class="form-group"><label>Show Other elements</label><select class="form-control mr-2" id="show_other_edges"><option value="1">None</option><option value="2">Show Other Similar Valued Edges</option><option value="3">Show Edges with Lesser P value</option><option value="4">Show Edges with Greater P Values</option></select></div></div>'; 
+
+
+   let text='Clicked Item Type : Edge <br> Source Node : <strong><span style="color:blue">'+clickedEdge.source().id()+'</span></strong> <br> Destination Node : <strong><span style="color:blue">'
+   +clickedEdge.target().id()+'</span></strong><br> P Value :'+clickedEdge.data().p_value;
+
+    $('#alert_edge').html(text).fadeTo(1000,1);
+    $('#alert_edge_2').html(text4+text3).fadeTo(1000,1);
+// generate_alert_edge(cy.$(clickedEdge).source().id(),cy.$(clickedEdge).target().id(),cy.$(clickedEdge).data().p_value);
 });
 
 
-cy.nodes().on('tap', function(e){ 
+cy.edges().on('cxttap', function(e){
+
+  var clickedEdge = e.target;  
+  similar_edges=cy.$('edge[p_value='+clickedEdge.data().p_value+']') 
+   similar_edges.forEach(function(item,index){
+    let e1=cy.$(item).animation({style: { 'line-color': 'purple'},duration: 3000});
+    e1.play().promise('completed').then(function(){ e1.reverse().rewind().play();});  
+   });
+   
+   let text='Clicked Item Type : Edge <br> Source Node : <strong><span style="color:blue">'+clickedEdge.source().id()+'</span></strong> <br> Destination Node : <strong><span style="color:blue">'
+   +clickedEdge.target().id()+'</span></strong><br> P Value :'+clickedEdge.data().p_value;
+
+// let text2='<br><div class="row"><div class="col-md-6"><div class="d-flex">'+'<input type="button" class="btn btn-primary" value="Select" id="'+clickedEdge.id()+'" /> </div></div></div>';
+
+let text3= '<input type="hidden" id="hidden_clicked_item_type" value="1"><input type="hidden" id="hidden_clicked_item_id" value="'+clickedEdge.id()+'"><div class="col-md-12"><div class="form-group"><label>Change color of this item</label><select class="form-control mr-2" id="elements_color_change"><option value="#1abc9c">Turquoise</option><option value="#16a085">green-sea</option><option value="#2ecc71">emerald</option><option value="#27ae60">Nephritis</option><option value="#3498db">Peter-river</option><option value="#2980b9">Belize-hole</option><option value="#9b59b6">Amethyst</option><option value="#8e44ad">wisteria</option><option value="#34495e">Wet-asphalt</option><option value="#e67e22">carrot</option><option value="#f39c12">Orange</option><option value="#f1c40f">Sunflower</option><option value="#d35400">pumpkin</option><option value="#e74c3c">alizarin</option><option value="#c0392b">pomegranate</option></select></div></div><div class="col-md-12"><div class="form-group"><label>Remove This Element</label><input type="button" class="form-control mr-2 btn btn-danger" id="remove_element_edge" value="Remove"></div></div>';   
+
+
+let text4= '<div class="col-md-12"><div class="form-group"><label>Show Other elements</label><select class="form-control mr-2" id="show_other_edges"><option value="1">None</option><option value="2">Show Other Similar Valued Edges</option><option value="3">Show Edges with Lesser P value</option><option value="4">Show Edges with Greater P Values</option></select></div></div>'; 
+
+// let text4= '<div class="col-md-12"><div class="form-group"><label>Change color of this item</label><select class="form-control mr-2" id="elements_color_change"><option value="1">1</option><option value="2">2</option></select></div></div>';  
+    
+    $('#alert_edge').html(text).fadeTo(1000,1);
+    $('#alert_edge_2').html(text4+text3).fadeTo(1000,1);
+
+}); 
+cy.nodes().on('cxttap', function(e){ 
   let clickedNode = e.target; 
   let text='<table style="width:100%"  class="table"><tr><th>Source Node</th><th>Target Notes</th><th>Connecting Edge P Value</th></tr>'; // </tr></table> 
 
@@ -214,7 +561,28 @@ cy.nodes().on('tap', function(e){
     text=text+'<tr><td>'+clickedNode.id()+'</td><td>'+item.id()+'</td><td>'+item.data().p_value+'</td></tr>'
   });
     text=text+'</table>';   
+let text3= '<input type="hidden" id="hidden_clicked_item_type" value="2"><input type="hidden" id="hidden_clicked_item_id" value="'+clickedNode.id()+'"><div class="col-md-12"><div class="form-group"><label>Change color of this item</label><select class="form-control mr-2" id="elements_color_change"><option value="#1abc9c">Turquoise</option><option value="#16a085">green-sea</option><option value="#2ecc71">emerald</option><option value="#27ae60">Nephritis</option><option value="#3498db">Peter-river</option><option value="#2980b9">Belize-hole</option><option value="#9b59b6">Amethyst</option><option value="#8e44ad">wisteria</option><option value="#34495e">Wet-asphalt</option><option value="#e67e22">carrot</option><option value="#f39c12">Orange</option><option value="#f1c40f">Sunflower</option><option value="#d35400">pumpkin</option><option value="#e74c3c">alizarin</option><option value="#c0392b">pomegranate</option></select></div></div><div class="col-md-12"><div class="form-group"><label>Remove This Element</label><input type="button" class="form-control mr-2 btn btn-danger" id="remove_element_node" value="Remove"></div></div>';   
+
+$('#alert_edge_2').html(text3).fadeTo(1000,1);   
 $('#alert_edge').html(text).fadeTo(1000,1);  
+});
+
+cy.nodes().on('tap', function(e){ 
+  let clickedNode = e.target; 
+  let text='<table style="width:100%"  class="table"><tr><th>Source Node</th><th>Target Notes</th><th>Connecting Edge P Value</th></tr>'; 
+
+  cy.$(clickedNode).connectedEdges().forEach(function(item,index){  
+    text=text+'<tr><td>'+clickedNode.id()+'</td><td>'+item.id()+'</td><td>'+item.data().p_value+'</td></tr>'
+  });
+   
+  let text5='Clicked Item Type : Node/Vertices <br> Name : <strong><span style="color:blue">'+clickedNode.id()+'</span></strong> <br>';
+
+
+  text=text+'</table>';   
+  let text3= '<input type="hidden" id="hidden_clicked_item_type" value="2"><input type="hidden" id="hidden_clicked_item_id" value="'+clickedNode.id()+'"><div class="col-md-12"><div class="form-group"><label>Change color of this item</label><select class="form-control mr-2" id="elements_color_change"><option value="#1abc9c">Turquoise</option><option value="#16a085">green-sea</option><option value="#2ecc71">emerald</option><option value="#27ae60">Nephritis</option><option value="#3498db">Peter-river</option><option value="#2980b9">Belize-hole</option><option value="#9b59b6">Amethyst</option><option value="#8e44ad">wisteria</option><option value="#34495e">Wet-asphalt</option><option value="#e67e22">carrot</option><option value="#f39c12">Orange</option><option value="#f1c40f">Sunflower</option><option value="#d35400">pumpkin</option><option value="#e74c3c">alizarin</option><option value="#c0392b">pomegranate</option></select></div></div><div class="col-md-12"><div class="form-group"><label>Remove This Element</label><input type="button" class="form-control mr-2 btn btn-danger" id="remove_element_node" value="Remove"></div></div>';   
+
+$('#alert_edge_2').html(text3).fadeTo(1000,1);   
+$('#alert_edge').html(text5+text).fadeTo(1000,1);  
 });
 
 
@@ -222,11 +590,85 @@ $('#alert_edge').html(text).fadeTo(1000,1);
 
 
 
+ $("#layout_type").change(function(){
+   let lyname=$( this ).val();
+   // cy.reset();
+   cy.layout({ name:lyname,fit:true,avoidOverlap: true,avoidOverlapPadding: 10}).run();
+
+ });
 
 
+ let centralities=[]
+ let xticks=[]
+ let yvals=[]
+ $("#centrality_distribution").change(function(){
+    centralities=[];
 
+  if($("#centrality_distribution").val()==1){
+      var dcn = cy.$().dcn(); 
+      cy.elements().forEach(function(item,index){
+        if(item.isNode()){
+          centralities.push(dcn.degree(item));
+        }
+      });
+        xtickGenerate();
+        yvalsgenerate();
+        console.log(xticks);
 
+    }else if($("#centrality_distribution").val()==2){ 
+        var ccn = cy.$().ccn(); 
+        cy.elements().forEach(function(item,index){
+              if(item.isNode()){                         
+                 centralities.push(ccn.closeness(item));
+              }
+          });
 
+    }else if($("#centrality_distribution").val()==3){ 
+        var bc = cy.$().bc();
+        cy.elements().forEach(function(item,index){
+              if(item.isNode()){                       
+                centralities.push(bc.betweenness(item));
+              }
+          });
+    }else if($("#centrality_distribution").val()==4){ 
+       var pr = cy.elements().pageRank();
+        cy.elements().forEach(function(item,index){
+              if(item.isNode()){                       
+                centralities.push(pr.rank(item));
+              }
+          });
+    }else{
+      centralities=[];
+    }
+ });
+
+function xtickGenerate(){
+  let min=Math.min.apply(Math,centralities);
+  let max=Math.max.apply(Math,centralities);
+  // let max=Math.max(centralities);
+  let stepsize=(max-min)/10.00; 
+  for (var i = min; i<=max; i+=stepsize) {
+    if(i>max){
+      xticks.push(max);
+    }else{
+      xticks.push(i);
+    }
+  }
+}
+
+function yvalsgenerate(){ 
+  
+  xticks.forEach(function(item,index){
+    let temp=0;
+    centralities.forEach(function(item11,index11){
+      if(item11<=item){
+        temp++;
+      }
+    });
+    yvals.push(parseFloat(((temp/centralities.length)*100.00).toFixed(2)));
+  });
+  console.log(yvals);
+}
    })   // document ready ends 
  </script>
 
