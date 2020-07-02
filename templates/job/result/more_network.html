@@ -97,6 +97,16 @@ body {
  overflow-x: hidden;
 }
 
+.wrap3{
+  display:relative !important;
+  /*border: 5px solid #ddd;*/
+ width:100%;
+ height:700px;
+ overflow-x: hidden;
+}
+#pie-chart {
+height:700px;
+}
 .wrap:after{
   display:table;
   clear:both;
@@ -185,6 +195,33 @@ body {
 .wrapper {
 overflow: hidden;
 }
+
+
+
+
+.bar { fill: steelblue; }
+
+path { 
+    stroke: steelblue;
+    stroke-width: 2;
+    fill: none;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: grey;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+}
+#panel_3_svg_container{
+  overflow: scroll;
+}
+
+.title-text {
+  font-size: 12px;
+}
+
 </style>
 
  
@@ -316,30 +353,42 @@ overflow: hidden;
         <div class="col-md-12"> 
             <div class="card card-primary">
                   <div class="card-header"><h3>Centrality Options</h3></div>
-                  <div class="card-body wrap2">
+                  <div class="card-body wrap3">
                           <div class="col-md-12">
                             <div class="form-group">
-                                <label>Filter Edges with Respect to P Value</label>
-                                <select class="form-control select2" style="width: 100%;" name="centrality_distribution" id="centrality_distribution">
-                                  <option selected="selected" value="none">N/A </option>  
-                                      <option value="1">Degree Centrality</option>
+                                <label>Select A Vertex Centrality Measurement Technique</label>
+                                <select class="form-control select2" style="width: 100%;" name="centrality_distribution" id="centrality_distribution"> 
+                                      <option selected="selected" value="1">Degree Centrality</option>
                                       <option value="2">Closeness Centrality</option>
                                       <option value="3">Betweenness Centrality</option>
                                       <option value="4">Page Rank Centrality</option>
                                        
                                 </select>
                             </div>
-                          </div>
+                          </div> 
+                          <div class="col-md-12" id="pie_chart"> 
+                   
+                          </div> 
                   </div>
    
+
+
             </div>
         </div>
+      </div>
+
+            <div class="row">
+              <div class="col-md-12" id="pice_chart"> 
+       
+              </div>
       </div>
     </div> 
 
  {% endblock%}
 
 {%block scripts %}
+
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 <script>
 
 
@@ -598,9 +647,12 @@ $('#alert_edge').html(text5+text).fadeTo(1000,1);
  });
 
 
- let centralities=[]
- let xticks=[]
- let yvals=[]
+let centralities=[]
+let xticks=[]
+let yvals=[]
+var svg;
+var final_parsed_data=[];
+
  $("#centrality_distribution").change(function(){
     centralities=[];
 
@@ -611,10 +663,7 @@ $('#alert_edge').html(text5+text).fadeTo(1000,1);
           centralities.push(dcn.degree(item));
         }
       });
-        xtickGenerate();
-        yvalsgenerate();
-        console.log(xticks);
-
+ 
     }else if($("#centrality_distribution").val()==2){ 
         var ccn = cy.$().ccn(); 
         cy.elements().forEach(function(item,index){
@@ -640,12 +689,18 @@ $('#alert_edge').html(text5+text).fadeTo(1000,1);
     }else{
       centralities=[];
     }
+          xtickGenerate();
+      yvalsgenerate();  
+      finalDataGenerate();
+
+
+      render_the_chart();
  });
 
 function xtickGenerate(){
+  xticks=[];
   let min=Math.min.apply(Math,centralities);
   let max=Math.max.apply(Math,centralities);
-  // let max=Math.max(centralities);
   let stepsize=(max-min)/10.00; 
   for (var i = min; i<=max; i+=stepsize) {
     if(i>max){
@@ -657,19 +712,113 @@ function xtickGenerate(){
 }
 
 function yvalsgenerate(){ 
-  
+  yvals=[];
+  let temp10=0;
   xticks.forEach(function(item,index){
     let temp=0;
+
     centralities.forEach(function(item11,index11){
-      if(item11<=item){
+      if(temp10<=item11 && item11<=item){
         temp++;
       }
+
     });
-    yvals.push(parseFloat(((temp/centralities.length)*100.00).toFixed(2)));
-  });
-  console.log(yvals);
+
+    temp10=item; 
+    yvals.push(parseFloat(((temp/centralities.length)*100.00).toFixed(2))); 
+  }); 
+  yvals.sort();
 }
+
+
+function finalDataGenerate(){
+  final_parsed_data=[];
+  xticks.forEach(function(d,i){
+    
+    final_parsed_data.push({
+      id:d,value:yvals[i]
+    })
+  });
+}
+
+
+
+
+
+
+
+
+//from following line we generate lpie chart
+
+      var dcn = cy.$().dcn(); 
+      cy.elements().forEach(function(item,index){
+        if(item.isNode()){
+          centralities.push(dcn.degree(item));
+        }
+      });
+      xtickGenerate();
+      yvalsgenerate();  
+      finalDataGenerate();
+
+
+      render_the_chart();
+
+
+
+
+ function render_the_chart(){
+ $("#pie_chart").html("");  
+ 
+  var margin = {top: 30, right: 40, bottom: 120, left: 50},width = 1500 - margin.left - margin.right,height = 500 - margin.top - margin.bottom;
+ 
+  svg = d3.select("#pie_chart").append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top +margin.bottom).append("g")
+  .attr("transform","translate(" + margin.left + "," + margin.top + ")");
+
+  svg.selectAll("path").remove();
+
+
+  var x = d3.scaleBand().domain(xticks).range([0, width]);
+  
+  var xAxis = d3.axisBottom().scale(x).tickFormat(function(d,i) { return  d; });
+
+
+  svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + height + ")").call(xAxis).selectAll("text").style("text-anchor", "end")
+  .attr("dx", "-.8em").attr("dy", ".15em").attr("transform", function(d) {return "rotate(-65)" });
+ 
+  var y0 = d3.scaleLinear().domain([0,100]).range([height,0]); 
+   
+  var yAxisLeft = d3.axisLeft().scale(y0).ticks(10);
+  
+
+  var valueline = d3.line().x(function(d) {return x(d.id); }).y(function(d) {return y0(d.value); })
+
+
+  svg.append("g").attr("class", "y axis").style("fill", "steelblue").call(yAxisLeft)
+    .append("text").attr("transform", "rotate(-90)").attr("y", 6).attr("dy", ".71em").style("text-anchor", "end").text($("#job1_select option:selected").html());
+ 
+  svg.append("path").style("stroke", "steelblue").attr("d", valueline(final_parsed_data)); 
+ 
+ 
+
+}
+
+
+var clusters = cy.elements().kMeans({
+  k: 2,
+  attributes: [
+    function( node ){ return edge.data('weight'); }
+  ]
+});
+console.log(clusters);
+
+
    })   // document ready ends 
+
+
  </script>
 
+
+
+
+ 
 {% endblock%}
