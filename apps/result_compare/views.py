@@ -36,7 +36,7 @@ class compare_result(APIView):
         return HttpResponse([job1_template,job2_template])
     
     def generate_panel_3(self, request, *args, **kwargs): 
-        print(request.POST)
+        # print(request.POST)
         data={}
         if 'job1_type_param' in request.POST:
             data['job1']=self.gather_data_for_panel3(request.POST['job1'],request.POST['job1_param'],request.POST['job1_type_param'])
@@ -47,7 +47,7 @@ class compare_result(APIView):
             data['job2']=self.gather_data_for_panel3(request.POST['job2'],request.POST['job2_param'],request.POST['job2_type_param'])
         else:
             data['job2']=self.gather_data_for_panel3(request.POST['job2'],request.POST['job2_param'],None)
-        print(data)
+        # print(data)
         return HttpResponse(json.dumps(data), content_type='application/json')
     
     def gather_data_for_panel3(self,job,param,param2):
