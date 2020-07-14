@@ -3,148 +3,148 @@
 {% load staticfiles %}
 
 {% block content %}
- 
+
 <script type="text/javascript" src="{% static 'js/cytoscape.js' %}"></script>
 <script src="{% static 'js/excellentexport.js' %}"></script>
 <link rel="stylesheet" href="{% static 'css/select2.css' %}">
 <link rel="stylesheet" href="{% static 'css/network_vis.css' %}">
 <style media="screen">
-body {
-  font-family: 'Open Sans', 'sans-serif';
-  font-weight: 300;
-  overflow-x: hidden;
+  body {
+    font-family: 'Open Sans', 'sans-serif';
+    font-weight: 300;
+    overflow-x: hidden;
 
-}
-.tabs {
-
-  margin: 0 auto;
-  padding: 0 20px;
-  max-height:800px;
-}
-#tab-button {
-  display: table;
-  table-layout: fixed;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-#tab-button li {
-  display: table-cell;
-  width: 20%;
-}
-#tab-button li a {
-  display: block;
-  padding: .5em;
-  background: #eee;
-  border: 1px solid #ddd;
-  text-align: center;
-  color: #000;
-  text-decoration: none;
-}
-#tab-button li:not(:first-child) a {
-  border-left: none;
-}
-#tab-button li a:hover,
-#tab-button .is-active a {
-  border-bottom-color: transparent;
-  background: #fff;
-}
-.tab-contents {
-  padding: .5em 2em 1em;
-  border: 1px solid #ddd;
-  /* height:100% */
-}
-
-
-
-.tab-button-outer {
-  display: none;
-}
-.tab-contents {
-  margin-top: 20px;
-}
-@media screen and (min-width: 768px) {
-  .tab-button-outer {
-    position: relative;
-    z-index: 2;
-    display: block;
   }
-  .tab-select-outer {
+  .tabs {
+
+    margin: 0 auto;
+    padding: 0 20px;
+    max-height:800px;
+  }
+  #tab-button {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  #tab-button li {
+    display: table-cell;
+    width: 20%;
+  }
+  #tab-button li a {
+    display: block;
+    padding: .5em;
+    background: #eee;
+    border: 1px solid #ddd;
+    text-align: center;
+    color: #000;
+    text-decoration: none;
+  }
+  #tab-button li:not(:first-child) a {
+    border-left: none;
+  }
+  #tab-button li a:hover,
+  #tab-button .is-active a {
+    border-bottom-color: transparent;
+    background: #fff;
+  }
+  .tab-contents {
+    padding: .5em 2em 1em;
+    border: 1px solid #ddd;
+    /* height:100% */
+  }
+
+
+
+  .tab-button-outer {
     display: none;
   }
   .tab-contents {
-    position: relative;
-    top: -1px;
-    margin-top: 0;
+    margin-top: 20px;
+  }
+  @media screen and (min-width: 768px) {
+    .tab-button-outer {
+      position: relative;
+      z-index: 2;
+      display: block;
+    }
+    .tab-select-outer {
+      display: none;
+    }
+    .tab-contents {
+      position: relative;
+      top: -1px;
+      margin-top: 0;
+    }
+
+
+
+
+    .wrap1{
+      display:relative !important;
+      /*border: 5px solid #ddd;*/
+      width:100%;
+      height:1000px;
+    }
+
+    .wrap2{
+      display:relative !important;
+      /*border: 5px solid #ddd;*/
+      width:100%;
+      height:650px;
+      overflow-x: hidden;
+    }
+
+    .wrap3{
+      display:relative !important;
+      /*border: 5px solid #ddd;*/
+      width:100%;
+      height:700px;
+      overflow-x: hidden;
+    }
+    #pie-chart {
+      height:700px;
+    }
+    .wrap:after{
+      display:table;
+      clear:both;
+    }
+
+
+  }
+
+  #cy {
+    position: static;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    height:1000px;
+    /* border:5px solid green !important; */
+  }
+  #cy_second {
+    position: static;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    height:1000px;
+    /* border:5px solid green !important; */
   }
 
 
 
-
-.wrap1{
-  display:relative !important;
-  /*border: 5px solid #ddd;*/
- width:100%;
- height:1000px;
-}
-
-.wrap2{
-  display:relative !important;
-  /*border: 5px solid #ddd;*/
- width:100%;
- height:650px;
- overflow-x: hidden;
-}
-
-.wrap3{
-  display:relative !important;
-  /*border: 5px solid #ddd;*/
- width:100%;
- height:700px;
- overflow-x: hidden;
-}
-#pie-chart {
-height:700px;
-}
-.wrap:after{
-  display:table;
-  clear:both;
-}
-
-
-}
-
-#cy {
-  position: static;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  height:1000px;
- /* border:5px solid green !important; */
-}
-#cy_second {
-  position: static;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  height:1000px;
- /* border:5px solid green !important; */
-}
-
-
-
-/* Important part */
-.modal-dialog{
+  /* Important part */
+  .modal-dialog{
    width: 100%;
-    overflow-y: initial !important
-}
-.modal-body{
-    height: 450px;
-    width:100%;
-    overflow-y: auto;
+   overflow-y: initial !important
+ }
+ .modal-body{
+  height: 450px;
+  width:100%;
+  overflow-y: auto;
 }
 .funny{
   background: red;
@@ -165,35 +165,35 @@ height:700px;
   background: red !important;
   font-weight: 1200;
 }
- .card{
+.card{
   position: relative;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    min-width: 0;
-    word-wrap: break-word;
-    background-color: #fff;
-    background-clip: border-box;
-    border: 0 solid rgba(0,0,0,.125);
-    border-radius: .25rem;
- }
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 0 solid rgba(0,0,0,.125);
+  border-radius: .25rem;
+}
 .card-header {
-    background-color: transparent;
-    border-bottom: 1px solid rgba(0,0,0,.125);
-    padding: 0rem 2.25rem;
-    position: relative;
-    border-top-left-radius: .25rem;
-    border-top-right-radius: .25rem;
-    color: #fff;
+  background-color: transparent;
+  border-bottom: 1px solid rgba(0,0,0,.125);
+  padding: 0rem 2.25rem;
+  position: relative;
+  border-top-left-radius: .25rem;
+  border-top-right-radius: .25rem;
+  color: #fff;
 }
 .card-primary:not(.card-outline)>.card-header {
-    /*background-color: #007bff;*/
-    background-color: #30A2B8;
+  /*background-color: #007bff;*/
+  background-color: #30A2B8;
 }
 
 .wrapper {
-overflow: hidden;
+  overflow: hidden;
 }
 
 
@@ -202,19 +202,19 @@ overflow: hidden;
 .bar { fill: steelblue; }
 
 path { 
-    stroke: steelblue;
-    stroke-width: 2;
-    fill: none;
+  stroke: steelblue;
+  stroke-width: 2;
+  fill: none;
 }
 
 .axis path,
 .axis line {
-    fill: none;
-    stroke: grey;
-    stroke-width: 1;
-    shape-rendering: crispEdges;
+  fill: none;
+  stroke: grey;
+  stroke-width: 1;
+  shape-rendering: crispEdges;
 }
-#panel_3_svg_container{
+#network_density{
   overflow: scroll;
 }
 
@@ -224,7 +224,6 @@ path {
 
 </style>
 
- 
 
 <div class="box box-default">
   <div class="box-header with-border">
@@ -237,46 +236,46 @@ path {
     <div class="row"> 
       <div class="col-md-6">
         <div class="form-group">
-            <label>Filter Edges with Respect to P Value</label>
-            <select class="form-control select2" style="width: 100%;" name="edge_filter" id="edge_filter">
-              <option selected="selected" value="none">N/A </option>  
-                  <option value="0.09">Only keep edges with P value less than 0.09</option>
-                  <option value="0.08">Only keep edges with P value less than  0.08</option>
-                  <option value="0.07">Only keep edges with P value less than  0.07</option>
-                  <option value="0.06">Only keep edges with P value less than  0.06</option>
-                  <option value="0.05">Only keep edges with P value less than  0.05</option>
-                  <option value="0.04">Only keep edges with P value less than  0.04</option>
-                  <option value="0.03">Only keep edges with P value less than  0.03</option>
-                  <option value="0.02">Only keep edges with P value less than  0.02</option>
-                  <option value="0.01">Only keep edges with P value less than  0.01</option>
-            </select>
+          <label>Filter Edges with Respect to P Value</label>
+          <select class="form-control select2" style="width: 100%;" name="edge_filter" id="edge_filter">
+            <option selected="selected" value="none">N/A </option>  
+            <option value="0.09">Only keep edges with P value less than 0.09</option>
+            <option value="0.08">Only keep edges with P value less than  0.08</option>
+            <option value="0.07">Only keep edges with P value less than  0.07</option>
+            <option value="0.06">Only keep edges with P value less than  0.06</option>
+            <option value="0.05">Only keep edges with P value less than  0.05</option>
+            <option value="0.04">Only keep edges with P value less than  0.04</option>
+            <option value="0.03">Only keep edges with P value less than  0.03</option>
+            <option value="0.02">Only keep edges with P value less than  0.02</option>
+            <option value="0.01">Only keep edges with P value less than  0.01</option>
+          </select>
         </div>
       </div>
 
       <div class="col-md-6">
         <div class="form-group">
-            <label>Select Layout Type</label>
-            <select class="form-control select2" style="width: 100%;" name="layout_type" id="layout_type">
-              <option selected="selected" value="circle">Circle</option>
-                  <option value="grid">Grid</option>
-                  <option value="concentric">Concentric</option>
-                  <option value="breadthfirst">Breadth First</option>
-            </select>
+          <label>Select Layout Type</label>
+          <select class="form-control select2" style="width: 100%;" name="layout_type" id="layout_type">
+            <option selected="selected" value="circle">Circle</option>
+            <option value="grid">Grid</option>
+            <option value="concentric">Concentric</option>
+            <option value="breadthfirst">Breadth First</option>
+          </select>
         </div>
       </div>
 
 
     </div>
     <div class="row">
-            <div class="col-md-12">
+      <div class="col-md-12">
         <div class="form-group">
-            <label>Reset  Network</label>
-            <button type="button" name="reset" id="reset" class="btn btn-danger form-control" style="width: 100%;" >Reset</button>
+          <label>Reset  Network</label>
+          <button type="button" name="reset" id="reset" class="btn btn-danger form-control" style="width: 100%;" >Reset</button>
         </div>
       </div>
     </div>
 
- 
+
   </div>
 </div>
 
@@ -308,83 +307,127 @@ path {
          </div>
     </div>
   </div>
-   -->
+-->
 
 
- 
 
- <div class="container-fluid">  
-        <div class="row">
 
-        <div class="col-md-6"> 
-            <div class="card card-primary">
-                  <div class="card-header"><h3>Clicked Object Information</h3></div>
-                  <div class="card-body wrap2">
-                    <row><div class="alert  alert-style" role="alert" name="alert_edge" id="alert_edge" hidden="True" style="height: 100%"></div></row>
-                  </div>
-   
-            </div>
+<div class="container-fluid">  
+  <div class="row">
+
+    <div class="col-md-6"> 
+      <div class="card card-primary">
+        <div class="card-header"><h3>Clicked Object Information</h3></div>
+        <div class="card-body wrap2">
+          <row><div class="alert  alert-style" role="alert" name="alert_edge" id="alert_edge" hidden="True" style="height: 100%"></div></row>
         </div>
 
-        <div class="col-md-6"> 
-          <div class="card card-primary">
-            <div class="card-header"> <h3 class="card-title">More Options For the clicket element</h3></div>
-            <div class="card-body wrap2">  
-                  <div class="container-fluid" id="alert_edge_2"> 
+      </div>
+    </div>
 
-                </div> 
-
-            </div>
-            <div class="card-footer"></div>
+    <div class="col-md-6"> 
+      <div class="card card-primary">
+        <div class="card-header"> <h3 class="card-title">More Options For the clicket element</h3></div>
+        <div class="card-body wrap2">  
+          <div class="container-fluid" id="alert_edge_2"> 
 
           </div> 
+
         </div>
+        <div class="card-footer"></div>
+
+      </div> 
+    </div>
 
 
 
-    </div> 
- </div> 
+  </div> 
+</div> 
 
 
 
-   
-    <div class="container-fluid" style="margin-top: 20px"> 
-      <div class="row">
-        <div class="col-md-12"> 
-            <div class="card card-primary">
-                  <div class="card-header"><h3>Centrality Options</h3></div>
-                  <div class="card-body wrap3">
-                          <div class="col-md-12">
-                            <div class="form-group">
-                                <label>Select A Vertex Centrality Measurement Technique</label>
-                                <select class="form-control select2" style="width: 100%;" name="centrality_distribution" id="centrality_distribution"> 
-                                      <option selected="selected" value="1">Degree Centrality</option>
-                                      <option value="2">Closeness Centrality</option>
-                                      <option value="3">Betweenness Centrality</option>
-                                      <option value="4">Page Rank Centrality</option>
-                                       
-                                </select>
-                            </div>
-                          </div> 
-                          <div class="col-md-12" id="pie_chart"> 
-                   
-                          </div> 
-                  </div>
-   
 
+<div class="container-fluid" style="margin-top: 20px"> 
+  <div class="row">
+    <div class="col-md-12"> 
+      <div class="card card-primary">
+        <div class="card-header"><h3>Centrality Options</h3></div>
+        <div class="card-body wrap3">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Select A Vertex Centrality Measurement Technique</label>
+              <select class="form-control select2" style="width: 100%;" name="centrality_distribution" id="centrality_distribution"> 
+                <option selected="selected" value="1">Degree Centrality</option>
+                <option value="2">Closeness Centrality</option>
+                <option value="3">Betweenness Centrality</option>
+                <option value="4">Page Rank Centrality</option>
 
+              </select>
             </div>
+          </div> 
+          <div class="col-md-12" id="pie_chart"> </div>    
         </div>
-      </div>
 
-            <div class="row">
-              <div class="col-md-12" id="pice_chart"> 
-       
-              </div>
+
+
       </div>
+    </div>
+  </div> 
+</div> 
+
+<div class="container-fluid" style="margin-top: 20px"> 
+  <div class="row">
+    <div class="col-md-12"> 
+      <div class="card card-primary">
+        <div class="card-header"><h3>Centrality Options</h3></div>
+        <div class="card-body wrap3">
+          <div class="col-md-12">
+
+          </div> 
+          <div class="col-md-12" id="network_density"> </div>    
+        </div>
+
+
+
+      </div>
+    </div>
+  </div> 
+</div> 
+<!-- <div class="container-fluid" style="margin-top: 20px"> 
+  <div class="row">
+    <div class="col-md-12"> 
+      <div class="card card-primary">
+        <div class="card-header"><h3>Vertex Centrality of the existing network</h3></div>
+        <div class="card-body wrap3">
+          <div class="col-md-8">
+            <div class="form-group">
+              <label>Select A Vertex Centrality Measurement Technique</label>
+              <select class="form-control select2" style="width: 100%;" name="centrality_distribution_2" id="centrality_distribution_2"> 
+                <option selected="selected" value="1">Degree Centrality</option>
+                <option value="2">Closeness Centrality</option>
+                <option value="3">Betweenness Centrality</option>
+                <option value="4">Page Rank Centrality</option>
+
+              </select>
+            </div>
+          </div> 
+          <div class="col-md-4" >  
+            <div class="form-group">
+              <label>Update  Graph</label>
+              <button type="button" name="update_graph" id="update_graph" class="btn btn-success form-control" style="width: 100%;" >Submit</button>
+            </div> 
+          </div> 
+
+          <div class="col-md-12" id="network_density"> 
+
+          </div>           
+        </div>
+      </div> 
     </div> 
+  </div> 
+</div>  -->
 
- {% endblock%}
+{% endblock%}
 
 {%block scripts %}
 
@@ -399,9 +442,9 @@ path {
 
  let layout_option={ name: 'circle',fit:true,avoidOverlap: true,avoidOverlapPadding: 10};
  let basic_style=[
-     {
-       selector: 'node',
-       style: {
+ {
+   selector: 'node',
+   style: {
          // 'background-color': '#666666',
          'background-color': 'D6D8D9',
          'label': 'data(id)'
@@ -417,54 +460,54 @@ path {
          'target-arrow-shape': 'triangle'
        }
      }
-   ];
+     ];
 
 
-   let datas=[];
+     let datas=[];
 
 
 
 
 
- var cy;
+     var cy;
 
- function generate_cy(){
-   cy = cytoscape({
-   container: document.getElementById('cy'),
-   elements:datas,
-   style: basic_style,
-   layout: layout_option,
-   zoom: 1,
+     function generate_cy(){
+       cy = cytoscape({
+         container: document.getElementById('cy'),
+         elements:datas,
+         style: basic_style,
+         layout: layout_option,
+         zoom: 1,
 
- });
- }
+       });
+     }
 
-  function generate_alert_edge(src,target,value){
-  let text='Clicked Item Type : Edge <br> Source Node : <strong><span style="color:blue">'+src+'</span></strong> <br> Destination Node : <strong><span style="color:blue">'+target+'</span></strong><br> P Value :'+value ; 
-  $('#alert_edge').html(text).fadeTo(1000,1);
- }
-
-
-   $(document).ready(function(){
-   
-    $.ajax({
-            url: "{% url 'api_network_data' 123 %}".replace('123',{{ job_id }}),
-            type: 'GET',
-            dataType: "json",
-            async:false,
-            success: function(data){ 
-              datas= JSON.parse(data); 
-              generate_cy(); 
-            }
-        });
+     function generate_alert_edge(src,target,value){
+      let text='Clicked Item Type : Edge <br> Source Node : <strong><span style="color:blue">'+src+'</span></strong> <br> Destination Node : <strong><span style="color:blue">'+target+'</span></strong><br> P Value :'+value ; 
+      $('#alert_edge').html(text).fadeTo(1000,1);
+    }
 
 
- 
-     $("#edge_filter").change(function(){
+    $(document).ready(function(){
+
+      $.ajax({
+        url: "{% url 'api_network_data' 123 %}".replace('123',{{ job_id }}),
+        type: 'GET',
+        dataType: "json",
+        async:false,
+        success: function(data){ 
+          datas= JSON.parse(data); 
+          generate_cy(); 
+        }
+      });
+
+
+
+      $("#edge_filter").change(function(){
         let value=$("#edge_filter").val()
         var collection = cy.elements('edge[p_value >'+value+']'); 
         cy.remove( collection ); 
-     }); 
+      }); 
 
 
       $(document).on('change','#elements_color_change',function(){ 
@@ -478,26 +521,26 @@ path {
           cy.getElementById(id).style({'background-color':value}); 
           cy.getElementById(id).style({'background-color':value}); 
         }
-     });
+      });
 
 
       $(document).on('click','#remove_element_edge',function(){  
         let id=$("#hidden_clicked_item_id").val();  
         cy.remove(cy.$('#'+id)); 
-            $('#alert_edge').html("").fadeTo(100,1);
-    $('#alert_edge_2').html("").fadeTo(100,1);
-     }); 
+        $('#alert_edge').html("").fadeTo(100,1);
+        $('#alert_edge_2').html("").fadeTo(100,1);
+      }); 
       $(document).on('click','#remove_element_node',function(){ 
-        
+
         let id=$("#hidden_clicked_item_id").val();
         let clickedNode1=cy.getElementById(id); 
         clickedNode1.connectedEdges().forEach(function(item,index){ 
           cy.remove(cy.$('#'+item.id())); 
         });  
         cy.remove(clickedNode1);
-            $('#alert_edge').html("").fadeTo(100,1);
-    $('#alert_edge_2').html("").fadeTo(100,1);
-     });
+        $('#alert_edge').html("").fadeTo(100,1);
+        $('#alert_edge_2').html("").fadeTo(100,1);
+      });
 
 
 
@@ -505,84 +548,84 @@ path {
 
 
       $(document).on('change','#show_other_edges',function(){
- 
+
         let id=$("#hidden_clicked_item_id").val();
         let text5='<br>'+'<table style="width:100%"  class="table"><tr><th>Source Node</th><th>Target Notes</th><th>Connecting Edge P Value</th></tr>';
         let text='';
         if($("#hidden_clicked_item_type").val()==1){
-        let value=$("#show_other_edges").val();
-        let p_value=cy.$('#'+id).data().p_value;
+          let value=$("#show_other_edges").val();
+          let p_value=cy.$('#'+id).data().p_value;
           if(value=='2'){
-               similar_edges=cy.$('edge[p_value='+p_value+']'); 
-               similar_edges.forEach(function(item,index){
-                text5=text5+'<tr><td>'+item.source().id()+'</td><td>'+item.target().id()+'</td><td>'+item.data().p_value+'</td></tr>'
-                let e1=cy.$(item).animation({style: { 'line-color': 'purple'},duration: 3000});
-                e1.play().promise('completed').then(function(){ e1.reverse().rewind().play();});   
-               });
-          }else if(value=='3'){
-                similar_edges=cy.$('edge[p_value<'+p_value+']'); 
-               similar_edges.forEach(function(item,index){
-                 text5=text5+'<tr><td>'+item.source().id()+'</td><td>'+item.target().id()+'</td><td>'+item.data().p_value+'</td></tr>'
-                let e1=cy.$(item).animation({style: { 'line-color': 'purple'},duration: 3000});
-                e1.play().promise('completed').then(function(){ e1.reverse().rewind().play();});  
-               });
-          }else if(value=='4'){
-                similar_edges=cy.$('edge[p_value>'+p_value+']'); 
-               similar_edges.forEach(function(item,index){
-                 text5=text5+'<tr><td>'+item.source().id()+'</td><td>'+item.target().id()+'</td><td>'+item.data().p_value+'</td></tr>'
-                let e1=cy.$(item).animation({style: { 'line-color': 'purple'},duration: 3000});
-                e1.play().promise('completed').then(function(){ e1.reverse().rewind().play();});  
-               });
-          }else{
-
-          }
-          text=text+'Clicked Item Type : Edge <br> Source Node : <strong><span style="color:blue">'+cy.$('#'+id).source().id()+'</span></strong> <br> Destination Node : <strong><span style="color:blue">'+cy.$('#'+id).id()+'</span></strong><br> P Value :'+p_value;
+           similar_edges=cy.$('edge[p_value='+p_value+']'); 
+           similar_edges.forEach(function(item,index){
+            text5=text5+'<tr><td>'+item.source().id()+'</td><td>'+item.target().id()+'</td><td>'+item.data().p_value+'</td></tr>'
+            let e1=cy.$(item).animation({style: { 'line-color': 'purple'},duration: 3000});
+            e1.play().promise('completed').then(function(){ e1.reverse().rewind().play();});   
+          });
+         }else if(value=='3'){
+          similar_edges=cy.$('edge[p_value<'+p_value+']'); 
+          similar_edges.forEach(function(item,index){
+           text5=text5+'<tr><td>'+item.source().id()+'</td><td>'+item.target().id()+'</td><td>'+item.data().p_value+'</td></tr>'
+           let e1=cy.$(item).animation({style: { 'line-color': 'purple'},duration: 3000});
+           e1.play().promise('completed').then(function(){ e1.reverse().rewind().play();});  
+         });
+        }else if(value=='4'){
+          similar_edges=cy.$('edge[p_value>'+p_value+']'); 
+          similar_edges.forEach(function(item,index){
+           text5=text5+'<tr><td>'+item.source().id()+'</td><td>'+item.target().id()+'</td><td>'+item.data().p_value+'</td></tr>'
+           let e1=cy.$(item).animation({style: { 'line-color': 'purple'},duration: 3000});
+           e1.play().promise('completed').then(function(){ e1.reverse().rewind().play();});  
+         });
+        }else{
 
         }
-    text5=text5+'</table>';  
-    $('#alert_edge').html(text+text5).fadeTo(1000,1);            
-     }); 
- 
- 
-cy.edges().on('tap', function(e){
-  var clickedEdge = e.target; 
+        text=text+'Clicked Item Type : Edge <br> Source Node : <strong><span style="color:blue">'+cy.$('#'+id).source().id()+'</span></strong> <br> Destination Node : <strong><span style="color:blue">'+cy.$('#'+id).id()+'</span></strong><br> P Value :'+p_value;
+
+      }
+      text5=text5+'</table>';  
+      $('#alert_edge').html(text+text5).fadeTo(1000,1);            
+    }); 
 
 
-let e1=cy.$(clickedEdge).animation({style: { 'line-color': 'blue'},duration: 1000});
-e1.play().promise('completed').then(function(){ e1.reverse().rewind().play();});
-let s1=cy.$(clickedEdge).source().animation({style: { 'background-color': 'red','width': 75,'height':75},duration: 1000});
-s1.play().promise('completed').then(function(){s1.reverse().rewind().play();}); 
-
-let t2=cy.$(clickedEdge).target().animation({style: { 'background-color': 'red','width': 75,'height':75},duration: 1000});
-t2.play().promise('completed').then(function(){ t2.reverse().rewind().play();}); 
+      cy.edges().on('tap', function(e){
+        var clickedEdge = e.target; 
 
 
+        let e1=cy.$(clickedEdge).animation({style: { 'line-color': 'blue'},duration: 1000});
+        e1.play().promise('completed').then(function(){ e1.reverse().rewind().play();});
+        let s1=cy.$(clickedEdge).source().animation({style: { 'background-color': 'red','width': 75,'height':75},duration: 1000});
+        s1.play().promise('completed').then(function(){s1.reverse().rewind().play();}); 
 
-let text3= '<input type="hidden" id="hidden_clicked_item_type" value="1"><input type="hidden" id="hidden_clicked_item_id" value="'+clickedEdge.id()+'"><div class="col-md-12"><div class="form-group"><label>Change color of this item</label><select class="form-control mr-2" id="elements_color_change"><option value="#1abc9c">Turquoise</option><option value="#16a085">green-sea</option><option value="#2ecc71">emerald</option><option value="#27ae60">Nephritis</option><option value="#3498db">Peter-river</option><option value="#2980b9">Belize-hole</option><option value="#9b59b6">Amethyst</option><option value="#8e44ad">wisteria</option><option value="#34495e">Wet-asphalt</option><option value="#e67e22">carrot</option><option value="#f39c12">Orange</option><option value="#f1c40f">Sunflower</option><option value="#d35400">pumpkin</option><option value="#e74c3c">alizarin</option><option value="#c0392b">pomegranate</option></select></div></div><div class="col-md-12"><div class="form-group"><label>Remove This Element</label><input type="button" class="form-control mr-2 btn btn-danger" id="remove_element_edge" value="Remove"></div></div>'; 
+        let t2=cy.$(clickedEdge).target().animation({style: { 'background-color': 'red','width': 75,'height':75},duration: 1000});
+        t2.play().promise('completed').then(function(){ t2.reverse().rewind().play();}); 
 
-let text4= '<div class="col-md-12"><div class="form-group"><label>Show Other elements</label><select class="form-control mr-2" id="show_other_edges"><option value="1">None</option><option value="2">Show Other Similar Valued Edges</option><option value="3">Show Edges with Lesser P value</option><option value="4">Show Edges with Greater P Values</option></select></div></div>'; 
 
 
-   let text='Clicked Item Type : Edge <br> Source Node : <strong><span style="color:blue">'+clickedEdge.source().id()+'</span></strong> <br> Destination Node : <strong><span style="color:blue">'
-   +clickedEdge.target().id()+'</span></strong><br> P Value :'+clickedEdge.data().p_value;
+        let text3= '<input type="hidden" id="hidden_clicked_item_type" value="1"><input type="hidden" id="hidden_clicked_item_id" value="'+clickedEdge.id()+'"><div class="col-md-12"><div class="form-group"><label>Change color of this item</label><select class="form-control mr-2" id="elements_color_change"><option value="#1abc9c">Turquoise</option><option value="#16a085">green-sea</option><option value="#2ecc71">emerald</option><option value="#27ae60">Nephritis</option><option value="#3498db">Peter-river</option><option value="#2980b9">Belize-hole</option><option value="#9b59b6">Amethyst</option><option value="#8e44ad">wisteria</option><option value="#34495e">Wet-asphalt</option><option value="#e67e22">carrot</option><option value="#f39c12">Orange</option><option value="#f1c40f">Sunflower</option><option value="#d35400">pumpkin</option><option value="#e74c3c">alizarin</option><option value="#c0392b">pomegranate</option></select></div></div><div class="col-md-12"><div class="form-group"><label>Remove This Element</label><input type="button" class="form-control mr-2 btn btn-danger" id="remove_element_edge" value="Remove"></div></div>'; 
 
-    $('#alert_edge').html(text).fadeTo(1000,1);
-    $('#alert_edge_2').html(text4+text3).fadeTo(1000,1);
+        let text4= '<div class="col-md-12"><div class="form-group"><label>Show Other elements</label><select class="form-control mr-2" id="show_other_edges"><option value="1">None</option><option value="2">Show Other Similar Valued Edges</option><option value="3">Show Edges with Lesser P value</option><option value="4">Show Edges with Greater P Values</option></select></div></div>'; 
+
+
+        let text='Clicked Item Type : Edge <br> Source Node : <strong><span style="color:blue">'+clickedEdge.source().id()+'</span></strong> <br> Destination Node : <strong><span style="color:blue">'
+        +clickedEdge.target().id()+'</span></strong><br> P Value :'+clickedEdge.data().p_value;
+
+        $('#alert_edge').html(text).fadeTo(1000,1);
+        $('#alert_edge_2').html(text4+text3).fadeTo(1000,1);
 // generate_alert_edge(cy.$(clickedEdge).source().id(),cy.$(clickedEdge).target().id(),cy.$(clickedEdge).data().p_value);
 });
 
 
-cy.edges().on('cxttap', function(e){
+      cy.edges().on('cxttap', function(e){
 
-  var clickedEdge = e.target;  
-  similar_edges=cy.$('edge[p_value='+clickedEdge.data().p_value+']') 
-   similar_edges.forEach(function(item,index){
-    let e1=cy.$(item).animation({style: { 'line-color': 'purple'},duration: 3000});
-    e1.play().promise('completed').then(function(){ e1.reverse().rewind().play();});  
-   });
-   
-   let text='Clicked Item Type : Edge <br> Source Node : <strong><span style="color:blue">'+clickedEdge.source().id()+'</span></strong> <br> Destination Node : <strong><span style="color:blue">'
-   +clickedEdge.target().id()+'</span></strong><br> P Value :'+clickedEdge.data().p_value;
+        var clickedEdge = e.target;  
+        similar_edges=cy.$('edge[p_value='+clickedEdge.data().p_value+']') 
+        similar_edges.forEach(function(item,index){
+          let e1=cy.$(item).animation({style: { 'line-color': 'purple'},duration: 3000});
+          e1.play().promise('completed').then(function(){ e1.reverse().rewind().play();});  
+        });
+
+        let text='Clicked Item Type : Edge <br> Source Node : <strong><span style="color:blue">'+clickedEdge.source().id()+'</span></strong> <br> Destination Node : <strong><span style="color:blue">'
+        +clickedEdge.target().id()+'</span></strong><br> P Value :'+clickedEdge.data().p_value;
 
 // let text2='<br><div class="row"><div class="col-md-6"><div class="d-flex">'+'<input type="button" class="btn btn-primary" value="Select" id="'+clickedEdge.id()+'" /> </div></div></div>';
 
@@ -592,154 +635,181 @@ let text3= '<input type="hidden" id="hidden_clicked_item_type" value="1"><input 
 let text4= '<div class="col-md-12"><div class="form-group"><label>Show Other elements</label><select class="form-control mr-2" id="show_other_edges"><option value="1">None</option><option value="2">Show Other Similar Valued Edges</option><option value="3">Show Edges with Lesser P value</option><option value="4">Show Edges with Greater P Values</option></select></div></div>'; 
 
 // let text4= '<div class="col-md-12"><div class="form-group"><label>Change color of this item</label><select class="form-control mr-2" id="elements_color_change"><option value="1">1</option><option value="2">2</option></select></div></div>';  
-    
-    $('#alert_edge').html(text).fadeTo(1000,1);
-    $('#alert_edge_2').html(text4+text3).fadeTo(1000,1);
+
+$('#alert_edge').html(text).fadeTo(1000,1);
+$('#alert_edge_2').html(text4+text3).fadeTo(1000,1);
 
 }); 
-cy.nodes().on('cxttap', function(e){ 
-  let clickedNode = e.target; 
+      cy.nodes().on('cxttap', function(e){ 
+        let clickedNode = e.target; 
   let text='<table style="width:100%"  class="table"><tr><th>Source Node</th><th>Target Notes</th><th>Connecting Edge P Value</th></tr>'; // </tr></table> 
 
-    cy.$(clickedNode).connectedEdges().forEach(function(item,index){ 
+  cy.$(clickedNode).connectedEdges().forEach(function(item,index){ 
       // text=text+item.id()+',';
       let e1=cy.$(item).animation({style: { 'line-color': 'green'},duration: 1000});
       e1.play().promise('completed').then(function(){ e1.reverse().rewind().play();});  
       let t2=cy.$(item).target().animation({style: { 'background-color': 'red','width': 75,'height':75},duration: 3000});
       t2.play().promise('completed').then(function(){ t2.reverse().rewind().play();}); 
-    text=text+'<tr><td>'+clickedNode.id()+'</td><td>'+item.id()+'</td><td>'+item.data().p_value+'</td></tr>'
-  });
-    text=text+'</table>';   
-let text3= '<input type="hidden" id="hidden_clicked_item_type" value="2"><input type="hidden" id="hidden_clicked_item_id" value="'+clickedNode.id()+'"><div class="col-md-12"><div class="form-group"><label>Change color of this item</label><select class="form-control mr-2" id="elements_color_change"><option value="#1abc9c">Turquoise</option><option value="#16a085">green-sea</option><option value="#2ecc71">emerald</option><option value="#27ae60">Nephritis</option><option value="#3498db">Peter-river</option><option value="#2980b9">Belize-hole</option><option value="#9b59b6">Amethyst</option><option value="#8e44ad">wisteria</option><option value="#34495e">Wet-asphalt</option><option value="#e67e22">carrot</option><option value="#f39c12">Orange</option><option value="#f1c40f">Sunflower</option><option value="#d35400">pumpkin</option><option value="#e74c3c">alizarin</option><option value="#c0392b">pomegranate</option></select></div></div><div class="col-md-12"><div class="form-group"><label>Remove This Element</label><input type="button" class="form-control mr-2 btn btn-danger" id="remove_element_node" value="Remove"></div></div>';   
-
-$('#alert_edge_2').html(text3).fadeTo(1000,1);   
-$('#alert_edge').html(text).fadeTo(1000,1);  
-});
-
-cy.nodes().on('tap', function(e){ 
-  let clickedNode = e.target; 
-  let text='<table style="width:100%"  class="table"><tr><th>Source Node</th><th>Target Notes</th><th>Connecting Edge P Value</th></tr>'; 
-
-  cy.$(clickedNode).connectedEdges().forEach(function(item,index){  
-    text=text+'<tr><td>'+clickedNode.id()+'</td><td>'+item.id()+'</td><td>'+item.data().p_value+'</td></tr>'
-  });
-   
-  let text5='Clicked Item Type : Node/Vertices <br> Name : <strong><span style="color:blue">'+clickedNode.id()+'</span></strong> <br>';
-
-
+      text=text+'<tr><td>'+clickedNode.id()+'</td><td>'+item.id()+'</td><td>'+item.data().p_value+'</td></tr>'
+    });
   text=text+'</table>';   
   let text3= '<input type="hidden" id="hidden_clicked_item_type" value="2"><input type="hidden" id="hidden_clicked_item_id" value="'+clickedNode.id()+'"><div class="col-md-12"><div class="form-group"><label>Change color of this item</label><select class="form-control mr-2" id="elements_color_change"><option value="#1abc9c">Turquoise</option><option value="#16a085">green-sea</option><option value="#2ecc71">emerald</option><option value="#27ae60">Nephritis</option><option value="#3498db">Peter-river</option><option value="#2980b9">Belize-hole</option><option value="#9b59b6">Amethyst</option><option value="#8e44ad">wisteria</option><option value="#34495e">Wet-asphalt</option><option value="#e67e22">carrot</option><option value="#f39c12">Orange</option><option value="#f1c40f">Sunflower</option><option value="#d35400">pumpkin</option><option value="#e74c3c">alizarin</option><option value="#c0392b">pomegranate</option></select></div></div><div class="col-md-12"><div class="form-group"><label>Remove This Element</label><input type="button" class="form-control mr-2 btn btn-danger" id="remove_element_node" value="Remove"></div></div>';   
 
-$('#alert_edge_2').html(text3).fadeTo(1000,1);   
-$('#alert_edge').html(text5+text).fadeTo(1000,1);  
+  $('#alert_edge_2').html(text3).fadeTo(1000,1);   
+  $('#alert_edge').html(text).fadeTo(1000,1);  
 });
 
+      cy.nodes().on('tap', function(e){ 
+        let clickedNode = e.target; 
+        let text='<table style="width:100%"  class="table"><tr><th>Source Node</th><th>Target Notes</th><th>Connecting Edge P Value</th></tr>'; 
+
+        cy.$(clickedNode).connectedEdges().forEach(function(item,index){  
+          text=text+'<tr><td>'+clickedNode.id()+'</td><td>'+item.id()+'</td><td>'+item.data().p_value+'</td></tr>'
+        });
+
+        let text5='Clicked Item Type : Node/Vertices <br> Name : <strong><span style="color:blue">'+clickedNode.id()+'</span></strong> <br>';
+
+
+        text=text+'</table>';   
+        let text3= '<input type="hidden" id="hidden_clicked_item_type" value="2"><input type="hidden" id="hidden_clicked_item_id" value="'+clickedNode.id()+'"><div class="col-md-12"><div class="form-group"><label>Change color of this item</label><select class="form-control mr-2" id="elements_color_change"><option value="#1abc9c">Turquoise</option><option value="#16a085">green-sea</option><option value="#2ecc71">emerald</option><option value="#27ae60">Nephritis</option><option value="#3498db">Peter-river</option><option value="#2980b9">Belize-hole</option><option value="#9b59b6">Amethyst</option><option value="#8e44ad">wisteria</option><option value="#34495e">Wet-asphalt</option><option value="#e67e22">carrot</option><option value="#f39c12">Orange</option><option value="#f1c40f">Sunflower</option><option value="#d35400">pumpkin</option><option value="#e74c3c">alizarin</option><option value="#c0392b">pomegranate</option></select></div></div><div class="col-md-12"><div class="form-group"><label>Remove This Element</label><input type="button" class="form-control mr-2 btn btn-danger" id="remove_element_node" value="Remove"></div></div>';   
+
+        $('#alert_edge_2').html(text3).fadeTo(1000,1);   
+        $('#alert_edge').html(text5+text).fadeTo(1000,1);  
+      });
 
 
 
 
 
- $("#layout_type").change(function(){
-   let lyname=$( this ).val();
+
+      $("#layout_type").change(function(){
+       let lyname=$( this ).val();
    // cy.reset();
    cy.layout({ name:lyname,fit:true,avoidOverlap: true,avoidOverlapPadding: 10}).run();
 
  });
 
 
-let centralities=[]
-let xticks=[]
-let yvals=[]
-var svg;
-var final_parsed_data=[];
+      let centralities=[];
+      let xticks=[];
+      let yvals=[];
+      var svg;
+      var svg2;
+      var final_parsed_data=[];
+      var final_parsed_data_2=[];
+      var keys=[];
 
- $("#centrality_distribution").change(function(){
-    centralities=[];
 
-  if($("#centrality_distribution").val()==1){
-      var dcn = cy.$().dcn(); 
-      cy.elements().forEach(function(item,index){
-        if(item.isNode()){
-          centralities.push(dcn.degree(item));
-        }
-      });
- 
-    }else if($("#centrality_distribution").val()==2){ 
-        var ccn = cy.$().ccn(); 
-        cy.elements().forEach(function(item,index){
-              if(item.isNode()){                         
-                 centralities.push(ccn.closeness(item));
-              }
+
+function centralities_data_generation(){
+        centralities=[];
+        keys=[];
+
+        if($("#centrality_distribution").val()==1){
+          var dcn = cy.$().dcn(); 
+          cy.elements().forEach(function(item,index){
+            if(item.isNode()){
+              // console.log(dcn.degree(item));
+              centralities.push(dcn.degree(item));
+              keys.push(item.id());
+            }
           });
 
-    }else if($("#centrality_distribution").val()==3){ 
-        var bc = cy.$().bc();
-        cy.elements().forEach(function(item,index){
-              if(item.isNode()){                       
-                centralities.push(bc.betweenness(item));
-              }
+        }else if($("#centrality_distribution").val()==2){ 
+          var ccn = cy.$().ccn(); 
+          cy.elements().forEach(function(item,index){
+            if(item.isNode()){          
+
+              // console.log(ccn.closeness(item));               
+             centralities.push(ccn.closeness(item));
+             keys.push(item.id());
+           }
+         });
+
+        }else if($("#centrality_distribution").val()==3){ 
+          var bc = cy.$().bc();
+          cy.elements().forEach(function(item,index){
+            if(item.isNode()){                       
+              centralities.push(bc.betweenness(item));
+              keys.push(item.id());
+            }
           });
-    }else if($("#centrality_distribution").val()==4){ 
-       var pr = cy.elements().pageRank();
-        cy.elements().forEach(function(item,index){
-              if(item.isNode()){                       
-                centralities.push(pr.rank(item));
-              }
-          });
-    }else{
-      centralities=[];
-    }
-          xtickGenerate();
+        }else if($("#centrality_distribution").val()==4){ 
+         var pr = cy.elements().pageRank();
+         cy.elements().forEach(function(item,index){
+          if(item.isNode()){                       
+            centralities.push(pr.rank(item));
+            keys.push(item.id());
+          }
+        });
+       }else{
+        centralities=[];
+      }
+      xtickGenerate();
       yvalsgenerate();  
       finalDataGenerate();
-
-
+      finalDataGenerate2();
       render_the_chart();
- });
-
-function xtickGenerate(){
-  xticks=[];
-  let min=Math.min.apply(Math,centralities);
-  let max=Math.max.apply(Math,centralities);
-  let stepsize=(max-min)/10.00; 
-  for (var i = min; i<=max; i+=stepsize) {
-    if(i>max){
-      xticks.push(max);
-    }else{
-      xticks.push(i);
+      render_the_chart_2();
     }
-  }
-}
 
-function yvalsgenerate(){ 
-  yvals=[];
-  let temp10=0;
-  xticks.forEach(function(item,index){
-    let temp=0;
+      $("#centrality_distribution").change(function(){
+        centralities_data_generation();
+      });
 
-    centralities.forEach(function(item11,index11){
-      if(temp10<=item11 && item11<=item){
-        temp++;
+      function xtickGenerate(){
+        xticks=[];
+        let min=Math.min.apply(Math,centralities);
+        let max=Math.max.apply(Math,centralities);
+        let stepsize=(max-min)/10.00; 
+        for (var i = min; i<=max; i+=stepsize) {
+          if(i>max){
+            xticks.push(max);
+          }else{
+            xticks.push(i);
+          }
+        }
       }
 
-    });
+      function yvalsgenerate(){ 
+        yvals=[];
+        let temp10=0;
+        xticks.forEach(function(item,index){
+          let temp=0;
 
-    temp10=item; 
-    yvals.push(parseFloat(((temp/centralities.length)*100.00).toFixed(2))); 
-  }); 
-  yvals.sort();
-}
+          centralities.forEach(function(item11,index11){
+            if(temp10<=item11 && item11<=item){
+              temp++;
+            }
+
+          });
+
+          temp10=item; 
+          yvals.push(parseFloat(((temp/centralities.length)*100.00).toFixed(2))); 
+        }); 
+        yvals.sort();
+      }
 
 
-function finalDataGenerate(){
-  final_parsed_data=[];
-  xticks.forEach(function(d,i){
-    
-    final_parsed_data.push({
-      id:d,value:yvals[i]
-    })
-  });
-}
+      function finalDataGenerate(){
+        final_parsed_data=[];
+        xticks.forEach(function(d,i){
+
+          final_parsed_data.push({
+            id:d,value:yvals[i]
+          })
+        });
+      }
+
+      function finalDataGenerate2(){
+        final_parsed_data_2=[];
+        keys.forEach(function(d,i){
+          // console.log(yvals[i]);
+          final_parsed_data_2.push({
+            id:d,value:centralities[i]
+          })
+        });
+      }
 
 
 
@@ -750,66 +820,117 @@ function finalDataGenerate(){
 
 //from following line we generate lpie chart
 
-      var dcn = cy.$().dcn(); 
-      cy.elements().forEach(function(item,index){
-        if(item.isNode()){
-          centralities.push(dcn.degree(item));
-        }
-      });
-      xtickGenerate();
-      yvalsgenerate();  
-      finalDataGenerate();
+var dcn = cy.$().dcn(); 
+cy.elements().forEach(function(item,index){
+  if(item.isNode()){
+    centralities.push(dcn.degree(item));
+  }
+});
 
 
-      render_the_chart();
+// xtickGenerate();
+// yvalsgenerate();  
+// finalDataGenerate();
+centralities_data_generation()
+// finalDataGenerate2();
+
+
+// render_the_chart();
+// render_the_chart_2();
 
 
 
 
- function render_the_chart(){
+function render_the_chart(){
  $("#pie_chart").html("");  
  
-  var margin = {top: 30, right: 40, bottom: 120, left: 50},width = 1500 - margin.left - margin.right,height = 500 - margin.top - margin.bottom;
+ var margin = {top: 30, right: 40, bottom: 120, left: 50},width = 1500 - margin.left - margin.right,height = 500 - margin.top - margin.bottom;
  
-  svg = d3.select("#pie_chart").append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top +margin.bottom).append("g")
-  .attr("transform","translate(" + margin.left + "," + margin.top + ")");
+ svg = d3.select("#pie_chart").append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top +margin.bottom).append("g")
+ .attr("transform","translate(" + margin.left + "," + margin.top + ")");
 
-  svg.selectAll("path").remove();
-
-
-  var x = d3.scaleBand().domain(xticks).range([0, width]);
-  
-  var xAxis = d3.axisBottom().scale(x).tickFormat(function(d,i) { return  d; });
+ svg.selectAll("path").remove();
 
 
-  svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + height + ")").call(xAxis).selectAll("text").style("text-anchor", "end")
-  .attr("dx", "-.8em").attr("dy", ".15em").attr("transform", function(d) {return "rotate(-65)" });
+ var x = d3.scaleBand().domain(xticks).range([0, width]);
+
+ var xAxis = d3.axisBottom().scale(x).tickFormat(function(d,i) { return  d; });
+
+
+ svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + height + ")").call(xAxis).selectAll("text").style("text-anchor", "end")
+ .attr("dx", "-.8em").attr("dy", ".15em").attr("transform", function(d) {return "rotate(-65)" });
  
-  var y0 = d3.scaleLinear().domain([0,100]).range([height,0]); 
-   
-  var yAxisLeft = d3.axisLeft().scale(y0).ticks(10);
-  
+ var y0 = d3.scaleLinear().domain([0,100]).range([height,0]); 
 
-  var valueline = d3.line().x(function(d) {return x(d.id); }).y(function(d) {return y0(d.value); })
+ var yAxisLeft = d3.axisLeft().scale(y0).ticks(10);
 
 
-  svg.append("g").attr("class", "y axis").style("fill", "steelblue").call(yAxisLeft)
-    .append("text").attr("transform", "rotate(-90)").attr("y", 6).attr("dy", ".71em").style("text-anchor", "end").text($("#job1_select option:selected").html());
+ var valueline = d3.line().x(function(d) {return x(d.id); }).y(function(d) {return y0(d.value); })
+
+
+ svg.append("g").attr("class", "y axis").style("fill", "steelblue").call(yAxisLeft)
+ .append("text").attr("transform", "rotate(-90)").attr("y", 6).attr("dy", ".71em").style("text-anchor", "end").text($("#job1_select option:selected").html());
  
-  svg.append("path").style("stroke", "steelblue").attr("d", valueline(final_parsed_data)); 
+ svg.append("path").style("stroke", "steelblue").attr("d", valueline(final_parsed_data)); 
  
  
 
 }
 
 
-var clusters = cy.elements().kMeans({
-  k: 2,
-  attributes: [
-    function( node ){ return edge.data('weight'); }
-  ]
-});
-console.log(clusters);
+// var clusters = cy.elements().kMeans({
+//   k: 2,
+//   attributes: [
+//   function( node ){ return edge.data('weight'); }
+//   ]
+// });
+// console.log(clusters);
+
+
+
+
+
+
+function render_the_chart_2(){
+
+// console.log(final_parsed_data_2);
+ $("#network_density").html("");  
+ 
+ var margin = {top: 30, right: 40, bottom: 120, left: 50},width = (keys.length*22) - margin.left - margin.right,height = 500 - margin.top - margin.bottom;
+ 
+ svg2 = d3.select("#network_density").append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top +margin.bottom).append("g")
+ .attr("transform","translate(" + margin.left + "," + margin.top + ")");
+
+ svg2.selectAll("path").remove();
+ var x = d3.scaleBand().domain(keys).range([0, width]);
+ var xAxis = d3.axisBottom().scale(x).tickFormat(function(d,i) { return  d; });
+
+ svg2.append("g").attr("class", "x axis").attr("transform", "translate(0," + height + ")").call(xAxis).selectAll("text").style("text-anchor", "end")
+ .attr("dx", "-.8em").attr("dy", ".15em").attr("transform", function(d) {return "rotate(-65)" });
+ 
+ // var y0 = d3.scaleLinear().domain([0,100]).range([height,0]); 
+ var y0 = d3.scaleLinear().domain([d3.min(final_parsed_data_2, function(d) {return Math.min(d.value);}), d3.max(final_parsed_data_2, function(d) {return Math.max(d.value);})]).range([height,0]); 
+
+
+
+
+ var yAxisLeft = d3.axisLeft().scale(y0).ticks(10);
+ var valueline = d3.line().x(function(d) {return x(d.id); }).y(function(d) {return y0(d.value); })
+
+
+ svg2.append("g").attr("class", "y axis").style("fill", "steelblue").call(yAxisLeft)
+ .append("text").attr("transform", "rotate(-90)").attr("y", 6).attr("dy", ".71em").style("text-anchor", "end").text($("#job1_select option:selected").html());
+ 
+  svg2.append("path").style("stroke", "red").attr("d", valueline(final_parsed_data_2)); 
+ 
+ 
+
+}
+
+
+
+
+
 
 
    })   // document ready ends 
@@ -821,4 +942,4 @@ console.log(clusters);
 
 
  
-{% endblock%}
+ {% endblock%}

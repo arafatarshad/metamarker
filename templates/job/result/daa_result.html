@@ -10,122 +10,122 @@
 <link rel="stylesheet" href="{% static 'css/select2.css/' %}">
 <style media="screen">
   body {
-  font-family: 'Open Sans', sans-serif;
-  font-weight: 300;
-}
-.tabs {
-
-  margin: 0 auto;
-  padding: 0 20px;
-  max-height:800px;
-}
-#tab-button {
-  display: table;
-  table-layout: fixed;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-#tab-button li {
-  display: table-cell;
-  width: 20%;
-}
-#tab-button li a {
-  display: block;
-  padding: .5em;
-  background: #eee;
-  border: 1px solid #ddd;
-  text-align: center;
-  color: #000;
-  text-decoration: none;
-}
-#tab-button li:not(:first-child) a {
-  border-left: none;
-}
-#tab-button li a:hover,
-#tab-button .is-active a {
-  border-bottom-color: transparent;
-  background: #fff;
-}
-.tab-contents {
-  padding: .5em 2em 1em;
-  border: 1px solid #ddd;
-  /* height:100% */
-}
-
-
-
-.tab-button-outer {
-  display: none;
-}
-.tab-contents {
-  margin-top: 20px;
-}
-@media screen and (min-width: 768px) {
-  .tab-button-outer {
-    position: relative;
-    z-index: 2;
-    display: block;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
   }
-  .tab-select-outer {
+  .tabs {
+
+    margin: 0 auto;
+    padding: 0 20px;
+    max-height:800px;
+  }
+  #tab-button {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  #tab-button li {
+    display: table-cell;
+    width: 20%;
+  }
+  #tab-button li a {
+    display: block;
+    padding: .5em;
+    background: #eee;
+    border: 1px solid #ddd;
+    text-align: center;
+    color: #000;
+    text-decoration: none;
+  }
+  #tab-button li:not(:first-child) a {
+    border-left: none;
+  }
+  #tab-button li a:hover,
+  #tab-button .is-active a {
+    border-bottom-color: transparent;
+    background: #fff;
+  }
+  .tab-contents {
+    padding: .5em 2em 1em;
+    border: 1px solid #ddd;
+    /* height:100% */
+  }
+
+
+
+  .tab-button-outer {
     display: none;
   }
   .tab-contents {
-    position: relative;
-    top: -1px;
-    margin-top: 0;
+    margin-top: 20px;
+  }
+  @media screen and (min-width: 768px) {
+    .tab-button-outer {
+      position: relative;
+      z-index: 2;
+      display: block;
+    }
+    .tab-select-outer {
+      display: none;
+    }
+    .tab-contents {
+      position: relative;
+      top: -1px;
+      margin-top: 0;
+    }
+
+
+
+
+    .wrap1{
+      display:relative !important;
+
+      /*border: 5px solid #ddd;*/
+      width:100%;
+      height:1000px;
+    }
+
+    .wrap:after{
+      display:table;
+      clear:both;
+    }
+
+
+  }
+
+  #cy {
+    position: static;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    height:1000px;
+    /* border:5px solid green !important; */
+  }
+  #cy_second {
+    position: static;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    height:1000px;
+    /* border:5px solid green !important; */
   }
 
 
 
-
-.wrap1{
-  display:relative !important;
-
-  /*border: 5px solid #ddd;*/
- width:100%;
- height:1000px;
-}
-
-.wrap:after{
-  display:table;
-  clear:both;
-}
-
-
-}
-
-#cy {
-  position: static;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  height:1000px;
- /* border:5px solid green !important; */
-}
-#cy_second {
-  position: static;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  height:1000px;
- /* border:5px solid green !important; */
-}
-
-
-
-/* Important part */
-.modal-dialog{
+  /* Important part */
+  .modal-dialog{
    width: 100%;
-    overflow-y: initial !important
-}
-.modal-body{
-    height: 450px;
-    width:100%;
-    overflow-y: auto;
+   overflow-y: initial !important
+ }
+ .modal-body{
+  height: 450px;
+  width:100%;
+  overflow-y: auto;
 }
 
 </style>
@@ -141,47 +141,47 @@
     </div>
   </div>
   
-    <div class=" table-container" style="width:auto;overflow:auto;margin-top:30px">
+  <div class=" table-container" style="width:auto;overflow:auto;margin-top:30px">
 
-          <div class="tabs">
-           <div class="tab-button-outer">
-             <ul id="tab-button">
-               <li><a href="#tab01">Initial Differential Correlation Matrix</a></li> 
-               <li><a href="#tab02">Significance matrix</a></li>
-             </ul>
-           </div>
-           <div class="tab-select-outer">
-             <select id="tab-select">
-               <option value="#tab01"></option> 
-               <option value="#tab02"></option>
+    <div class="tabs">
+     <div class="tab-button-outer">
+       <ul id="tab-button">
+         <li><a href="#tab01">Initial Differential Correlation Matrix</a></li> 
+         <li><a href="#tab02">Significance matrix</a></li>
+       </ul>
+     </div>
+     <div class="tab-select-outer">
+       <select id="tab-select">
+         <option value="#tab01"></option> 
+         <option value="#tab02"></option>
 
-             </select>
-           </div>
+       </select>
+     </div>
 
-           <div id="tab01" class="tab-contents">
+     <div id="tab01" class="tab-contents">
 
-             <h2>Tab 1</h2>
-             <div class=" table-container" style="width:auto;overflow:auto;margin-top:30px">
-               {% if table %}
-                 <div >
-                 {{ table|safe }}
-                 </div>
-               {% endif %}
-             </div>
-           </div> 
-           <div id="tab02" class="tab-contents">
-             <h2>Tab 3</h2>
-             {% if table1 %}
-               <div >
-               {{ table1|safe }}
-               </div>
-             {% endif %}
+       <h2>Tab 1</h2>
+       <div class=" table-container" style="width:auto;overflow:auto;margin-top:30px">
+         {% if table %}
+         <div >
+           {{ table|safe }}
+         </div>
+         {% endif %}
+       </div>
+     </div> 
+     <div id="tab02" class="tab-contents">
+       <h2>Tab 3</h2>
+       {% if table1 %}
+       <div >
+         {{ table1|safe }}
+       </div>
+       {% endif %}
 
-              </div>
+     </div>
 
-          </div>
-    </div>
-  </div>
+   </div>
+ </div>
+</div>
 </div>
 
 
@@ -197,47 +197,47 @@
     <div class="row">
       <div class="col-md-3">
         <div class="form-group">
-            <label>Select Layout Type</label>
-            <select class="form-control select2" style="width: 100%;" name="layout_type" id="layout_type">
-              <option selected="selected" value="circle">Circle</option>
-                  <option value="grid">Grid</option>
-                  <option value="concentric">Concentric</option>
-                  <option value="breadthfirst">Breadth First</option>
-            </select>
+          <label>Select Layout Type</label>
+          <select class="form-control select2" style="width: 100%;" name="layout_type" id="layout_type">
+            <option selected="selected" value="circle">Circle</option>
+            <option value="grid">Grid</option>
+            <option value="concentric">Concentric</option>
+            <option value="breadthfirst">Breadth First</option>
+          </select>
         </div>
       </div>
       <div class="col-md-3">
         <div class="form-group">
-            <label>Generate Centrality Measures</label>
-            <select class="form-control select2" style="width: 100%;" name="centrality_type" id="centrality_type">
-              <option selected="selected" value="all">All</option>
-                  <option value="degree">Degree</option>
-                  <option value="closeness">Closeness Centrality</option>
-                  <option value="betweenness">Betweenness Centrality</option>
-                  <option value="pagerank">Page Rank Centrality</option>
-            </select>
-        </div>
-      </div>
-
-      <div class="col-md-3">
-        <div class="form-group">
-            <label>Show nodes that belong to </label>
-            <select class="form-control select2" style="width: 100%;" name="node_visibility_type" id="node_visibility_type">
-              <option selected="selected" value="none">N/A </option>
-                  <option value="90">90% central</option>
-                  <option value="80">Most 80% central</option>
-                  <option value="70">Most 70% central</option>
-                  <option value="60">Most 60% central</option>
-                  <option value="50">Most 50% central</option>
-                  <option value="40">Most 40% central</option>
-            </select>
+          <label>Generate Centrality Measures</label>
+          <select class="form-control select2" style="width: 100%;" name="centrality_type" id="centrality_type">
+            <option selected="selected" value="all">All</option>
+            <option value="degree">Degree</option>
+            <option value="closeness">Closeness Centrality</option>
+            <option value="betweenness">Betweenness Centrality</option>
+            <option value="pagerank">Page Rank Centrality</option>
+          </select>
         </div>
       </div>
 
       <div class="col-md-3">
         <div class="form-group">
-            <label>Reset  Network</label>
-            <button type="button" name="reset" id="reset" class="btn btn-danger form-control" style="width: 100%;" >Reset</button>
+          <label>Show nodes that belong to </label>
+          <select class="form-control select2" style="width: 100%;" name="node_visibility_type" id="node_visibility_type">
+            <option selected="selected" value="none">N/A </option>
+            <option value="90">90% central</option>
+            <option value="80">Most 80% central</option>
+            <option value="70">Most 70% central</option>
+            <option value="60">Most 60% central</option>
+            <option value="50">Most 50% central</option>
+            <option value="40">Most 40% central</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Reset  Network</label>
+          <button type="button" name="reset" id="reset" class="btn btn-danger form-control" style="width: 100%;" >Reset</button>
         </div>
       </div>
 
@@ -262,12 +262,12 @@
 
 <div class="box box-default">
   <div class="box-body"> 
-      <label>For More Networking Option</label>
-            <a href="{% url 'more_networks_options' job%}" class="btn btn-danger form-control">Click On the Button </a> 
+    <label>For More Networking Option</label>
+    <a href="{% url 'more_networks_options' job%}" class="btn btn-danger form-control">Click On the Button </a> 
   </div>
 </div>
 
- 
+
 
 <div class="modal modal-info fade" id="modal-info">
   <div class="modal-dialog">
@@ -275,61 +275,62 @@
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Information</h4>
+          <h4 class="modal-title">Information</h4>
+        </div>
+        <div class="modal-body">
+          <p>Please Wait, this may take a while &hellip;</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+          <!-- <button type="button" class="btn btn-outline">Save changes</button> -->
+        </div>
       </div>
-      <div class="modal-body">
-        <p>Please Wait, this may take a while &hellip;</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
-        <!-- <button type="button" class="btn btn-outline">Save changes</button> -->
-      </div>
+      <!-- /.modal-content -->
     </div>
-    <!-- /.modal-content -->
+    <!-- /.modal-dialog -->
   </div>
-  <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
+  <!-- /.modal -->
 
 
-      <!-- <div id="cy"></div> -->
-{% endblock%}
+  <!-- <div id="cy"></div> -->
+  {% endblock%}
 
-{%block scripts %}
-<script src="{% static 'js/select2.js' %}"></script>
-<script type="text/javascript">
-  let margin = {top: 30, right: 10, bottom: 10, left: 0};
+  {%block scripts %}
+  <script src="{% static 'js/select2.js' %}"></script>
+  <script type="text/javascript">
+    let margin = {top: 30, right: 10, bottom: 10, left: 0};
 
- $(function() {
-   var $tabButtonItem = $('#tab-button li'),
-       $tabSelect = $('#tab-select'),
-       $tabContents = $('.tab-contents'),
-       activeClass = 'is-active';
+    $(function() {
+     var $tabButtonItem = $('#tab-button li'),
+     $tabSelect = $('#tab-select'),
+     $tabContents = $('.tab-contents'),
+     activeClass = 'is-active';
 
-   $tabButtonItem.first().addClass(activeClass);
-   $tabContents.not(':first').hide();
+     $tabButtonItem.first().addClass(activeClass);
+     $tabContents.not(':first').hide();
 
-   $tabButtonItem.find('a').on('click', function(e) {
-     var target = $(this).attr('href');
+     $tabButtonItem.find('a').on('click', function(e) {
+       var target = $(this).attr('href');
 
-     $tabButtonItem.removeClass(activeClass);
-     $(this).parent().addClass(activeClass);
-     $tabSelect.val(target);
-     $tabContents.hide();
-     $(target).show();
-     e.preventDefault();
+       $tabButtonItem.removeClass(activeClass);
+       $(this).parent().addClass(activeClass);
+       $tabSelect.val(target);
+       $tabContents.hide();
+       $(target).show();
+       e.preventDefault();
+     });
+
+     $tabSelect.on('change', function() {
+       var target = $(this).val(),
+       targetSelectNum = $(this).prop('selectedIndex');
+
+       $tabButtonItem.removeClass(activeClass);
+       $tabButtonItem.eq(targetSelectNum).addClass(activeClass);
+       $tabContents.hide();
+       $(target).show();
+     });
    });
 
-   $tabSelect.on('change', function() {
-     var target = $(this).val(),
-         targetSelectNum = $(this).prop('selectedIndex');
-
-     $tabButtonItem.removeClass(activeClass);
-     $tabButtonItem.eq(targetSelectNum).addClass(activeClass);
-     $tabContents.hide();
-     $(target).show();
-   });
- });
 
 
 
@@ -342,26 +343,25 @@
 
 
 
-
- let layout_option={ name: 'circle',fit:true,avoidOverlap: true,avoidOverlapPadding: 10};
- let basic_style=[
-     {
-       selector: 'node',
-       style: {
-         'background-color': '#666666',
-         'label': 'data(id)'
-       }
-     },
-
-     {
-       selector: 'edge',
-       style: {
-         'width': 3,
-         'line-color': '#ccc',
-         'target-arrow-color': '#ccc',
-         'target-arrow-shape': 'triangle'
-       }
+    let layout_option={ name: 'circle',fit:true,avoidOverlap: true,avoidOverlapPadding: 10};
+    let basic_style=[
+    {
+     selector: 'node',
+     style: {
+       'background-color': '#666666',
+       'label': 'data(id)'
      }
+   },
+
+   {
+     selector: 'edge',
+     style: {
+       'width': 3,
+       'line-color': '#ccc',
+       'target-arrow-color': '#ccc',
+       'target-arrow-shape': 'triangle'
+     }
+   }
    ];
 
 
@@ -398,38 +398,38 @@
      "group": "nodes"
    }, 
 
-    {"data": { "id": "e638",  "source": "n100", "target": "n104"},"group": "edges"},
-    {"data": { "id": "e639",  "source": "n101", "target": "n104"},"group": "edges"},
-    {"data": { "id": "e640",  "source": "n101", "target": "n100"},"group": "edges"},
-    {"data": { "id": "e641",  "source": "n103", "target": "n102"},"group": "edges"},
-    {"data": { "id": "e642",  "source": "n102", "target": "n105"},"group": "edges"},
-    {"data": { "id": "e643",  "source": "n102", "target": "n100"},"group": "edges"},
+   {"data": { "id": "e638",  "source": "n100", "target": "n104"},"group": "edges"},
+   {"data": { "id": "e639",  "source": "n101", "target": "n104"},"group": "edges"},
+   {"data": { "id": "e640",  "source": "n101", "target": "n100"},"group": "edges"},
+   {"data": { "id": "e641",  "source": "n103", "target": "n102"},"group": "edges"},
+   {"data": { "id": "e642",  "source": "n102", "target": "n105"},"group": "edges"},
+   {"data": { "id": "e643",  "source": "n102", "target": "n100"},"group": "edges"},
 
-    {"data": { "id": "e648",  "source": "n105", "target": "n104"},"group": "edges"},
-    {"data": { "id": "e649",  "source": "n106", "target": "n104"},"group": "edges"},
-    {"data": { "id": "e650",  "source": "n108", "target": "n104"},"group": "edges"},
-    {"data": { "id": "e651",  "source": "n109", "target": "n103"},"group": "edges"},
-    {"data": { "id": "e652",  "source": "n109", "target": "n108"},"group": "edges"},
-
-
-  ];
+   {"data": { "id": "e648",  "source": "n105", "target": "n104"},"group": "edges"},
+   {"data": { "id": "e649",  "source": "n106", "target": "n104"},"group": "edges"},
+   {"data": { "id": "e650",  "source": "n108", "target": "n104"},"group": "edges"},
+   {"data": { "id": "e651",  "source": "n109", "target": "n103"},"group": "edges"},
+   {"data": { "id": "e652",  "source": "n109", "target": "n108"},"group": "edges"},
 
 
+   ];
 
 
 
- var cy;
 
- function generate_cy(){
-   cy = cytoscape({
-   container: document.getElementById('cy'),
-   elements:datas,
-   style: basic_style,
-   layout: layout_option,
-   zoom: 1,
 
- });
- }
+   var cy;
+
+   function generate_cy(){
+     cy = cytoscape({
+       container: document.getElementById('cy'),
+       elements:datas,
+       style: basic_style,
+       layout: layout_option,
+       zoom: 1,
+
+     });
+   }
  // var cy_second;
  // function generate_cy_second(){ 
 
@@ -478,28 +478,28 @@
 
 
 
-    $.ajax({
-            url: "{% url 'api_network_data' 123 %}".replace('123',{{ job }}),
-            type: 'GET',
-            dataType: "json",
-            async:false,
-            success: function(data){
-              datas= JSON.parse(data); 
-              generate_cy();
+  $.ajax({
+    url: "{% url 'api_network_data' 123 %}".replace('123',{{ job }}),
+    type: 'GET',
+    dataType: "json",
+    async:false,
+    success: function(data){
+      datas= JSON.parse(data); 
+      generate_cy();
               // generate_cy_second();
             }
-        });
+          });
 
-       cy.on('tap', 'node', function(evt){ 
-        var jname =  evt.target.data().id;  
-        cy.elements().style('background-color','#666666'); 
-        var j = cy.$(jname).neighbourhood(); 
-        cy.$(jname).style('background-color','green'); 
-        j.forEach(function(item,index){ 
-          item.style('background-color','red');
-        }); 
+  cy.on('tap', 'node', function(evt){ 
+    var jname =  evt.target.data().id;  
+    cy.elements().style('background-color','#666666'); 
+    var j = cy.$(jname).neighbourhood(); 
+    cy.$(jname).style('background-color','green'); 
+    j.forEach(function(item,index){ 
+      item.style('background-color','red');
+    }); 
 
-      });
+  });
 
       // $("#neighbour_node").select2({
       //     placeholder: "Select a feature from the list",
@@ -519,7 +519,7 @@
       //   // console.log()
       // });
       
- });
+    });
 
 
 
@@ -541,89 +541,89 @@
 
 
  $("#centrality_type").change(function(){
-$('#modal-info').modal("show");
+  $('#modal-info').modal("show");
 // $('#modal-info').html("");
- generateModalBody($(this).val());
- });
+generateModalBody($(this).val());
+});
 
 
 
-function generateModalBody(tableType){
+ function generateModalBody(tableType){
   switch(tableType) {
     case 'all':
-        $('#modal-info').find('.modal-body').html(generateAllTable());
+    $('#modal-info').find('.modal-body').html(generateAllTable());
         // $('#modal-info').find('.modal-body').html("generating all table");
         console.log("clicked all table");
         break;
-    case 'degree':
+        case 'degree':
         $('#modal-info').find('.modal-body').html(generateDegreeCentralityTable());
                 // $('#modal-info').find('.modal-body').html("generating degree table");
-        console.log("clicked Degree table")
-      break;
-    case 'closeness':
-        $('#modal-info').find('.modal-body').html(generateClosenessCentralityTable());
+                console.log("clicked Degree table")
+                break;
+                case 'closeness':
+                $('#modal-info').find('.modal-body').html(generateClosenessCentralityTable());
                 // $('#modal-info').find('.modal-body').html("generating closeness table");
-        console.log("clicked closeness table")
-      break;
-    case 'betweenness':
-        $('#modal-info').find('.modal-body').html(generateBetweenNessCentralityTable());
+                console.log("clicked closeness table")
+                break;
+                case 'betweenness':
+                $('#modal-info').find('.modal-body').html(generateBetweenNessCentralityTable());
                 // $('#modal-info').find('.modal-body').html("generating betweenness table");
-        console.log("clicked betweenness table")
-      break;
-    default:
-        $('#modal-info').find('.modal-body').html(generatePageRankCentralityTable());
+                console.log("clicked betweenness table")
+                break;
+                default:
+                $('#modal-info').find('.modal-body').html(generatePageRankCentralityTable());
         // $('#modal-info').find('.modal-body').html("generating pagerank table");
         console.log("clicked pagerank table")
-}
+      }
 
-}
-
-
-
-
-
-
-function generateDegreeCentralityTable(){
-  var table='<a download="somedata.csv" href="#" onclick="return ExcellentExport.csv(this,'+"'datatable'"+');">Export to CSV</a>'+'<table id="example" class="table table-bordered nowrap" style="width:100%">'
-            +'<thead>  <tr> <th>Name</th> <th>Degree Centrality</th></tr></thead><tbody>'
-              +generateDegreeCentrality()+'</tbody></table>';
-  return table;
-}
-
-
-
-function generateDegreeCentrality(){
-  
-  var table_row="";
-  var dcn = cy.$().dcn();
-  cy.elements().forEach(function(item,index){
-    if(item.isNode()){
-      table_row=table_row+'<tr><td>'+item.id()+'</td><td>'+ dcn.degree('#'+item.id())+'</td></tr>';
     }
-  });
-  return table_row;
-}
 
 
 
 
 
-function generateClosenessCentralityTable(){
-  var table='<a download="somedata.csv" href="#" onclick="return ExcellentExport.csv(this,'+"'datatable'"+');">Export to CSV</a>'+'<table id="example" class="table table-bordered nowrap" style="width:100%">'
-            +'<thead>  <tr> <th>Name</th> <th>Closeness Centrality</th></tr></thead><tbody>'
-              +generateClosenessCentrality()+'</tbody></table>';
-  return table;
-}
-function generateClosenessCentrality(){
-  var table_row="";
-    var ccn = cy.$().ccn();
+
+    function generateDegreeCentralityTable(){
+      var table='<a download="somedata.csv" href="#" onclick="return ExcellentExport.csv(this,'+"'datatable'"+');">Export to CSV</a>'+'<table id="example" class="table table-bordered nowrap" style="width:100%">'
+      +'<thead>  <tr> <th>Name</th> <th>Degree Centrality</th></tr></thead><tbody>'
+      +generateDegreeCentrality()+'</tbody></table>';
+      return table;
+    }
+
+
+
+    function generateDegreeCentrality(){
+      
+      var table_row="";
+      var dcn = cy.$().dcn();
+      cy.elements().forEach(function(item,index){
+        if(item.isNode()){
+          table_row=table_row+'<tr><td>'+item.id()+'</td><td>'+ dcn.degree('#'+item.id())+'</td></tr>';
+        }
+      });
+      return table_row;
+    }
+
+
+
+
+
+    function generateClosenessCentralityTable(){
+      var table='<a download="somedata.csv" href="#" onclick="return ExcellentExport.csv(this,'+"'datatable'"+');">Export to CSV</a>'+'<table id="example" class="table table-bordered nowrap" style="width:100%">'
+      +'<thead>  <tr> <th>Name</th> <th>Closeness Centrality</th></tr></thead><tbody>'
+      +generateClosenessCentrality()+'</tbody></table>';
+      return table;
+    }
+    function generateClosenessCentrality(){
+      var table_row="";
+      var ccn = cy.$().ccn();
 
     // console.log(ccn);
     cy.elements().forEach(function(item,index){
       if(item.isNode()){
 
         try {
-                table_row=table_row+'<tr><td>'+item.id()+'</td><td>'+ ccn.closeness('#'+item.id())+'</td></tr>';
+          table_row=table_row+'<tr><td>'+item.id()+'</td><td>'+ ccn.closeness('#'+item.id())+'</td></tr>';
         }
         catch(err) {
             // table_row=table_row+'<tr><td>'+item.id()+'</td><td>'+ "Could not generate centrality measure"+'</td></tr>';
@@ -636,113 +636,113 @@ function generateClosenessCentrality(){
       }
 
 
+    });
+    return table_row;
+  }
+
+
+
+
+
+  function generateBetweenNessCentralityTable(){
+    var table='<a download="somedata.csv" href="#" onclick="return ExcellentExport.csv(this,'+"'datatable'"+');">Export to CSV</a>'+'<table id="example" class="table table-bordered nowrap" style="width:100%">'
+    +'<thead>  <tr> <th>Name</th> <th>Betweenness Centrality</th></tr></thead><tbody>'
+    +generateBetweenNessCentrality()+'</tbody></table>';
+    return table;
+  }
+  function generateBetweenNessCentrality(){
+    var table_row="";
+    var bc = cy.$().bc();
+    cy.elements().forEach(function(item,index){
+      if(item.isNode()){
+        table_row=table_row+'<tr><td>'+item.id()+'</td><td>'+ bc.betweenness('#'+item.id())+'</td></tr>';
+      }
+
+    });
+    return table_row;
+  }
+
+
+
+
+
+
+
+  function generatePageRankCentralityTable(){
+    var table='<a download="somedata.csv" href="#" onclick="return ExcellentExport.csv(this,'+"'datatable'"+');">Export to CSV</a>'+'<table id="example" class="table table-bordered nowrap" style="width:100%">'
+    +'<thead>  <tr> <th>Name</th> <th>PageRank Centrality</th></tr></thead><tbody>'
+    +generatePageRankCentrality()+'</tbody></table>';
+    return table;
+  }
+  function generatePageRankCentrality(){
+    var table_row="";
+    var pr = cy.elements().pageRank();
+    cy.elements().forEach(function(item,index){
+      if(item.isNode()){
+
+
+
+        try {
+          table_row=table_row+'<tr><td>'+item.id()+'</td><td>'+ pr.rank('#'+item.id())+'</td></tr>';
+        }
+        catch(err) {
+          table_row=table_row+'<tr><td>'+item.id()+'</td><td>'+ "Could not generate centrality measure"+'</td></tr>';
+          console.log("couldnot generate it for "+item.id());
+        }
+
+
+      }
+
+    });
+    return table_row;
+  }
+
+
+
+
+
+
+
+
+
+
+
+  function generateAllTable(){
+    var table='<a download="somedata.csv" href="#" onclick="return ExcellentExport.csv(this,'+"'datatable'"+');">Export to CSV</a>'+'<table id="example" class="table table-bordered nowrap" style="width:100%">'
+    +'<thead>  <tr> <th>Name</th> <th>Degree Centrality</th> <th>Closeness Centrality</th><th>Betweenness Centrality</th><th>Page rank Centrality</th></tr></thead><tbody>'
+    +generateAllCentrality()+'</tbody></table>'+'<a download="somedata.csv" href="#" onclick="return ExcellentExport.csv(this,'+"'example'"+');">Export to CSV</a>';
+    return table;
+  }
+
+
+
+
+  function generateAllCentrality(){
+    var table_row="";
+    var dcn = cy.$().dcn();
+    var bc = cy.$().bc();
+    var ccn = cy.$().ccn();
+    var pr = cy.elements().pageRank();
+
+    cy.elements().forEach(function(item,index){
+      if(item.isNode()){
+        table_row=table_row+'<tr><td>'+item.id()+'</td><td>'+ dcn.degree('#'+item.id())+'</td><td>'+ccn.closeness('#'+item.id())+'</td><td>'+bc.betweenness('#'+item.id())+'</td><td>'+pr.rank('#'+item.id())+'</td></tr>';
+      }
+
+    });
+    return table_row;
+  }
+
+
+  $("#node_visibility_type").change(function(){
+    stockCentralityMeasure($( this ).val());
   });
-  return table_row;
-}
 
 
+  function stockCentralityMeasure(mlength){
 
-
-
-function generateBetweenNessCentralityTable(){
-  var table='<a download="somedata.csv" href="#" onclick="return ExcellentExport.csv(this,'+"'datatable'"+');">Export to CSV</a>'+'<table id="example" class="table table-bordered nowrap" style="width:100%">'
-            +'<thead>  <tr> <th>Name</th> <th>Betweenness Centrality</th></tr></thead><tbody>'
-              +generateBetweenNessCentrality()+'</tbody></table>';
-  return table;
-}
-function generateBetweenNessCentrality(){
-  var table_row="";
-  var bc = cy.$().bc();
-  cy.elements().forEach(function(item,index){
-    if(item.isNode()){
-      table_row=table_row+'<tr><td>'+item.id()+'</td><td>'+ bc.betweenness('#'+item.id())+'</td></tr>';
-    }
-
-  });
-  return table_row;
-}
-
-
-
-
-
-
-
-function generatePageRankCentralityTable(){
-  var table='<a download="somedata.csv" href="#" onclick="return ExcellentExport.csv(this,'+"'datatable'"+');">Export to CSV</a>'+'<table id="example" class="table table-bordered nowrap" style="width:100%">'
-            +'<thead>  <tr> <th>Name</th> <th>PageRank Centrality</th></tr></thead><tbody>'
-              +generatePageRankCentrality()+'</tbody></table>';
-  return table;
-}
-function generatePageRankCentrality(){
-  var table_row="";
-  var pr = cy.elements().pageRank();
-  cy.elements().forEach(function(item,index){
-    if(item.isNode()){
-
-
-
-              try {
-                table_row=table_row+'<tr><td>'+item.id()+'</td><td>'+ pr.rank('#'+item.id())+'</td></tr>';
-              }
-              catch(err) {
-                  table_row=table_row+'<tr><td>'+item.id()+'</td><td>'+ "Could not generate centrality measure"+'</td></tr>';
-                console.log("couldnot generate it for "+item.id());
-              }
-
-
-    }
-
-  });
-  return table_row;
-}
-
-
-
-
-
-
-
-
-
-
-
-function generateAllTable(){
-  var table='<a download="somedata.csv" href="#" onclick="return ExcellentExport.csv(this,'+"'datatable'"+');">Export to CSV</a>'+'<table id="example" class="table table-bordered nowrap" style="width:100%">'
-            +'<thead>  <tr> <th>Name</th> <th>Degree Centrality</th> <th>Closeness Centrality</th><th>Betweenness Centrality</th><th>Page rank Centrality</th></tr></thead><tbody>'
-              +generateAllCentrality()+'</tbody></table>'+'<a download="somedata.csv" href="#" onclick="return ExcellentExport.csv(this,'+"'example'"+');">Export to CSV</a>';
-  return table;
-}
-
-
-
-
-function generateAllCentrality(){
-  var table_row="";
-  var dcn = cy.$().dcn();
-  var bc = cy.$().bc();
-  var ccn = cy.$().ccn();
-  var pr = cy.elements().pageRank();
-
-  cy.elements().forEach(function(item,index){
-    if(item.isNode()){
-      table_row=table_row+'<tr><td>'+item.id()+'</td><td>'+ dcn.degree('#'+item.id())+'</td><td>'+ccn.closeness('#'+item.id())+'</td><td>'+bc.betweenness('#'+item.id())+'</td><td>'+pr.rank('#'+item.id())+'</td></tr>';
-    }
-
-  });
-  return table_row;
-}
-
-
-$("#node_visibility_type").change(function(){
-  stockCentralityMeasure($( this ).val());
-});
-
-
-function stockCentralityMeasure(mlength){
-
-  var node_centrality_positive=[]
-  var node_centrality_remove=[]
+    var node_centrality_positive=[]
+    var node_centrality_remove=[]
 
 
     var dcn = cy.$().dcn();
@@ -764,19 +764,19 @@ function stockCentralityMeasure(mlength){
       // console.log();
       cy.remove('#'+node_centrality_positive[index]['name']);
     }
-}
+  }
 
 
-function compare(a, b) {
-  if (a.centrality < b.centrality) return 1;
-  if (b.centrality < a.centrality) return -1;
+  function compare(a, b) {
+    if (a.centrality < b.centrality) return 1;
+    if (b.centrality < a.centrality) return -1;
 
-  return 0;
-}
+    return 0;
+  }
 
 
 
-$("#reset").click(function(){
+  $("#reset").click(function(){
   // console.log("asds");
   // cy.elements.remove();
   // cy.destroy();

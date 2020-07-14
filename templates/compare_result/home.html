@@ -13,46 +13,46 @@
 
 <style media="screen">
 
-body {
-  font-family: 'Open Sans', sans-serif;
-  font-weight: 300;
-}
- 
+  body {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+  }
+  
 
-.wrap1{
-  display:relative !important;
+  .wrap1{
+    display:relative !important;
 
-  border: 5px solid #ddd;
- width:100%;
- height:1000px;
-}
-
-.wrap:after{
-  display:table;
-  clear:both;
-}
- 
-.modal-dialog{
-   width: 100%;
-    overflow-y: initial !important
-}
-.modal-body{
-    height: 450px;
+    border: 5px solid #ddd;
     width:100%;
-    overflow-y: auto;
+    height:1000px;
+  }
+
+  .wrap:after{
+    display:table;
+    clear:both;
+  }
+  
+  .modal-dialog{
+   width: 100%;
+   overflow-y: initial !important
+ }
+ .modal-body{
+  height: 450px;
+  width:100%;
+  overflow-y: auto;
 }
 path { 
-    stroke: steelblue;
-    stroke-width: 2;
-    fill: none;
+  stroke: steelblue;
+  stroke-width: 2;
+  fill: none;
 }
 
 .axis path,
 .axis line {
-    fill: none;
-    stroke: grey;
-    stroke-width: 1;
-    shape-rendering: crispEdges;
+  fill: none;
+  stroke: grey;
+  stroke-width: 1;
+  shape-rendering: crispEdges;
 }
 #panel_3_svg_container{
   overflow: scroll;
@@ -64,7 +64,7 @@ path {
 </style>
 
 
- 
+
 
 <div class="box box-default">
   <div class="box-header with-border">
@@ -75,54 +75,54 @@ path {
   </div>
   <div class="box-body">
   	<form name="panel_1_form" id="panel_1_form" action="{% url 'generate_panel_2' %}">
-  		  	    <div hidden class="col-md-12 alert alert-info" id="selcetion_alert" role="alert">
-           Select job for both the form.
-		</div>  
-    <div class="row">
+     <div hidden class="col-md-12 alert alert-info" id="selcetion_alert" role="alert">
+       Select job for both the form.
+     </div>  
+     <div class="row">
 
       <div class="col-md-4">
         <div class="form-group">
-            <label>Select The First job</label>
-            <select class="form-control select2" style="width: 100%;" name="job1_select" id="job1_select"> 
-            	{% for job in jobs %}
-            		<option value={{job.id}}>{{job.name}}</option> 
-				{% endfor %}
-            </select>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="form-group">
-            <label>Select The First job</label>
-            <select class="form-control select2" style="width: 100%;" name="job2_select" id="job2_select"> 
-            	            	{% for job in jobs %}
-            		<option value={{job.id}}>{{job.name}}</option> 
-				{% endfor %}
+          <label>Select The First job</label>
+          <select class="form-control select2" style="width: 100%;" name="job1_select" id="job1_select"> 
+           {% for job in jobs %}
+           <option value={{job.id}}>{{job.name}}</option> 
+           {% endfor %}
+         </select>
+       </div>
+     </div>
+     <div class="col-md-4">
+      <div class="form-group">
+        <label>Select The First job</label>
+        <select class="form-control select2" style="width: 100%;" name="job2_select" id="job2_select"> 
+          {% for job in jobs %}
+          <option value={{job.id}}>{{job.name}}</option> 
+          {% endfor %}
 
-            </select>
-        </div>
+        </select>
       </div>
-
-      <div class="col-md-2">
-        <div class="form-group">
-            <label>Confirm</label>
-            <button type="button" name="confirm" id="confirm" class="btn btn-success form-control" style="width: 100%;" onclick="generate_panel_2()">Submit</button>
-        </div>
-      </div>
-      <div class="col-md-2">
-        <div class="form-group">
-            <label>Reset</label>
-            <button type="button" name="reset" id="reset" class="btn btn-danger form-control" style="width: 100%;" onclick="all_panel_reset()">Reset</button>
-        </div>
-      </div>
-
     </div>
 
-  	</form> 
+    <div class="col-md-2">
+      <div class="form-group">
+        <label>Confirm</label>
+        <button type="button" name="confirm" id="confirm" class="btn btn-success form-control" style="width: 100%;" onclick="generate_panel_2()">Submit</button>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="form-group">
+        <label>Reset</label>
+        <button type="button" name="reset" id="reset" class="btn btn-danger form-control" style="width: 100%;" onclick="all_panel_reset()">Reset</button>
+      </div>
+    </div>
+
   </div>
+
+</form> 
+</div>
 </div>
 
- 
- <div class="box box-default">
+
+<div class="box box-default">
   <div class="box-header with-border">
     <h3 class="box-title">Step 2</h3>
     <div class="box-tools pull-right">
@@ -136,15 +136,15 @@ path {
 
 
 
- <div class="box box-default">
+<div class="box box-default">
   <div class="box-header with-border">
     <h3 class="box-title">Result</h3>
     <div class="box-tools pull-right">
       <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
     </div>
   </div> 
-   <div class="box-body" id="panel_3_selection_container"></div> 
-   <div class="box-body" id="panel_3_svg_container"></div> 
+  <div class="box-body" id="panel_3_selection_container"></div> 
+  <div class="box-body" id="panel_3_svg_container"></div> 
 </div>
 
 
@@ -156,35 +156,35 @@ path {
 <script src="{% static 'js/select2.js' %}"></script>
 <script type="text/javascript">
 
-   $( document ).ready(function(){
-      $('li#compare_result').addClass("active");
+ $( document ).ready(function(){
+  $('li#compare_result').addClass("active");
 
-      $("#job1_select").select2({
-          placeholder: "Select a feature from the list",
-          allowClear: true
-      }); 
-    $("#job2_select").select2({
-          placeholder: "Select a feature from the list",
-          allowClear: true
-      });    
- });
+  $("#job1_select").select2({
+    placeholder: "Select a feature from the list",
+    allowClear: true
+  }); 
+  $("#job2_select").select2({
+    placeholder: "Select a feature from the list",
+    allowClear: true
+  });    
+});
 
-  var job_1_parsed_data=[]
-  var job_2_parsed_data=[]
-  var final_parsed_data=[]
+ var job_1_parsed_data=[]
+ var job_2_parsed_data=[]
+ var final_parsed_data=[]
 
-  var keys_1=[]
-  var keys_2=[]
+ var keys_1=[]
+ var keys_2=[]
 
-  var job1=null;
-  var job2=null;
-  var job1_param=null;
-  var job2_param=null;  
-  var svg=null;
-function render_panel_2(data){
-	$("#panel_2_job_form").html(data);
-}
-function all_panel_reset(){
+ var job1=null;
+ var job2=null;
+ var job1_param=null;
+ var job2_param=null;  
+ var svg=null;
+ function render_panel_2(data){
+   $("#panel_2_job_form").html(data);
+ }
+ function all_panel_reset(){
   $('#job1_select').val(null).trigger('change');
   $('#job2_select').val(null).trigger('change');
   $("#panel_2_job_form").html("");
@@ -205,27 +205,27 @@ function go_to_third_panel(){
   if($('#job_tracker_1').val()==3){ 
     data.job1_type_param=$('#pls_result_type_1').val();    
   }
-	if($('#job_tracker_2').val()==3){ 
+  if($('#job_tracker_2').val()==3){ 
     data.job2_type_param=$('#pls_result_type_2').val();
   }
-	
-	if((job1==null) || (job2==null)){ 
- 		$('#selcetion_alert').fadeIn(1000).fadeOut(3000);
-	}else{ 
-		var token = '{{csrf_token}}';
-		$.ajax({
-			headers: { "X-CSRFToken": token },
-			type: "POST",
-            url: $("#panel_2_job_form").attr('action'), 
-            data: data,
-            success: function (data) {  
-               parse_data_for_chart(data);
-            },
-            error: function (e) {
-             alert('Error');
-            }
-        });	
-	}	
+  
+  if((job1==null) || (job2==null)){ 
+   $('#selcetion_alert').fadeIn(1000).fadeOut(3000);
+ }else{ 
+  var token = '{{csrf_token}}';
+  $.ajax({
+   headers: { "X-CSRFToken": token },
+   type: "POST",
+   url: $("#panel_2_job_form").attr('action'), 
+   data: data,
+   success: function (data) {  
+     parse_data_for_chart(data);
+   },
+   error: function (e) {
+     alert('Error');
+   }
+ });	
+}	
 }
 
 
@@ -247,21 +247,21 @@ function parse_data_for_chart(data){
 }
 
 function parse_helper(selecter,values){
-    if(selecter==1){
-      if($('#job_tracker_1').val()==1)
-        parse_pca_job_data(1,values)
-      else if($('#job_tracker_1').val()==2) 
-        parse_dca_job_data(1,values)
-      else 
-        parse_pls_job_data(1,values)
-    }else{
-      if($('#job_tracker_2').val()==1)
-        parse_pca_job_data(2,values)
-      else if($('#job_tracker_2').val()==2) 
-        parse_dca_job_data(2,values)
-      else 
-        parse_pls_job_data(2,values)
-    } 
+  if(selecter==1){
+    if($('#job_tracker_1').val()==1)
+      parse_pca_job_data(1,values)
+    else if($('#job_tracker_1').val()==2) 
+      parse_dca_job_data(1,values)
+    else 
+      parse_pls_job_data(1,values)
+  }else{
+    if($('#job_tracker_2').val()==1)
+      parse_pca_job_data(2,values)
+    else if($('#job_tracker_2').val()==2) 
+      parse_dca_job_data(2,values)
+    else 
+      parse_pls_job_data(2,values)
+  } 
 }
 
 function parse_pca_job_data(selector,values){
@@ -295,114 +295,114 @@ function parse_pls_job_data(selector,values){
 
 function parse_dca_job_data(selector,values){  
   // console.log(values);
-    var cy = cytoscape({
+  var cy = cytoscape({
     elements:JSON.parse(values),
   }); 
-    if(selector==1){
-      if (job1_param=="degree_centrality") {
-        parse_dca_degree(selector,cy,values);
-      }
-      else if (job1_param=="page-rank_centrality") {
-        parse_dca_pagerank(selector,cy,values);
-      }
-      else if (job1_param=="betweenness_centrality") {
-        parse_dca_betweenness(selector,cy,values);
-      }
-      else{
-        parse_dca_closeness(selector,cy,values);
-      }
+  if(selector==1){
+    if (job1_param=="degree_centrality") {
+      parse_dca_degree(selector,cy,values);
     }
-    else{ 
-      if (job2_param=="degree_centrality") {
-        parse_dca_degree(selector,cy,values);
-      }
-      else if (job2_param=="page-rank_centrality") {
-        parse_dca_pagerank(selector,cy,values);
-      }
-      else if (job2_param=="betweenness_centrality") {
-        parse_dca_betweenness(selector,cy,values);
-      }
-      else{
-        parse_dca_closeness(selector,cy,values);
-      }
-    } 
+    else if (job1_param=="page-rank_centrality") {
+      parse_dca_pagerank(selector,cy,values);
+    }
+    else if (job1_param=="betweenness_centrality") {
+      parse_dca_betweenness(selector,cy,values);
+    }
+    else{
+      parse_dca_closeness(selector,cy,values);
+    }
+  }
+  else{ 
+    if (job2_param=="degree_centrality") {
+      parse_dca_degree(selector,cy,values);
+    }
+    else if (job2_param=="page-rank_centrality") {
+      parse_dca_pagerank(selector,cy,values);
+    }
+    else if (job2_param=="betweenness_centrality") {
+      parse_dca_betweenness(selector,cy,values);
+    }
+    else{
+      parse_dca_closeness(selector,cy,values);
+    }
+  } 
 }
 
 
 function parse_dca_degree(selector,cy,values){  
  var dcn = cy.$().dcn();
-  
-    
-    if (selector==1) {
-      cy.elements().forEach(function(item,index){
-        if(item.isNode()){ 
-        keys_1.push(item.id());
-        try {
+ 
+ 
+ if (selector==1) {
+  cy.elements().forEach(function(item,index){
+    if(item.isNode()){ 
+      keys_1.push(item.id());
+      try {
 
-          var centrality= dcn.degree('#'+item.id());  
-          if(isNaN(centrality)){ 
-             job_1_parsed_data.push(0); 
-          }
-          else{
-            job_1_parsed_data.push(centrality);
-          }
-        
-        }
-        catch(err) {
-             job_1_parsed_data.push(0);
-        }
-        
-      }         
-      });
-    }else{
-      cy.elements().forEach(function(item,index){
-        if(item.isNode()){ 
-        keys_2.push(item.id());
-        try { 
-            var centrality= dcn.degree('#'+item.id());
+        var centrality= dcn.degree('#'+item.id());  
+        if(isNaN(centrality)){ 
+         job_1_parsed_data.push(0); 
+       }
+       else{
+        job_1_parsed_data.push(centrality);
+      }
+      
+    }
+    catch(err) {
+     job_1_parsed_data.push(0);
+   }
+   
+ }         
+});
+}else{
+  cy.elements().forEach(function(item,index){
+    if(item.isNode()){ 
+      keys_2.push(item.id());
+      try { 
+        var centrality= dcn.degree('#'+item.id());
 
-          if(isNaN(centrality))
-            job_2_parsed_data.push(0);
-          else 
-            job_2_parsed_data.push(centrality);
-        }
-        catch(err) {
-             job_2_parsed_data.push(0);
-        }
-        
-      }         
-      });
-    } 
+        if(isNaN(centrality))
+          job_2_parsed_data.push(0);
+        else 
+          job_2_parsed_data.push(centrality);
+      }
+      catch(err) {
+       job_2_parsed_data.push(0);
+     }
+     
+   }         
+ });
+} 
     // console.log(job_2_parsed_data)
-}
-function parse_dca_closeness(selector,cy,values){  
-  var ccn = cy.$().ccn();   
+  }
+  function parse_dca_closeness(selector,cy,values){  
+    var ccn = cy.$().ccn();   
     if (selector==1) {
       cy.elements().forEach(function(item,index){
         if(item.isNode()){ 
-        keys_1.push(item.id());
-        try { 
+          keys_1.push(item.id());
+          try { 
 
-          var centrality= ccn.closeness('#'+item.id());  
-          if(isNaN(centrality)){ 
-            job_1_parsed_data.push(0); 
-          }
-          else{
-            job_1_parsed_data.push(centrality);
-          }
+            var centrality= ccn.closeness('#'+item.id());  
+            if(isNaN(centrality)){ 
+              job_1_parsed_data.push(0); 
+            }
+            else{
+              job_1_parsed_data.push(centrality);
+            }
 
-        }
-        catch(err) {
+          }
+          catch(err) {
             job_2_parsed_data.push(0);
-        }
-        
-      }         
+          }
+          
+        }         
       });
     }else{
       cy.elements().forEach(function(item,index){
         if(item.isNode()){ 
-        keys_2.push(item.id());
-        try {
+          keys_2.push(item.id());
+          try {
 
 
           // job_2_parsed_data.push(ccn.closeness('#'+item.id()));
@@ -416,131 +416,131 @@ function parse_dca_closeness(selector,cy,values){
 
         }
         catch(err) {
-            job_2_parsed_data.push(0);
+          job_2_parsed_data.push(0);
         }
         
       }         
-      });
+    });
     } 
-}
-function parse_dca_betweenness(selector,cy,values){  
- var bc = cy.$().bc(); 
- if (selector==1) {
-      cy.elements().forEach(function(item,index){
-        if(item.isNode()){ 
+  }
+  function parse_dca_betweenness(selector,cy,values){  
+   var bc = cy.$().bc(); 
+   if (selector==1) {
+    cy.elements().forEach(function(item,index){
+      if(item.isNode()){ 
         keys_1.push(item.id());
         try {
 
             // job_1_parsed_data.push(bc.betweenness('#'+item.id()));
-          var centrality= bc.betweenness('#'+item.id());  
-          if(isNaN(centrality)){ 
-            job_1_parsed_data.push(0); 
+            var centrality= bc.betweenness('#'+item.id());  
+            if(isNaN(centrality)){ 
+              job_1_parsed_data.push(0); 
+            }
+            else{
+              job_1_parsed_data.push(centrality);
+            }
+
+
+
           }
-          else{
-            job_1_parsed_data.push(centrality);
-          }
-
-
-
-        }
-        catch(err) {
+          catch(err) {
             job_1_parsed_data.push(0);
-        }
-        
-      }         
+          }
+          
+        }         
       });
-    }else{
-      cy.elements().forEach(function(item,index){
-        if(item.isNode()){ 
+  }else{
+    cy.elements().forEach(function(item,index){
+      if(item.isNode()){ 
         keys_2.push(item.id());
         try {
             // job_2_parsed_data.push(bc.betweenness('#'+item.id()));
                         // job_1_parsed_data.push(bc.betweenness('#'+item.id()));
-          var centrality= bc.betweenness('#'+item.id());  
-          if(isNaN(centrality)){ 
-            job_2_parsed_data.push(0); 
-          }
-          else{
-            job_2_parsed_data.push(centrality);
-          }
-        }
-        catch(err) {
-            job_2_parsed_data.push(0);
-        }
-        
-      }         
-      });
-    } 
+                        var centrality= bc.betweenness('#'+item.id());  
+                        if(isNaN(centrality)){ 
+                          job_2_parsed_data.push(0); 
+                        }
+                        else{
+                          job_2_parsed_data.push(centrality);
+                        }
+                      }
+                      catch(err) {
+                        job_2_parsed_data.push(0);
+                      }
+                      
+                    }         
+                  });
+  } 
 }
 function parse_dca_pagerank(selector,cy,values){  
-   var pr = cy.elements().pageRank(); 
-    if (selector==1) {
-      cy.elements().forEach(function(item,index){
-        if(item.isNode()){ 
-        keys_1.push(item.id());
-        try {
+ var pr = cy.elements().pageRank(); 
+ if (selector==1) {
+  cy.elements().forEach(function(item,index){
+    if(item.isNode()){ 
+      keys_1.push(item.id());
+      try {
             // job_1_parsed_data.push(pr.rank('#'+item.id()));
                         // job_1_parsed_data.push(bc.betweenness('#'+item.id()));
-          var centrality= pr.rank('#'+item.id());  
-          if(isNaN(centrality)){ 
-            job_1_parsed_data.push(0); 
-          }
-          else{
-            job_1_parsed_data.push(centrality);
-          }
-        }
-        catch(err) {
-            job_1_parsed_data.push(0);
-        }
-        
-      }         
-      });
-    }else{
-      cy.elements().forEach(function(item,index){
-        if(item.isNode()){ 
-        keys_2.push(item.id());
-        try {
+                        var centrality= pr.rank('#'+item.id());  
+                        if(isNaN(centrality)){ 
+                          job_1_parsed_data.push(0); 
+                        }
+                        else{
+                          job_1_parsed_data.push(centrality);
+                        }
+                      }
+                      catch(err) {
+                        job_1_parsed_data.push(0);
+                      }
+                      
+                    }         
+                  });
+}else{
+  cy.elements().forEach(function(item,index){
+    if(item.isNode()){ 
+      keys_2.push(item.id());
+      try {
             // job_2_parsed_data.push(pr.rank('#'+item.id()));
-          var centrality= pr.rank('#'+item.id());  
-          if(isNaN(centrality)){ 
-            job_2_parsed_data.push(0); 
+            var centrality= pr.rank('#'+item.id());  
+            if(isNaN(centrality)){ 
+              job_2_parsed_data.push(0); 
+            }
+            else{
+              job_2_parsed_data.push(centrality);
+            }
           }
-          else{
-            job_2_parsed_data.push(centrality);
-          }
-        }
-        catch(err) {
+          catch(err) {
             job_2_parsed_data.push(0);
-        }
-        
-      }         
+          }
+          
+        }         
       });
-    } 
+} 
 }
 
 
 function generate_panel_2(){
- 	var job1=$('#job1_select').val();
-	var job2=$('#job2_select').val();
+  var job1=$('#job1_select').val();
+  var job2=$('#job2_select').val();
 
-	if((job1==null) || (job2==null)){ 
- 		$('#selcetion_alert').fadeIn(1000).fadeOut(3000);
-	}else{
+  if((job1==null) || (job2==null)){ 
+   $('#selcetion_alert').fadeIn(1000).fadeOut(3000);
+ }else{
 
-		var token = '{{csrf_token}}';
-		$.ajax({
-			headers: { "X-CSRFToken": token },
-			type: "POST",
-            url: $("#panel_1_form").attr('action'), 
-            data: $("#panel_1_form").serialize(),
-            success: function (data) {
-               render_panel_2(data); 
-            },
-            error: function (e) {
-             alert('Error');
-            }
-        });		
-	}
+  var token = '{{csrf_token}}';
+  $.ajax({
+   headers: { "X-CSRFToken": token },
+   type: "POST",
+   url: $("#panel_1_form").attr('action'), 
+   data: $("#panel_1_form").serialize(),
+   success: function (data) {
+     render_panel_2(data); 
+   },
+   error: function (e) {
+     alert('Error');
+   }
+ });		
+}
 }		
 
 
@@ -565,16 +565,16 @@ function draw_the_chart(){
 }
 
 function sortByProperty(property){  
-   return function(a,b){  
-      if(a[property] < b[property])  
-         return 1;  
-      else if(a[property] > b[property])  
-         return -1;  
-  
-      return 0;  
-   }  
-}
+ return function(a,b){  
+  if(a[property] < b[property])  
+   return 1;  
+ else if(a[property] > b[property])  
+   return -1;  
  
+ return 0;  
+}  
+}
+
 
 
 function render_the_chart(){
@@ -588,11 +588,11 @@ function render_the_chart(){
 
 
   if($('#scale_selector').val()==1)
-     final_parsed_data.sort(sortByProperty("value2"));
-  else
+   final_parsed_data.sort(sortByProperty("value2"));
+ else
 
-     final_parsed_data.sort(sortByProperty("value1"));
-     
+   final_parsed_data.sort(sortByProperty("value1"));
+ 
   // if($('#scale_selector').val()==1){
   //   final_parsed_data.sort(function(obj1, obj2) {
   //     // console.log(obj1.id+"-------------"+obj2.id+"==="+(obj1.value2 - obj2.value2));
@@ -605,7 +605,7 @@ function render_the_chart(){
   //   });
   // }
 
-  console.log(final_parsed_data);
+  // console.log(final_parsed_data);
 
   keys_temp=[];
   final_parsed_data.forEach(function(d){keys_temp.push(d.id);});
@@ -624,7 +624,7 @@ function render_the_chart(){
   // var x = d3.scaleBand().domain(d3.extent(final_parsed_data, function(d) { console.log(d); return d.id })).range([0, width]);
   // var x = d3.scaleBand().domain(d3.extent(final_parsed_data, function(d) { consol;e.return d.id })).range([0, width]).paddingInner(0.3).paddingOuter(0.1);
       // x.domain(d3.extent(final_parsed_data,function(d){console.log(d.id);return d.id;});
-  
+      
 
   // console.log(keys_temp);
   
@@ -655,7 +655,7 @@ function render_the_chart(){
   
   var valueline2 = d3.line().x(function(d) { return x(d.id);}).y(function(d) {return y1(d.value2); });
 // svg.append("path").style("stroke", "blue").attr("d", valueline(dataset));
-  svg.append("path").style("stroke", "red").attr("d", valueline2(final_parsed_data));
+svg.append("path").style("stroke", "red").attr("d", valueline2(final_parsed_data));
   // .on("mouseover", function(d, i) {
   //       console.log("mous over");
 
@@ -674,10 +674,10 @@ function render_the_chart(){
 
 
   svg.append("g").attr("class", "y axis").style("fill", "steelblue").call(yAxisLeft)
-    .append("text").attr("transform", "rotate(-90)").attr("y", 6).attr("dy", ".71em").style("text-anchor", "end").text($("#job1_select option:selected").html());
+  .append("text").attr("transform", "rotate(-90)").attr("y", 6).attr("dy", ".71em").style("text-anchor", "end").text($("#job1_select option:selected").html());
 
   svg.append("g").attr("class", "y axis").attr("transform", "translate(" + width + " ,0)").style("fill", "red").call(yAxisRight)
-      .append("text").attr("transform", "rotate(0)").attr("y", 6).attr("dy", ".71em").style("text-anchor", "end").text($("#job2_select option:selected").html());
+  .append("text").attr("transform", "rotate(0)").attr("y", 6).attr("dy", ".71em").style("text-anchor", "end").text($("#job2_select option:selected").html());
 
 
   svg.append("path").style("stroke", "steelblue").attr("d", valueline(final_parsed_data));
