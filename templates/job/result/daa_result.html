@@ -553,27 +553,27 @@ generateModalBody($(this).val());
     case 'all':
     $('#modal-info').find('.modal-body').html(generateAllTable());
         // $('#modal-info').find('.modal-body').html("generating all table");
-        console.log("clicked all table");
+        // console.log("clicked all table");
         break;
         case 'degree':
         $('#modal-info').find('.modal-body').html(generateDegreeCentralityTable());
                 // $('#modal-info').find('.modal-body').html("generating degree table");
-                console.log("clicked Degree table")
+                // console.log("clicked Degree table")
                 break;
                 case 'closeness':
                 $('#modal-info').find('.modal-body').html(generateClosenessCentralityTable());
                 // $('#modal-info').find('.modal-body').html("generating closeness table");
-                console.log("clicked closeness table")
+                // console.log("clicked closeness table")
                 break;
                 case 'betweenness':
                 $('#modal-info').find('.modal-body').html(generateBetweenNessCentralityTable());
                 // $('#modal-info').find('.modal-body').html("generating betweenness table");
-                console.log("clicked betweenness table")
+                // console.log("clicked betweenness table")
                 break;
                 default:
                 $('#modal-info').find('.modal-body').html(generatePageRankCentralityTable());
         // $('#modal-info').find('.modal-body').html("generating pagerank table");
-        console.log("clicked pagerank table")
+        // console.log("clicked pagerank table")
       }
 
     }
@@ -687,7 +687,7 @@ generateModalBody($(this).val());
         }
         catch(err) {
           table_row=table_row+'<tr><td>'+item.id()+'</td><td>'+ "Could not generate centrality measure"+'</td></tr>';
-          console.log("couldnot generate it for "+item.id());
+          // console.log("couldnot generate it for "+item.id());
         }
 
 

@@ -393,6 +393,34 @@ path {
     </div>
   </div> 
 </div> 
+
+
+<div class="container-fluid">  
+  <div class="row">
+
+    <div class="col-md-12"> 
+      <div class="card card-primary">
+        <div class="card-header">
+          <h3>General Properties of the Network</h3>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Update Details</label>
+                <button type="button" name="update_details" id="update_details" class="btn btn-success form-control" style="width: 100%;" >Update</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body wrap2">
+          <row><div class="alert  alert-style" role="alert" name="alert_edge_5" id="alert_edge_5" hidden="True" style="height: 100%"></div></row>
+        </div>
+
+      </div>
+    </div>
+  </div> 
+</div> 
+
+
 <!-- <div class="container-fluid" style="margin-top: 20px"> 
   <div class="row">
     <div class="col-md-12"> 
@@ -426,6 +454,28 @@ path {
     </div> 
   </div> 
 </div>  -->
+
+
+<div class="modal modal-info fade" id="modal_info">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Information</h4>
+        </div>
+        <div class="modal-body" id="modal_body">
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+          <!-- <button type="button" class="btn btn-outline">Save changes</button> -->
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
 
 {% endblock%}
 
@@ -701,7 +751,7 @@ $('#alert_edge_2').html(text4+text3).fadeTo(1000,1);
 
 
 
-function centralities_data_generation(){
+      function centralities_data_generation(){
         centralities=[];
         keys=[];
 
@@ -721,10 +771,10 @@ function centralities_data_generation(){
             if(item.isNode()){          
 
               // console.log(ccn.closeness(item));               
-             centralities.push(ccn.closeness(item));
-             keys.push(item.id());
-           }
-         });
+              centralities.push(ccn.closeness(item));
+              keys.push(item.id());
+            }
+          });
 
         }else if($("#centrality_distribution").val()==3){ 
           var bc = cy.$().bc();
@@ -753,63 +803,63 @@ function centralities_data_generation(){
       render_the_chart_2();
     }
 
-      $("#centrality_distribution").change(function(){
-        centralities_data_generation();
-      });
+    $("#centrality_distribution").change(function(){
+      centralities_data_generation();
+    });
 
-      function xtickGenerate(){
-        xticks=[];
-        let min=Math.min.apply(Math,centralities);
-        let max=Math.max.apply(Math,centralities);
-        let stepsize=(max-min)/10.00; 
-        for (var i = min; i<=max; i+=stepsize) {
-          if(i>max){
-            xticks.push(max);
-          }else{
-            xticks.push(i);
-          }
+    function xtickGenerate(){
+      xticks=[];
+      let min=Math.min.apply(Math,centralities);
+      let max=Math.max.apply(Math,centralities);
+      let stepsize=(max-min)/10.00; 
+      for (var i = min; i<=max; i+=stepsize) {
+        if(i>max){
+          xticks.push(max);
+        }else{
+          xticks.push(i);
         }
       }
+    }
 
-      function yvalsgenerate(){ 
-        yvals=[];
-        let temp10=0;
-        xticks.forEach(function(item,index){
-          let temp=0;
+    function yvalsgenerate(){ 
+      yvals=[];
+      let temp10=0;
+      xticks.forEach(function(item,index){
+        let temp=0;
 
-          centralities.forEach(function(item11,index11){
-            if(temp10<=item11 && item11<=item){
-              temp++;
-            }
+        centralities.forEach(function(item11,index11){
+          if(temp10<=item11 && item11<=item){
+            temp++;
+          }
 
-          });
-
-          temp10=item; 
-          yvals.push(parseFloat(((temp/centralities.length)*100.00).toFixed(2))); 
-        }); 
-        yvals.sort();
-      }
-
-
-      function finalDataGenerate(){
-        final_parsed_data=[];
-        xticks.forEach(function(d,i){
-
-          final_parsed_data.push({
-            id:d,value:yvals[i]
-          })
         });
-      }
 
-      function finalDataGenerate2(){
-        final_parsed_data_2=[];
-        keys.forEach(function(d,i){
+        temp10=item; 
+        yvals.push(parseFloat(((temp/centralities.length)*100.00).toFixed(2))); 
+      }); 
+      yvals.sort();
+    }
+
+
+    function finalDataGenerate(){
+      final_parsed_data=[];
+      xticks.forEach(function(d,i){
+
+        final_parsed_data.push({
+          id:d,value:yvals[i]
+        })
+      });
+    }
+
+    function finalDataGenerate2(){
+      final_parsed_data_2=[];
+      keys.forEach(function(d,i){
           // console.log(yvals[i]);
           final_parsed_data_2.push({
             id:d,value:centralities[i]
           })
         });
-      }
+    }
 
 
 
@@ -894,20 +944,20 @@ function render_the_chart(){
 function render_the_chart_2(){
 
 // console.log(final_parsed_data_2);
- $("#network_density").html("");  
- 
- var margin = {top: 30, right: 40, bottom: 120, left: 50},width = (keys.length*22) - margin.left - margin.right,height = 500 - margin.top - margin.bottom;
- 
- svg2 = d3.select("#network_density").append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top +margin.bottom).append("g")
- .attr("transform","translate(" + margin.left + "," + margin.top + ")");
+$("#network_density").html("");  
 
- svg2.selectAll("path").remove();
- var x = d3.scaleBand().domain(keys).range([0, width]);
- var xAxis = d3.axisBottom().scale(x).tickFormat(function(d,i) { return  d; });
+var margin = {top: 30, right: 40, bottom: 120, left: 50},width = (keys.length*22) - margin.left - margin.right,height = 500 - margin.top - margin.bottom;
 
- svg2.append("g").attr("class", "x axis").attr("transform", "translate(0," + height + ")").call(xAxis).selectAll("text").style("text-anchor", "end")
- .attr("dx", "-.8em").attr("dy", ".15em").attr("transform", function(d) {return "rotate(-65)" });
- 
+svg2 = d3.select("#network_density").append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top +margin.bottom).append("g")
+.attr("transform","translate(" + margin.left + "," + margin.top + ")");
+
+svg2.selectAll("path").remove();
+var x = d3.scaleBand().domain(keys).range([0, width]);
+var xAxis = d3.axisBottom().scale(x).tickFormat(function(d,i) { return  d; });
+
+svg2.append("g").attr("class", "x axis").attr("transform", "translate(0," + height + ")").call(xAxis).selectAll("text").style("text-anchor", "end")
+.attr("dx", "-.8em").attr("dy", ".15em").attr("transform", function(d) {return "rotate(-65)" });
+
  // var y0 = d3.scaleLinear().domain([0,100]).range([height,0]); 
  var y0 = d3.scaleLinear().domain([d3.min(final_parsed_data_2, function(d) {return Math.min(d.value);}), d3.max(final_parsed_data_2, function(d) {return Math.max(d.value);})]).range([height,0]); 
 
@@ -921,7 +971,7 @@ function render_the_chart_2(){
  svg2.append("g").attr("class", "y axis").style("fill", "steelblue").call(yAxisLeft)
  .append("text").attr("transform", "rotate(-90)").attr("y", 6).attr("dy", ".71em").style("text-anchor", "end").text($("#job1_select option:selected").html());
  
-  svg2.append("path").style("stroke", "red").attr("d", valueline(final_parsed_data_2)); 
+ svg2.append("path").style("stroke", "red").attr("d", valueline(final_parsed_data_2)); 
  
  
 
@@ -930,10 +980,40 @@ function render_the_chart_2(){
 
 
 
+function update_details(){
+  $("#alert_edge_5").html("");
+   
+  let no_of_edges=cy.edges().length;
+  let no_of_nodes=cy.nodes().length;
+  let no_of_orphans=cy.nodes().orphans().length; 
+  // alert(no_of_edges);
+  let table45='<table style="width:100%"  class="table table-dark"><tr><th>Properties</th><th>Values</th><th>Details</th></tr><tr><td>No Of Vertices in The Network</td><td>'+no_of_nodes+'</td><td></td></tr>'+
+  '<tr><td>No Of Edges in The Network</td><td>'+no_of_edges+'</td><td></td></tr><tr><td>No Of Orphan Nodes in The Network</td><td>'+no_of_orphans+'</td><td><button type="button" id="more_orphans" class="btn btn-info">More Info</button></td></tr></table>'
+  // console.log(table);
+ // $("#alert_edge_5").append(table);
+  $('#alert_edge_5').html(table45).fadeTo(1000,1);  
+}
 
+$("#update_details").on("click",function(){
+  update_details();
+});
+
+$(document).on("click","#more_orphans",function(){
+  // update_details();
+  // alert("got clicked");
+  let no_of_orphans=cy.nodes().orphans();
+    let modal_value="";
+    no_of_orphans.forEach(function(d,i){
+      
+    });
+
+    $('#modal-body').html("");
+    $('#modal_info').modal("show");
+});
 
 
    })   // document ready ends 
+
 
 
  </script>
