@@ -877,17 +877,9 @@ cy.elements().forEach(function(item,index){
   }
 });
 
-
-// xtickGenerate();
-// yvalsgenerate();  
-// finalDataGenerate();
+ 
 centralities_data_generation()
-// finalDataGenerate2();
-
-
-// render_the_chart();
-// render_the_chart_2();
-
+ 
 
 
 
@@ -927,23 +919,10 @@ function render_the_chart(){
 
 }
 
-
-// var clusters = cy.elements().kMeans({
-//   k: 2,
-//   attributes: [
-//   function( node ){ return edge.data('weight'); }
-//   ]
-// });
-// console.log(clusters);
+ 
 
 
-
-
-
-
-function render_the_chart_2(){
-
-// console.log(final_parsed_data_2);
+function render_the_chart_2(){ 
 $("#network_density").html("");  
 
 var margin = {top: 30, right: 40, bottom: 120, left: 50},width = (keys.length*22) - margin.left - margin.right,height = 500 - margin.top - margin.bottom;
@@ -957,8 +936,7 @@ var xAxis = d3.axisBottom().scale(x).tickFormat(function(d,i) { return  d; });
 
 svg2.append("g").attr("class", "x axis").attr("transform", "translate(0," + height + ")").call(xAxis).selectAll("text").style("text-anchor", "end")
 .attr("dx", "-.8em").attr("dy", ".15em").attr("transform", function(d) {return "rotate(-65)" });
-
- // var y0 = d3.scaleLinear().domain([0,100]).range([height,0]); 
+ 
  var y0 = d3.scaleLinear().domain([d3.min(final_parsed_data_2, function(d) {return Math.min(d.value);}), d3.max(final_parsed_data_2, function(d) {return Math.max(d.value);})]).range([height,0]); 
 
 
@@ -998,16 +976,14 @@ $("#update_details").on("click",function(){
   update_details();
 });
 
-$(document).on("click","#more_orphans",function(){
-  // update_details();
-  // alert("got clicked");
+$(document).on("click","#more_orphans",function(){ 
   let no_of_orphans=cy.nodes().orphans();
-    let modal_value="";
+    let modal_value='<table style="width:100%"  class="table"><tr><th>Vertices</th></tr>';
     no_of_orphans.forEach(function(d,i){
-      
+      modal_value=modal_value+'<tr><td>'+d.id()+'</td></tr>';
     });
 
-    $('#modal-body').html("");
+    $('#modal_body').html(modal_value);
     $('#modal_info').modal("show");
 });
 
