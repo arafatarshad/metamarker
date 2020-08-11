@@ -142,7 +142,8 @@
    overflow-y: initial !important
  }
  .modal-body{
-  height: 450px;
+  /*height: 450px;*/
+  height: 100%;
   width:100%;
   overflow-y: auto;
 }
@@ -234,6 +235,8 @@ path {
   </div>
   <div class="box-body">
     <div class="row"> 
+
+<!-- 
       <div class="col-md-6">
         <div class="form-group">
           <label>Filter Edges with Respect to P Value</label>
@@ -249,6 +252,38 @@ path {
             <option value="0.02">Only keep edges with P value less than  0.02</option>
             <option value="0.01">Only keep edges with P value less than  0.01</option>
           </select>
+        </div>
+      </div> -->
+
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Filter Edges with Respect to P Value</label>
+
+
+          <div class="input-group input-group-sm">
+            <!-- <input type="text" class="form-control"> -->
+            <input type="number" min="0.001" max="0.05" step="0.001" value="0.001" class="form-control" id="edge_filter_value"/>
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-info btn-flat" name="edge_filter" id="edge_filter">Go!</button>
+            </span>
+          </div>
+
+
+<!--           <select class="form-control select2" style="width: 100%;" name="edge_filter" id="edge_filter">
+            <option selected="selected" value="none">N/A </option>  
+            <option value="0.09">Only keep edges with P value less than 0.09</option>
+            <option value="0.08">Only keep edges with P value less than  0.08</option>
+            <option value="0.07">Only keep edges with P value less than  0.07</option>
+            <option value="0.06">Only keep edges with P value less than  0.06</option>
+            <option value="0.05">Only keep edges with P value less than  0.05</option>
+            <option value="0.04">Only keep edges with P value less than  0.04</option>
+            <option value="0.03">Only keep edges with P value less than  0.03</option>
+            <option value="0.02">Only keep edges with P value less than  0.02</option>
+            <option value="0.01">Only keep edges with P value less than  0.01</option>
+          </select> -->
+
+
         </div>
       </div>
 
@@ -269,8 +304,8 @@ path {
     <div class="row">
       <div class="col-md-12">
         <div class="form-group">
-          <label>Reset  Network</label>
-          <button type="button" name="reset" id="reset" class="btn btn-danger form-control" style="width: 100%;" >Reset</button>
+          <label>Launch 3d Network</label>
+          <button type="button" name="3d_set_button" id="3d_set_button" class="btn btn-info form-control" style="width: 100%;" >Click On The button to launch 3d view of the network</button>
         </div>
       </div>
     </div>
@@ -465,7 +500,7 @@ path {
           <h4 class="modal-title">Information</h4>
         </div>
         <div class="modal-body" id="modal_body">
-          
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
@@ -477,24 +512,71 @@ path {
     <!-- /.modal-dialog -->
   </div>
 
-{% endblock%}
-
-{%block scripts %}
-
-<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
-<script>
 
 
+  <div class="modal modal-info fade" id="modal_3d_diagram">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">3D mapping</h4>
+          </div>
+          <div class="modal-body" id="modal_body"> 
+
+            <div id="3d-graph"></div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal modal-info fade" id="alert_edge_selection">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Alert</h4>
+            </div>
+            <div class="modal-body" id="modal_body"> 
+              <h3>Please Slect a value in between 0.001 to 0.05</h3>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% endblock%}
+
+      {%block scripts %}
+
+      <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+      <script src="//unpkg.com/three"></script>
+      <script src="//unpkg.com/three-spritetext"></script>
+
+
+
+      <script src="//unpkg.com/3d-force-graph"></script>
+
+      <script>
 
 
 
 
 
- let layout_option={ name: 'circle',fit:true,avoidOverlap: true,avoidOverlapPadding: 10};
- let basic_style=[
- {
-   selector: 'node',
-   style: {
+
+
+       let layout_option={ name: 'circle',fit:true,avoidOverlap: true,avoidOverlapPadding: 10};
+       let basic_style=[
+       {
+         selector: 'node',
+         style: {
          // 'background-color': '#666666',
          'background-color': 'D6D8D9',
          'label': 'data(id)'
@@ -553,11 +635,24 @@ path {
 
 
 
-      $("#edge_filter").change(function(){
-        let value=$("#edge_filter").val()
-        var collection = cy.elements('edge[p_value >'+value+']'); 
-        cy.remove( collection ); 
+      $("#edge_filter").on('click',function(){
+        // let value=$("#edge_filter").val()
+        let value=$("#edge_filter_value").val()
+        if(value<=0 || value >0.05){ 
+          $('#alert_edge_selection').modal("show");
+        }
+        else{
+          var collection = cy.elements('edge[p_value >'+value+']'); 
+          cy.remove( collection ); 
+        }
+
       }); 
+
+      // $("#edge_filter").change(function(){
+      //   let value=$("#edge_filter").val()
+      //   var collection = cy.elements('edge[p_value >'+value+']'); 
+      //   cy.remove( collection ); 
+      // }); 
 
 
       $(document).on('change','#elements_color_change',function(){ 
@@ -877,9 +972,9 @@ cy.elements().forEach(function(item,index){
   }
 });
 
- 
+
 centralities_data_generation()
- 
+
 
 
 
@@ -919,39 +1014,39 @@ function render_the_chart(){
 
 }
 
- 
+
 
 
 function render_the_chart_2(){ 
-$("#network_density").html("");  
+  $("#network_density").html("");  
 
-var margin = {top: 30, right: 40, bottom: 120, left: 50},width = (keys.length*22) - margin.left - margin.right,height = 500 - margin.top - margin.bottom;
+  var margin = {top: 30, right: 40, bottom: 120, left: 50},width = (keys.length*22) - margin.left - margin.right,height = 500 - margin.top - margin.bottom;
 
-svg2 = d3.select("#network_density").append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top +margin.bottom).append("g")
-.attr("transform","translate(" + margin.left + "," + margin.top + ")");
+  svg2 = d3.select("#network_density").append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top +margin.bottom).append("g")
+  .attr("transform","translate(" + margin.left + "," + margin.top + ")");
 
-svg2.selectAll("path").remove();
-var x = d3.scaleBand().domain(keys).range([0, width]);
-var xAxis = d3.axisBottom().scale(x).tickFormat(function(d,i) { return  d; });
+  svg2.selectAll("path").remove();
+  var x = d3.scaleBand().domain(keys).range([0, width]);
+  var xAxis = d3.axisBottom().scale(x).tickFormat(function(d,i) { return  d; });
 
-svg2.append("g").attr("class", "x axis").attr("transform", "translate(0," + height + ")").call(xAxis).selectAll("text").style("text-anchor", "end")
-.attr("dx", "-.8em").attr("dy", ".15em").attr("transform", function(d) {return "rotate(-65)" });
- 
- var y0 = d3.scaleLinear().domain([d3.min(final_parsed_data_2, function(d) {return Math.min(d.value);}), d3.max(final_parsed_data_2, function(d) {return Math.max(d.value);})]).range([height,0]); 
+  svg2.append("g").attr("class", "x axis").attr("transform", "translate(0," + height + ")").call(xAxis).selectAll("text").style("text-anchor", "end")
+  .attr("dx", "-.8em").attr("dy", ".15em").attr("transform", function(d) {return "rotate(-65)" });
 
-
+  var y0 = d3.scaleLinear().domain([d3.min(final_parsed_data_2, function(d) {return Math.min(d.value);}), d3.max(final_parsed_data_2, function(d) {return Math.max(d.value);})]).range([height,0]); 
 
 
- var yAxisLeft = d3.axisLeft().scale(y0).ticks(10);
- var valueline = d3.line().x(function(d) {return x(d.id); }).y(function(d) {return y0(d.value); })
 
 
- svg2.append("g").attr("class", "y axis").style("fill", "steelblue").call(yAxisLeft)
- .append("text").attr("transform", "rotate(-90)").attr("y", 6).attr("dy", ".71em").style("text-anchor", "end").text($("#job1_select option:selected").html());
- 
- svg2.append("path").style("stroke", "red").attr("d", valueline(final_parsed_data_2)); 
- 
- 
+  var yAxisLeft = d3.axisLeft().scale(y0).ticks(10);
+  var valueline = d3.line().x(function(d) {return x(d.id); }).y(function(d) {return y0(d.value); })
+
+
+  svg2.append("g").attr("class", "y axis").style("fill", "steelblue").call(yAxisLeft)
+  .append("text").attr("transform", "rotate(-90)").attr("y", 6).attr("dy", ".71em").style("text-anchor", "end").text($("#job1_select option:selected").html());
+
+  svg2.append("path").style("stroke", "red").attr("d", valueline(final_parsed_data_2)); 
+
+
 
 }
 
@@ -960,7 +1055,7 @@ svg2.append("g").attr("class", "x axis").attr("transform", "translate(0," + heig
 
 function update_details(){
   $("#alert_edge_5").html("");
-   
+
   let no_of_edges=cy.edges().length;
   let no_of_nodes=cy.nodes().length;
   let no_of_orphans=cy.nodes().orphans().length; 
@@ -969,7 +1064,7 @@ function update_details(){
   '<tr><td>No Of Edges in The Network</td><td>'+no_of_edges+'</td><td></td></tr><tr><td>No Of Orphan Nodes in The Network</td><td>'+no_of_orphans+'</td><td><button type="button" id="more_orphans" class="btn btn-info">More Info</button></td></tr></table>'
   // console.log(table);
  // $("#alert_edge_5").append(table);
-  $('#alert_edge_5').html(table45).fadeTo(1000,1);  
+ $('#alert_edge_5').html(table45).fadeTo(1000,1);  
 }
 
 $("#update_details").on("click",function(){
@@ -978,14 +1073,68 @@ $("#update_details").on("click",function(){
 
 $(document).on("click","#more_orphans",function(){ 
   let no_of_orphans=cy.nodes().orphans();
-    let modal_value='<table style="width:100%"  class="table"><tr><th>Vertices</th></tr>';
-    no_of_orphans.forEach(function(d,i){
-      modal_value=modal_value+'<tr><td>'+d.id()+'</td></tr>';
-    });
+  let modal_value='<table style="width:100%"  class="table"><tr><th>Vertices</th></tr>';
+  no_of_orphans.forEach(function(d,i){
+    modal_value=modal_value+'<tr><td>'+d.id()+'</td></tr>';
+  });
 
-    $('#modal_body').html(modal_value);
-    $('#modal_info').modal("show");
+  $('#modal_body').html(modal_value);
+  $('#modal_info').modal("show");
 });
+
+
+$("#3d_set_button").on("click",function(){
+  generate3Ddiagram();
+});
+
+function generate3Ddiagram(){
+
+  var nodes=[];
+  var links=[];
+  cy.nodes().forEach(function(v,i){
+    nodes.push({id:v.id()});
+  });
+  cy.edges().forEach(function(v,i){
+    links.push({source:v.source().id(),target:v.target().id(),value:v.data().p_value});
+  });
+
+  $('#modal_3d_diagram').modal("show");
+
+  const gData = {
+    nodes: nodes,
+    links: links};
+
+    // console.log(gData.links);
+
+
+
+
+    const Graph = ForceGraph3D()
+    (document.getElementById('3d-graph'))
+    .graphData(gData).nodeLabel('id')
+    .linkThreeObjectExtend(true)
+    .linkThreeObject(link => {
+     const sprite = new SpriteText(`${link.value}`);
+     sprite.color = 'lightgrey';
+     sprite.textHeight = 1.5;
+     return sprite;
+   }).linkPositionUpdate((sprite, { start, end }) => {
+    const middlePos = Object.assign(...['x', 'y', 'z'].map(c => ({
+            [c]: start[c] + (end[c] - start[c]) / 2 // calc middle point
+          })));  Object.assign(sprite.position, middlePos);
+  });
+
+
+    // Spread nodes a little wider
+    Graph.d3Force('charge').strength(-10);
+
+      // fit to canvas when engine stops
+      Graph.onEngineStop(() => Graph.zoomToFit(100));
+    }
+
+
+
+
 
 
    })   // document ready ends 
