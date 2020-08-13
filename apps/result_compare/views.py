@@ -19,16 +19,19 @@ import json
 # Create your views here.
 class compare_result(APIView):
     def get(self, request, *args, **kwargs):
+        if 'reference_id' not in request.session:
+            return redirect('/project_ground/')
+           
         project = Project.objects.get(reference_id=request.session['reference_id'])
         
-        jobs=Job.objects.filter(project_id=project.id,status=3)
-        # print(jobs[0].proce)
-        # dataset=ExtraDataset.objects.filter(project_id=project)
-        # preprocessing_tasks=PreprocessingTasks.objects.all()
+        jobs=Job.objects.filter(project_id=project.id,status=3) 
         return render(request,"compare_result/home.html",{"page_title":"Result Compare","project":project,"jobs":jobs})
         # return    HttpResponse(project.id)
     
     def generate_panel_2(self, request, *args, **kwargs):
+        if 'reference_id' not in request.session:
+            return redirect('/project_ground/')
+           
         job_1=Job.objects.get(id=request.POST['job1_select'])
         job_2=Job.objects.get(id=request.POST['job2_select'])
         job1_template=self.switcher(1,job_1)
@@ -36,7 +39,9 @@ class compare_result(APIView):
         return HttpResponse([job1_template,job2_template])
     
     def generate_panel_3(self, request, *args, **kwargs): 
-        # print(request.POST)
+        if 'reference_id' not in request.session:
+            return redirect('/project_ground/')
+           
         data={}
         if 'job1_type_param' in request.POST:
             data['job1']=self.gather_data_for_panel3(request.POST['job1'],request.POST['job1_param'],request.POST['job1_type_param'])
@@ -60,12 +65,9 @@ class compare_result(APIView):
             dca=DaaResultAndParameter.objects.get(job_id=job_object.id)  
             return dca.network_data
         else:
-            # print(param2)
             pls_da_id=PlsDa.objects.get(job_id=job_object.id).id
             component_result= PlsComponentResult.objects.filter(pls_da_id=pls_da_id,component_id=int(param),result_type=int(param2))[0]
-            # print(component_result.result)
             return component_result.result
-            # return component_result.result
             
 
     def switcher(self,job_count,job): 

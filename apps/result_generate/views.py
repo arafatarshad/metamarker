@@ -25,6 +25,9 @@ import json
 
 class JobResult(APIView):
         def showJobReult(request,id):
+            if 'reference_id' not in request.session:
+                return redirect('/project_ground/')
+           
             job = Job.objects.get(pk=id)
             project=Project.objects.filter(reference_id=request.session['reference_id']).first()
 
@@ -49,12 +52,16 @@ class JobResult(APIView):
                 return render(request,"show_result/pls_result_new.html",{"vip_score_figure":vip_score_figure,"title":"Pls Da Result","pls_components":pls_da_components,'job_id':id,"pls_da_id":pls_da.id})
 
         def getPCAComponentResult(request,id):
+            if 'reference_id' not in request.session:
+                return redirect('/project_ground/')
+           
             figure=ComponentsResultLib().returnBarChart(id)
             return HttpResponse(figure)
         
         def getPLSComponentResult(request):
-            # return HttpResponse("hello world")
-            # print(request.POST)
+            if 'reference_id' not in request.session:
+                return redirect('/project_ground/')
+           
             component_id=PlsComponentResult.objects.filter(pls_da_id=request.POST['pls_da_id'],result_type=request.POST['result_type'],component_id=request.POST['component_id'])[0]
             component_figure=PlsDaComponentResult().returnBarChart(component_id.id)
             vip_score_figure=PlsDaComponentResult().returnVIPBarChart(request.POST['pls_da_id'])
@@ -66,6 +73,9 @@ class JobResult(APIView):
             return render(request,"show_result/pls_result_new.html",{"vip_score_figure":vip_score_figure,"title":"Pls Da Result","pls_components":pls_da_components,'job_id':request.POST['job_id'],"pls_da_id":pls_da.id,"component_figure":component_figure})
 
         def MoreNetwork(request,id): 
+            if 'reference_id' not in request.session:
+                return redirect('/project_ground/')
+           
             return render(request,"job/result/more_network.html",{"title":"MoreNetwork",'job_id':id})
 
         # def getPLSComponentResult(request,component_id,result_type,pls_id):

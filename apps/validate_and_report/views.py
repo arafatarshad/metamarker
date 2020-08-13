@@ -23,13 +23,11 @@ from datetime import datetime
 class Main(APIView):
 
         def get(self, request, *args, **kwargs):
+            if 'reference_id' not in request.session:
+                return redirect('/project_ground/')
+           
             project = Project.objects.get(reference_id=request.session['reference_id'])
             return render(request,"validate_and_report/home.html",{"page_title":"Validate And Report","project":project})
-
-        # def post(self, request, *args, **kwargs):
-        #     project = Project.objects.get(reference_id=request.session['reference_id'])
-        #     return render(request,"validate_and_report/home.html",{"page_title":"Validate And Report","project":project})
-
 
         def getJobData(request,id):
             job=Job.objects.filter(status=3,project_id=id)
@@ -53,6 +51,9 @@ class ShowResult:
         self.name="asdas"
 
     def showResult(self,request,id):
+        if 'reference_id' not in request.session:
+            return redirect('/project_ground/')
+           
         job=Job.objects.get(id=id)
         if(job.processing_algorithm.reference_id=="pc_002"):
             return render(request,"validate_and_report/download_for_dca.html",{"page_title":"Downloads","job":job})
@@ -100,7 +101,6 @@ class downloadResultPCA:
         component_id=int(request.POST['component_id'])-1
 
         filename="component"+str(component_id+1)+".json"
-        # print(component_id)
         data=ComponentResult.objects.get(pca_result_id=pca_result_id,component_id=component_id).result
         response = HttpResponse(data, content_type='application/json')
         response['Content-Disposition'] = 'attachment; filename='+filename
@@ -112,60 +112,8 @@ class downloadResultPLS:
         pls_da_id=request.POST['pls_da_id']
         component_id=int(request.POST['component_id'])-1
         result_type=int(request.POST['result_type'])
-        # print(pls_da_id)
-        # print(component_id)
-        # print(result_type)
         filename="component"+str(component_id+1)+".json"
         data=PlsComponentResult.objects.filter(pls_da_id=pls_da_id,component_id=component_id,result_type=result_type)[0].result
-        # print(data[0])
         response = HttpResponse(data, content_type='application/json')
         response['Content-Disposition'] = 'attachment; filename='+filename
         return response
-        # return HttpResponse("sad")
-
-
-
-
-    #
-    #
-    #     filename = self.getMeFilename(id)
-    #     # report=Report(created_at=datetime.now(),name=filename,delete=0,job_id=id).save()
-    #
-    #     response = HttpResponse(content_type='application/pdf')
-    #     response['Content-Disposition'] = "'attachment; filename='"+filename
-    #
-    #     buffer = BytesIO()
-    #     p = canvas.Canvas(buffer)
-    #
-    #
-    #     p.drawString(100, 100, "Hello world.")
-    #
-    #
-    #
-    #
-    #
-    #     p.showPage()
-    #     p.save()
-    #     pdf = buffer.getvalue()
-    #     buffer.close()
-    #     response.write(pdf)
-    #     return response
-    # #
-    # # def findOutWhichReport(id,canvas):
-    # #     job=Job.objects.get(id=id)
-    # #     if(job.processing_algorithm.reference_id=="pc_002"):
-    # #         self.generateDCAPDF(id,canvas)
-    #
-    # def getMeFilename(self,reference_id):
-    #     job=Job.objects.get(id=reference_id)
-    #     project=Project.objects.get(id=job.project_id)
-    #
-    #     dateTimeObj = datetime.now()
-    #     timeObj = dateTimeObj.time()
-    #     timeStr = timeObj.strftime("%H:%M:%S.%f")
-    #     filename=str(project.reference_id)+str(dateTimeObj.year)+str(dateTimeObj.month)+str(dateTimeObj.day)+str(dateTimeObj.hour)+str(dateTimeObj.minute)+str(dateTimeObj.second)+str(dateTimeObj.microsecond)+".pdf"
-    #     # filename=str(project.reference_id)+str(timeStr)
-    #     # filename=str(reference_id)+str(timeStr)
-    #     return filename
-    #
-    # # def generateDCAPDF(self,id,canvas)

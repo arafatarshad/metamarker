@@ -17,11 +17,16 @@ from django.http import HttpResponse
 # Create your views here.
 class StartProject(APIView):
         def get(self, request, *args, **kwargs):
+            if 'reference_id' not in request.session:
+                return redirect('/project_ground/')
             return render(request,"project_ground/start.html",{"page_title":"Start Project"})
 
 
 class CreateOrSelectProject(APIView):
         def get(self, request, *args, **kwargs):
+            if 'reference_id' not in request.session:
+                return redirect('/project_ground/')
+           
             if kwargs.get('value') == 0 :
                 template_name = "project_ground/create_project.html"
                 return render(request,template_name,{"page_title":"Create New Project"})
@@ -31,6 +36,9 @@ class CreateOrSelectProject(APIView):
 
 
         def post(self, request, *args, **kwargs):
+            if 'reference_id' not in request.session:
+                return redirect('/project_ground/')
+           
             if 'select' in request.POST:
                 form = request.POST
                 reference = request.POST['project_reference'].strip()

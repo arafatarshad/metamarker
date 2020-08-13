@@ -31,6 +31,9 @@ import json
 
 class JOB(APIView):
         def get(self, request, *args, **kwargs):
+            if 'reference_id' not in request.session:
+                return redirect('/project_ground/')
+           
             project=Project.objects.filter(reference_id=request.session['reference_id']).first()
             checkBackgroundTask(repeat=60, repeat_until=None)
             return render(request,"job/job.html",{"page_title":"Task-Manager","project_id":project.id})
@@ -67,6 +70,9 @@ class JOB(APIView):
 
 
         def deleteJOB(self,request,id):
+            if 'reference_id' not in request.session:
+                return redirect('/project_ground/')
+           
             job = Job.objects.get(pk=id)
             job.status=50
             job.save()
@@ -74,6 +80,9 @@ class JOB(APIView):
             return render(request,"job/job.html",{"page_title":"Task-Manager","project_id":project.id})
 
         def showJobReult(self,request,id):
+            if 'reference_id' not in request.session:
+                return redirect('/project_ground/')
+           
             job = Job.objects.get(pk=id)
 
             if job.processing_algorithm.reference_id == 'pc_002':
@@ -117,10 +126,10 @@ class JOB(APIView):
             d = dca.network_data
             return JsonResponse(d,safe=False)
 
-
-
-# the folowwing lines of codes are responsible for automation
 def getAutomationAGo(request):
+    if 'reference_id' not in request.session:
+        return redirect('/project_ground/')
+   
     project=Project.objects.filter(reference_id=request.session['reference_id']).first()
     checkBackgroundTask(repeat=60, repeat_until=None)
     return render(request,"job/job.html",{"page_title":"Task-Manager","project_id":project.id})

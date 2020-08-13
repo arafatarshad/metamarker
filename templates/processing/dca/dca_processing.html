@@ -2,90 +2,82 @@
 {% block content %}
 
 <form name="options_form" id="options_form" class="" action="{% url 'dca_processing' %}"  method="post">
-<div class="box box-default">
- <div class="box-header with-border">
-   <h3 class="box-title">Differential Correlation Analysis</h3>
+  <div class="box box-default">
+   <div class="box-header with-border">
+     <h3 class="box-title">Differential Correlation Analysis</h3>
 
-   <div class="box-tools pull-right">
-     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+     <div class="box-tools pull-right">
+       <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+     </div>
    </div>
- </div>
- <div class="box-body">
-   <div class="row">
+   <div class="box-body">
+     <div class="row">
 
       <div class="col-md-6">
         <div class="form-group">
-            <label>Give This Task A name</label>
-             <input class="form-control" style="width: 100%;" type="text" name="name" id="name" required placeholder="Insert Name">
+          <label>Give This Task A name</label>
+          <input class="form-control" style="width: 100%;" type="text" name="name" id="name" required placeholder="Insert Name">
         </div>
       </div>
 
-    
-     <div class="col-md-6">
+
+      <div class="col-md-6">
        <div class="form-group">
-           <label>Select your Dataset</label>
-           <select class="form-control select2" style="width: 100%;" name="dataset_id">
-             <option selected="selected" value="00000">Main File</option>
-             {% for x in dataset %}
-                 <option value="{{ x.id }}">{{ x.name }}</option>
-             {% endfor %}
-           </select>
+         <label>Select your Dataset</label>
+         <select class="form-control select2" style="width: 100%;" name="dataset_id">
+           <option selected="selected" value="00000">Main File</option>
+           {% for x in dataset %}
+           <option value="{{ x.id }}">{{ x.name }}</option>
+           {% endfor %}
+         </select>
        </div>
      </div>
 
-<!--      <div class="col-md-6">
-       <div class="form-group">
-           <label>Marginal Significance  </label>
-           <select class="form-control select2" style="width: 100%;" name="sig_count">
-
-             <option value="70">0.7</option>
-             <option value="60">0.6</option>
-             <option selected="selected" value="50">0.5</option>
-             <option value="40">0.4</option>
-           </select>
-       </div>
-     </div>   --> 
-       <div class="col-md-6">
-       <div class="form-group">
-           <label>P-Value (Bonferroni Co efficient for Significance)  </label>
-           <select class="form-control select2" style="width: 100%;" name="p_value_cutoff">
-
-             <option value="0.09">0.09</option>
-             <option value="0.08">0.08</option>
-             <option value="0.07">0.07</option>
-             <option value="0.06">0.06</option>
-             <option selected="selected" value="0.05">0.05</option>
-             <option value="0.04">0.04</option>
-             <option value="0.03">0.03</option>
-             <option value="0.02">0.02</option>
-             <option value="0.01">0.01</option>
-           </select>
-       </div>
-     </div>
 
      <div class="col-md-6">
        <div class="form-group">
-           <label>Number Of Permutations</label>
-           <select class="form-control select2" style="width: 100%;" name="number_of_permutation">
+         <label>P-Value (Bonferroni Co efficient for Significance)  </label>
+         <select class="form-control select2" style="width: 100%;" name="p_value_cutoff">
 
-             <option  selected="selected" value="1000">1000</option>
-             <option value="900">900</option>
-             <option value="800">800</option>
-             <option value="700">700</option>
-             <option value="600">600</option>
-             <option value="500">500</option>
-             <option value="400">400</option>
-             <option value="300">300</option>
-             <option value="200">200</option>
-             <option value="100">100</option>
-           </select>
+           <option value="0.09">0.09</option>
+           <option value="0.08">0.08</option>
+           <option value="0.07">0.07</option>
+           <option value="0.06">0.06</option>
+           <option selected="selected" value="0.05">0.05</option>
+           <option value="0.04">0.04</option>
+           <option value="0.03">0.03</option>
+           <option value="0.02">0.02</option>
+           <option value="0.01">0.01</option>
+         </select>
+       </div>
+     </div>
+
+
+     
+
+     <div class="col-md-6">
+       <div class="form-group">
+         <label>Number Of Permutations</label>
+         <select class="form-control select2" style="width: 100%;" name="number_of_permutation">
+
+           <option  selected="selected" value="1000">1000</option>
+           <option value="900">900</option>
+           <option value="800">800</option>
+           <option value="700">700</option>
+           <option value="600">600</option>
+           <option value="500">500</option>
+           <option value="400">400</option>
+           <option value="300">300</option>
+           <option value="200">200</option>
+           <option value="100">100</option>
+         </select>
        </div>
      </div>
 
      <div class="col-md-12">
        <div class="form-group">
-             <input type="checkbox" name="scaler_scale_check" class="minimal" value="1">       <label> Apply Scaler Scaling</label>  <br>
-        </div>
+         <input type="checkbox" name="scaler_scale_check" class="minimal" value="1">       <label> Apply Scaler Scaling</label>  <br>
+       </div>
      </div>
 
    </div>
@@ -93,9 +85,9 @@
    <div class="row">
      <div class="col-md-12">
        <div class="form-group">
-           <label>Hit Submit to Apply your changes</label>
-           <button type="button" class="btn btn-small btn-success form-control"name="button" data-toggle="modal" data-target="#modal-confirm">Submit</button>
-         </div>
+         <label>Hit Submit to Apply your changes</label>
+         <button type="button" class="btn btn-small btn-success form-control"name="button" data-toggle="modal" data-target="#modal-confirm">Submit</button>
+       </div>
      </div>
    </div>
  </div>
@@ -108,23 +100,23 @@
      <div class="modal-header">
        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
          <span aria-hidden="true">&times;</span></button>
-       <h4 class="modal-title">Alert</h4>
-     </div>
-     <div class="modal-body">
-       <p>Please Be advised that this may take a while to process your data ( in case of large dataset ).
+         <h4 class="modal-title">Alert</h4>
+       </div>
+       <div class="modal-body">
+         <p>Please Be advised that this may take a while to process your data ( in case of large dataset ).
          Once the processing is done you will be automatically redirected to new page</p>
-       <input type="submit" class="btn btn-small btn-success form-control" value="Submit">
+         <input type="submit" class="btn btn-small btn-success form-control" value="Submit">
+       </div>
+       <div class="modal-footer">
+         <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+         <!-- <button type="button" class="btn btn-outline">Save changes</button> -->
+       </div>
      </div>
-     <div class="modal-footer">
-       <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
-       <!-- <button type="button" class="btn btn-outline">Save changes</button> -->
-     </div>
+     <!-- /.modal-content -->
    </div>
-   <!-- /.modal-content -->
+   <!-- /.modal-dialog -->
  </div>
- <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
+ <!-- /.modal -->
 </form>
 
 
@@ -136,51 +128,51 @@
      <div class="modal-header">
        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
          <span aria-hidden="true">&times;</span></button>
-       <h4 class="modal-title">Information</h4>
+         <h4 class="modal-title">Information</h4>
+       </div>
+       <div class="modal-body">
+         <p>Your Task Has been added to the server job queue. \n You will be notified by email once the server processes the entire dataset and generates the result</p>
+       </div>
+       <div class="modal-footer">
+         <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+         <!-- <button type="button" class="btn btn-outline">Save changes</button> -->
+       </div>
      </div>
-     <div class="modal-body">
-       <p>Your Task Has been added to the server job queue. \n You will be notified by email once the server processes the entire dataset and generates the result</p>
-     </div>
-     <div class="modal-footer">
-       <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
-       <!-- <button type="button" class="btn btn-outline">Save changes</button> -->
-     </div>
+     <!-- /.modal-content -->
    </div>
-   <!-- /.modal-content -->
+   <!-- /.modal-dialog -->
  </div>
- <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
+ <!-- /.modal -->
 
 
 
-{% endblock%}
+ {% endblock%}
 
-{%block scripts %}
-<script type="text/javascript">
- $( document ).ready(function() {
-       $('li#dca_processing').addClass("active");
+ {%block scripts %}
+ <script type="text/javascript">
+   $( document ).ready(function() {
+     $('li#dca_processing').addClass("active");
    });
 
    $(document).ready(function(){
      $("#options_form").submit(function(e) {
-         e.preventDefault();
-         var token = '{{csrf_token}}';
-         var form = $(this);
-         var url = form.attr('action');
+       e.preventDefault();
+       var token = '{{csrf_token}}';
+       var form = $(this);
+       var url = form.attr('action');
 
-           $('#modal-confirm').modal("hide");
+       $('#modal-confirm').modal("hide");
 
-         $.ajax({
-                headers: { "X-CSRFToken": token },
-                type: "POST",
-                url: url,
-                data: form.serialize(),
-                beforesend:function(){
+       $.ajax({
+        headers: { "X-CSRFToken": token },
+        type: "POST",
+        url: url,
+        data: form.serialize(),
+        beforesend:function(){
 
-                },
-                success: function(data)
-                {
+        },
+        success: function(data)
+        {
                   // $('#modal-info').modal("hide");
                   $('#options_form')[0].reset();
                   $('#options_form')[0].reset();
@@ -190,13 +182,13 @@
                 }
               });
 
-         });
+     });
    })
-</script>
+ </script>
 
 
 
 
 
 
-{% endblock%}
+ {% endblock%}

@@ -91,8 +91,7 @@ class showDashBoard(APIView):
             cell_list.append(df[value])
         return [column_list,cell_list]
 
-    def getMeTheTable(self,df):
-        # cell_list=self.getMeListOfCells(df)
+    def getMeTheTable(self,df): 
         df=df._get_numeric_data()
         cell_column=self.numericTableCellsOnly(df)
         trace= go.Table(
@@ -149,8 +148,7 @@ class showDashBoard(APIView):
         return "rgb"+"("+str(colors[0])+","+str(colors[1])+","+str(colors[2])+")"
 
 
-    def proper_color_scale(self,last_column_values):
-        # uniq_list=list.sort(last_column_values.unique())
+    def proper_color_scale(self,last_column_values): 
         uniq_list=np.sort(last_column_values.unique())
         colorscale=[]
         for value in uniq_list:
@@ -206,7 +204,6 @@ class showDashBoard(APIView):
                 trace=go.Parcoords(line = dict(color = df1[df1.columns[-1]]),dimensions=dimension_list)
             else:
                 trace=go.Parcoords(line = dict(color = df1[df1.columns[-1]],colorscale=colorscale),dimensions=dimension_list)
-
         data=[trace]
         layout =None
 
@@ -214,7 +211,6 @@ class showDashBoard(APIView):
             layout = go.Layout(plot_bgcolor = '#E5E5E5',paper_bgcolor = '#E5E5E5',dragmode = 'zoom',width=8000,height=1000)
         else :
              layout = go.Layout(plot_bgcolor = '#E5E5E5',paper_bgcolor = '#E5E5E5',dragmode = 'zoom',height=1000)
-
         return go.Figure(data=data,layout=layout)
 
     def getMetheParallelPlot(self,df1):
@@ -232,6 +228,9 @@ class showDashBoard(APIView):
 
 
     def get(self, request, *args, **kwargs):
+        if 'reference_id' not in request.session:
+            return redirect('/project_ground/')
+           
         project = Project.objects.get(reference_id=request.session['reference_id'])
         df= self.getMeDataFrame(project)
         div =self.getMeTheTable(df)
@@ -250,8 +249,7 @@ class parallelPlot(APIView):
         return pd.read_csv(project.dataset)
 
     def get(self, request, *args, **kwargs):
-            project = Project.objects.get(reference_id=request.session['reference_id'])
-            # print(project)
+            project = Project.objects.get(reference_id=request.session['reference_id']) 
             df=self.getMeDataFrame(project)
             df=df._get_numeric_data()
             df.fillna(df.mean(),inplace=True)

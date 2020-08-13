@@ -37,6 +37,9 @@ class showPreprocessingIndex(APIView):
             return '{randomstring}{ext}'.format(randomstring= randomstr, ext= '.csv')
 
         def get(self, request, *args, **kwargs):
+            if 'reference_id' not in request.session:
+                return redirect('/project_ground/')
+
             project = Project.objects.get(reference_id=request.session['reference_id'])
             dataset=ExtraDataset.objects.filter(project_id=project)
             preprocessing_tasks=PreprocessingTasks.objects.all()
@@ -44,6 +47,9 @@ class showPreprocessingIndex(APIView):
                                                                     "dataset":dataset,"preprocessing_tasks":preprocessing_tasks})
 
         def post(self, request, *args, **kwargs):
+            if 'reference_id' not in request.session:
+                return redirect('/project_ground/')
+           
             project = Project.objects.get(reference_id=request.session['reference_id'])
             dataset_id =request.POST['dataset_id']
             df=self.getUsProperDf(dataset_id,project)

@@ -1,29 +1,6 @@
 
 {% extends "dashboard_main_template/dashboard_main.html" %}
 {% load staticfiles %}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 {% block content %}
 
 
@@ -32,7 +9,7 @@
 
 
 <div class="box box-default">
-  <div class="box-header with-border">
+  <div class="box-header with-border ">
     <h3 class="box-title">A glimpse of the uploaded dataset</h3>
     <div class="box-tools pull-right">
       <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -177,24 +154,20 @@
          return [x(p), y[p](d[p])]; }));
        return line;
    }
-
-   // Highlight the specie that is hovered
+ 
    let highlight = function(d){
-     // selected_specie = d.Species
-
-     // first every group turns grey
+ 
      d3.selectAll(".line")
        .transition().duration(200)
        .style("stroke", "lightgrey")
-       .style("opacity", "0.2")
-     // Second the hovered specie takes its color
+       .style("opacity", "0.2") 
+
      d3.selectAll("." + d[labelcolumn])
        .transition().duration(200)
        .style("stroke", color(d[labelcolumn]))
        .style("opacity", "1")
    }
-
-   // Unhighlight
+ 
    var doNotHighlight = function(d){
      d3.selectAll(".line")
        .transition().duration(200).delay(1000)
