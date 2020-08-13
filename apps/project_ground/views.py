@@ -16,16 +16,12 @@ from django.http import HttpResponse
 
 # Create your views here.
 class StartProject(APIView):
-        def get(self, request, *args, **kwargs):
-            if 'reference_id' not in request.session:
-                return redirect('/project_ground/')
+        def get(self, request, *args, **kwargs): 
             return render(request,"project_ground/start.html",{"page_title":"Start Project"})
 
 
 class CreateOrSelectProject(APIView):
-        def get(self, request, *args, **kwargs):
-            if 'reference_id' not in request.session:
-                return redirect('/project_ground/')
+        def get(self, request, *args, **kwargs): 
            
             if kwargs.get('value') == 0 :
                 template_name = "project_ground/create_project.html"
@@ -35,10 +31,7 @@ class CreateOrSelectProject(APIView):
                 return render(request,template_name,{"page_title":"Select Existing Project"})
 
 
-        def post(self, request, *args, **kwargs):
-            if 'reference_id' not in request.session:
-                return redirect('/project_ground/')
-           
+        def post(self, request, *args, **kwargs):   
             if 'select' in request.POST:
                 form = request.POST
                 reference = request.POST['project_reference'].strip()
@@ -52,15 +45,10 @@ class CreateOrSelectProject(APIView):
                     template_name = "errors/project_not_found.html"
                     return render(request,template_name,{"page_title":"Project not found"})
 
-            else :
-                print(request.POST)
+            else : 
                 form = ProjectForm(request.POST,  request.FILES)
-                new_project=form.save(commit=False)
-                # new_project.dataset_type_id_id=request.POST['dataset_type_id']
-                new_project.save()
-
-                print(new_project.reference_id)
-                #
+                new_project=form.save(commit=False) 
+                new_project.save() 
                 request.session["reference_id"]=str(new_project.reference_id)
                 return redirect('/dashboard/')
 

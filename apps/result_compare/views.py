@@ -1,17 +1,13 @@
 import os
 import uuid
 from django.shortcuts import render
-
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http import HttpResponse
-
 from apps.project_ground.models import Project,Job,PcaJobParameters,DaaResultAndParameter,PlsDa,PcaResult,ComponentResult,PlsComponentResult
 from apps.project_ground.models import Extradataset as ExtraDataset
-
 import datetime
 from sklearn import preprocessing
-
 from django.conf import settings
 import pandas as pd
 import json
@@ -143,20 +139,3 @@ class compare_result(APIView):
             return first_part+second_part+part4
         else :
             return first_part+second_part
-
-
-
-
-
-
-
-        # def post(self, request, *args, **kwargs):
-        #     project = Project.objects.get(reference_id=request.session['reference_id'])
-        #     dataset_id =request.POST['dataset_id']
-        #     df=self.getUsProperDf(dataset_id,project)
-
-        #     df=self.PreprocessDataframe(df,request)
-        #     self.saveDataSet(project,request,df)
-        #     now = datetime.datetime.now()
-        #     html = "<html><body>It is now %s.</body></html>" % now
-        #     return    HttpResponse(html)
